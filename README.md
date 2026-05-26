@@ -1,17 +1,20 @@
-# flutter_aplication_bank
+# Banco Digital
 
-A new Flutter project.
+Monorepo do projeto Banco Digital.
 
-## Getting Started
+## Estrutura
 
-This project is a starting point for a Flutter application.
+- `mobile/`: aplicativo Flutter em Dart.
+- `backend/`: API Node.js + Express em JavaScript.
+- `docs/`: plano, checklist, prints e anotacoes.
 
-A few resources to get you started if this is your first Flutter project:
+## Branches do grupo
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- `main`: versao estavel.
+- `backend-kaua`: backend, banco, API e revisao final.
+- `frontend-maria`: login e home.
+- `frontend-neto`: cotacao, transferencia, rotas e estado.
+- `ui-jean`: componentes visuais, layout, README e prints.
+- `plugin-rian`: share_plus, comprovante e testes.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Nada deve ir direto para `main` sem revisao.
