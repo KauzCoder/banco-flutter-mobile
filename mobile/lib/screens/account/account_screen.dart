@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplication_bank/shared/widgets/feature_placeholder_page.dart';
+import 'package:flutter_aplication_bank/widgets/feedback/feature_placeholder_page.dart';
 
-class AccountPage extends StatelessWidget {
-  const AccountPage({super.key});
+class AccountScreen extends StatelessWidget {
+  const AccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

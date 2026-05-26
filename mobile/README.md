@@ -5,6 +5,7 @@ Projeto Flutter do aplicativo mobile.
 ## Organizacao principal
 
 - `lib/main.dart`: entrada do app Flutter.
+- `lib/app.dart`: widget raiz do aplicativo.
 - `lib/core`: rotas, tema, constantes e utilitarios.
 - `lib/models`: modelos de dados do app.
 - `lib/services`: comunicacao com backend, APIs e plugins.

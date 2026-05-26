@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplication_bank/shared/widgets/feature_placeholder_page.dart';
+import 'package:flutter_aplication_bank/widgets/feedback/feature_placeholder_page.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplication_bank/app/bank_app.dart';
+import 'package:flutter_aplication_bank/app.dart';
 
 void main() {
-  runApp(const BankApp());
+  runApp(const BancoDigitalApp());
 }

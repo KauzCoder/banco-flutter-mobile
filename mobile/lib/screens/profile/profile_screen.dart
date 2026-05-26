@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplication_bank/shared/widgets/feature_placeholder_page.dart';
+import 'package:flutter_aplication_bank/widgets/feedback/feature_placeholder_page.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

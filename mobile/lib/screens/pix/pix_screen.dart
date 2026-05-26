@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplication_bank/shared/widgets/feature_placeholder_page.dart';
+import 'package:flutter_aplication_bank/widgets/feedback/feature_placeholder_page.dart';
 
-class PixPage extends StatelessWidget {
-  const PixPage({super.key});
+class PixScreen extends StatelessWidget {
+  const PixScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

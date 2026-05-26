@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplication_bank/app/app_routes.dart';
 import 'package:flutter_aplication_bank/core/constants/app_constants.dart';
-import 'package:flutter_aplication_bank/shared/widgets/module_tile.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/widgets/cards/module_tile.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplication_bank/app/bank_app.dart';
+import 'package:flutter_aplication_bank/app.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('renders bank home modules', (WidgetTester tester) async {
-    await tester.pumpWidget(const BankApp());
+    await tester.pumpWidget(const BancoDigitalApp());
 
     expect(find.text('Banco Digital Kaua'), findsOneWidget);
     expect(find.text('Saldo disponível'), findsOneWidget);
@@ -15,7 +15,7 @@ void main() {
   });
 
   testWidgets('navigates to Pix module', (WidgetTester tester) async {
-    await tester.pumpWidget(const BankApp());
+    await tester.pumpWidget(const BancoDigitalApp());
 
     await tester.tap(find.byIcon(Icons.pix));
     await tester.pumpAndSettle();
