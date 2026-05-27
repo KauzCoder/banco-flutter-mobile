@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
             icon: Icons.swap_horiz,
             title: 'Transações',
             subtitle: 'Entradas, saídas e histórico',
-            routeName: AppRoutes.transactions,
+            routeName: AppRoutes.receipt,
           ),
           const ModuleTile(
             icon: Icons.pix,

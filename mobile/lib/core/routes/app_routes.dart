@@ -5,6 +5,7 @@ import 'package:flutter_aplication_bank/screens/cards/cards_screen.dart';
 import 'package:flutter_aplication_bank/screens/home/home_screen.dart';
 import 'package:flutter_aplication_bank/screens/pix/pix_screen.dart';
 import 'package:flutter_aplication_bank/screens/profile/profile_screen.dart';
+import 'package:flutter_aplication_bank/screens/receipt/receipt_screen.dart';
 import 'package:flutter_aplication_bank/screens/transactions/transactions_screen.dart';
 
 class AppRoutes {
@@ -14,6 +15,7 @@ class AppRoutes {
   static const login = '/login';
   static const account = '/account';
   static const transactions = '/transactions';
+  static const receipt = '/receipt';
   static const pix = '/pix';
   static const cards = '/cards';
   static const profile = '/profile';
@@ -24,6 +26,7 @@ class AppRoutes {
       login: (_) => const LoginScreen(),
       account: (_) => const AccountScreen(),
       transactions: (_) => const TransactionsScreen(),
+      receipt: (_) => ComprovanteScreen(),
       pix: (_) => const PixScreen(),
       cards: (_) => const CardsScreen(),
       profile: (_) => const ProfileScreen(),
