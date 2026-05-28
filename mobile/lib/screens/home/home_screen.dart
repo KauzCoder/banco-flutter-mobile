@@ -479,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _navItem(IconData icon, bool active, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Icon(icon, color: active ? const Color(0xFF6B3FE4) : const Color(0xFF6B3FE4).withOpacity(0.5), size: 28),
+      child: Icon(icon, color: active ? const Color(0xFF6B3FE4) : const Color(0xFF6B3FE4).withAlpha(128), size: 28),
     );
   }
 
@@ -489,7 +489,7 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF6B3FE4),
         borderRadius: BorderRadius.circular(18),
-        boxShadow: [BoxShadow(color: const Color(0xFF6B3FE4).withOpacity(0.4), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [BoxShadow(color: const Color(0xFF6B3FE4).withAlpha(102), blurRadius: 12, offset: const Offset(0, 4))],
       ),
       child: const Icon(Icons.qr_code_2_rounded, color: Colors.white, size: 30),
     );

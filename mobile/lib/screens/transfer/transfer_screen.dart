@@ -5,7 +5,9 @@ import '../../widgets/common_widgets.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class TransferScreen extends StatefulWidget {
-  const TransferScreen({super.key});
+  final String initialSection;
+
+  const TransferScreen({super.key, this.initialSection = 'Escanear'});
 
   @override
   State<TransferScreen> createState() => _TransferScreenState();
@@ -27,6 +29,12 @@ class _TransferScreenState extends State<TransferScreen> {
     {'icon': Icons.request_quote_outlined, 'label': 'Cobrar', 'color': AppColors.accent},
     {'icon': Icons.receipt_long_outlined, 'label': 'Boleto', 'color': AppColors.secondaryDark},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedSection = widget.initialSection;
+  }
 
   @override
   void dispose() {
@@ -98,9 +106,9 @@ class _TransferScreenState extends State<TransferScreen> {
           onTap: () => Navigator.pop(context),
           child: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
         ),
-        title: const Text(
-          'Transferências',
-          style: TextStyle(
+        title: Text(
+          _selectedSection == 'Digitar' ? 'Área PIX' : 'Transferências',
+          style: const TextStyle(
             color: AppColors.darkText,
             fontSize: 18,
             fontWeight: FontWeight.w700,
