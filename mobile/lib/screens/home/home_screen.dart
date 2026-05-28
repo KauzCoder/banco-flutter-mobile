@@ -54,49 +54,53 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           children: [
-          // Balance Card
-          BalanceCard(
-            balance: 'R\$ 50.540,00',
-            userName: 'Olá, Kauã',
-            hideBalance: _hideBalance,
-            onEyePressed: () {
-              setState(() {
-                _hideBalance = !_hideBalance;
-              });
-            },
-          ),
-          const SizedBox(height: 24),
-          // Menu Options
-          const ModuleTile(
-            icon: Icons.account_balance_wallet_outlined,
-            title: 'Conta',
-            subtitle: 'Dados da conta e saldo',
-            routeName: AppRoutes.account,
-          ),
-          const ModuleTile(
-            icon: Icons.swap_horiz,
-            title: 'Transações',
-            subtitle: 'Entradas, saídas e histórico',
-            routeName: AppRoutes.transactions,
-          ),
-          const ModuleTile(
-            icon: Icons.pix,
-            title: 'Pix',
-            subtitle: 'Chaves, pagamentos e transferências',
-            routeName: AppRoutes.pix,
-          ),
-          const ModuleTile(
-            icon: Icons.credit_card,
-            title: 'Cartões',
-            subtitle: 'Cartão virtual e limites',
-            routeName: AppRoutes.cards,
-          ),
-          const ModuleTile(
-            icon: Icons.login,
-            title: 'Entrar',
-            subtitle: 'Acesso do cliente',
-            routeName: AppRoutes.login,
-          ),
+            BalanceCard(
+              balance: 'R\$ 50.540,00',
+              userName: 'Olá, Kauã',
+              hideBalance: _hideBalance,
+              onEyePressed: () {
+                setState(() {
+                  _hideBalance = !_hideBalance;
+                });
+              },
+            ),
+            const SizedBox(height: 24),
+            const ModuleTile(
+              icon: Icons.account_balance_wallet_outlined,
+              title: 'Conta',
+              subtitle: 'Dados da conta e saldo',
+              routeName: AppRoutes.account,
+            ),
+            const ModuleTile(
+              icon: Icons.payment_rounded,
+              title: 'Pagamentos',
+              subtitle: 'Escanear, Pix e boletos',
+              routeName: AppRoutes.pay,
+            ),
+            const ModuleTile(
+              icon: Icons.swap_horiz,
+              title: 'Transações',
+              subtitle: 'Entradas, saídas e histórico',
+              routeName: AppRoutes.transactions,
+            ),
+            const ModuleTile(
+              icon: Icons.pix,
+              title: 'Pix',
+              subtitle: 'Chaves, pagamentos e transferências',
+              routeName: AppRoutes.pix,
+            ),
+            const ModuleTile(
+              icon: Icons.credit_card,
+              title: 'Cartões',
+              subtitle: 'Cartão virtual e limites',
+              routeName: AppRoutes.cards,
+            ),
+            const ModuleTile(
+              icon: Icons.login,
+              title: 'Entrar',
+              subtitle: 'Acesso do cliente',
+              routeName: AppRoutes.login,
+            ),
           ],
         ),
       ),
