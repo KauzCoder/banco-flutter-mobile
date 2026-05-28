@@ -27,7 +27,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
           child: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
         ),
         title: const Text(
-          'Scanner QR Code',
+          'Scanner',
           style: TextStyle(
             color: AppColors.darkText,
             fontSize: 18,
@@ -55,7 +55,6 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Simulação de câmera
                 Container(
                   color: AppColors.darkBgSecondary,
                   child: const Center(
@@ -68,7 +67,6 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                     ),
                   ),
                 ),
-                // Guia de QR Code
                 Container(
                   width: 250,
                   height: 250,
@@ -80,7 +78,6 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                     borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
                   ),
                 ),
-                // Cantos
                 Positioned(
                   top: 75,
                   left: 75,
@@ -89,14 +86,8 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                     height: 30,
                     decoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(
-                          color: AppColors.secondary,
-                          width: 3,
-                        ),
-                        left: BorderSide(
-                          color: AppColors.secondary,
-                          width: 3,
-                        ),
+                        top: BorderSide(color: AppColors.secondary, width: 3),
+                        left: BorderSide(color: AppColors.secondary, width: 3),
                       ),
                     ),
                   ),
@@ -105,6 +96,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
             ),
           ),
           Container(
+            width: double.infinity,
             padding: const EdgeInsets.all(AppConstants.paddingLarge),
             color: AppColors.darkBgSecondary,
             child: Column(
@@ -113,75 +105,89 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                   Container(
                     padding: const EdgeInsets.all(AppConstants.paddingMedium),
                     decoration: BoxDecoration(
-                      color: AppColors.success.withAlpha((0.2 * 255).round()),
+                      color: AppColors.success.withAlpha(50),
                       borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
                       border: Border.all(color: AppColors.success),
                     ),
                     child: const Row(
                       children: [
-                        Icon(
-                          Icons.check_circle,
-                          color: AppColors.success,
-                        ),
+                        Icon(Icons.check_circle, color: AppColors.success),
                         SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             'QR Code detectado! Toque para processar.',
-                            style: TextStyle(
-                              color: AppColors.success,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: TextStyle(color: AppColors.success, fontWeight: FontWeight.w600),
                           ),
                         ),
                       ],
                     ),
                   ),
                 if (!_isQRDetected) ...[
-                  const Icon(
-                    Icons.qr_code_2,
-                    size: 40,
-                    color: AppColors.secondary,
-                  ),
+                  const Icon(Icons.qr_code_2, size: 40, color: AppColors.secondary),
                   const SizedBox(height: 12),
                   const Text(
                     'Posicione o QR Code dentro do quadrado',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.darkText,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(color: AppColors.darkText, fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 4),
                   const Text(
                     'A câmera detectará automaticamente',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.darkTextSecondary,
-                      fontSize: 14,
+                    style: TextStyle(color: AppColors.darkTextSecondary, fontSize: 14),
+                  ),
+                ],
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondary,
+                            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Text('Ler', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-                if (_isQRDetected) ...[
-                  const SizedBox(height: 16),
-                  CustomButton(
-                    label: 'Processar PIX',
-                    onPressed: () {
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.myQrCode),
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: AppColors.darkBg,
+                            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                            border: Border.all(color: AppColors.darkBorder),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Text('Meu Código', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                CustomButton(
+                  label: _isQRDetected ? 'Processar PIX' : 'Ler QR Code',
+                  onPressed: () {
+                    if (_isQRDetected) {
                       Navigator.pushNamed(context, AppRoutes.transfer);
-                    },
-                  ),
-                ],
+                    } else {
+                      setState(() => _isQRDetected = true);
+                    }
+                  },
+                  backgroundColor: AppColors.primary,
+                ),
               ],
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() => _isQRDetected = !_isQRDetected);
-        },
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add),
       ),
     );
   }

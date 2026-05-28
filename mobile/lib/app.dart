@@ -13,7 +13,7 @@ class BancoDigitalApp extends StatelessWidget {
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.home,
       routes: AppRoutes.routes,
       onUnknownRoute: (_) {
         return MaterialPageRoute<void>(builder: (_) => const HomeScreen());

@@ -1,24 +1,14 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import '../../core/theme.dart';
 
 class PayScreen extends StatelessWidget {
   const PayScreen({super.key});
 
-  void _showSnackbar(BuildContext context, String mensagem) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(mensagem),
-        backgroundColor: const Color(0xFF6B3FE4),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D1A),
+      backgroundColor: AppColors.darkBg,
       body: SafeArea(
         child: Column(
           children: [
@@ -33,13 +23,13 @@ class PayScreen extends StatelessWidget {
                     _buildOptionTile(
                       icon: Icons.qr_code_scanner_rounded,
                       label: 'Escanear',
-                      onTap: () => _showSnackbar(context, 'Abrindo câmera...'),
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.scanQr),
                     ),
                     const SizedBox(height: 10),
                     _buildOptionTile(
                       icon: Icons.keyboard_rounded,
                       label: 'Digitar',
-                      onTap: () => _showSnackbar(context, 'Digitar código...'),
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.transfer, arguments: 'Digitar'),
                     ),
                     const SizedBox(height: 28),
                     _buildQuickActions(context),
@@ -67,7 +57,7 @@ class PayScreen extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF6B3FE4),
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -98,18 +88,18 @@ class PayScreen extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      color: const Color(0xFF141428),
+      color: AppColors.darkBgSecondary,
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(14),
-        splashColor: const Color(0xFF6B3FE4).withOpacity(0.2),
-        highlightColor: const Color(0xFF6B3FE4).withOpacity(0.1),
+        splashColor: AppColors.primary.withAlpha(50),
+        highlightColor: AppColors.primary.withAlpha(30),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: const Color(0xFF2A2A45), width: 0.5),
+            border: Border.all(color: AppColors.darkBorder, width: 0.5),
           ),
           child: Row(
             children: [
@@ -137,22 +127,23 @@ class PayScreen extends StatelessWidget {
 
   Widget _buildQuickActions(BuildContext context) {
     final actions = [
-      {'icon': Icons.pix, 'label': 'Pix', 'msg': 'Área Pix'},
-      {'icon': Icons.phone_android_rounded, 'label': 'Recargas', 'msg': 'Recargas'},
-      {'icon': Icons.storefront_rounded, 'label': 'Cobrar', 'msg': 'Cobrar'},
-      {'icon': Icons.barcode_reader, 'label': 'Boleto', 'msg': 'Boleto'},
+      {'icon': Icons.pix, 'label': 'Pix', 'route': AppRoutes.pix},
+      {'icon': Icons.phone_android_rounded, 'label': 'Recargas', 'route': AppRoutes.payments},
+      {'icon': Icons.storefront_rounded, 'label': 'Cobrar', 'route': AppRoutes.transfer},
+      {'icon': Icons.barcode_reader, 'label': 'Boleto', 'route': AppRoutes.payments},
     ];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: actions.map((action) {
+        final route = action['route'] as String;
         return Padding(
           padding: const EdgeInsets.only(right: 20),
           child: _buildActionItem(
             context: context,
             icon: action['icon'] as IconData,
             label: action['label'] as String,
-            msg: action['msg'] as String,
+            route: route,
           ),
         );
       }).toList(),
@@ -163,23 +154,23 @@ class PayScreen extends StatelessWidget {
     required BuildContext context,
     required IconData icon,
     required String label,
-    required String msg,
+    required String route,
   }) {
     return GestureDetector(
-      onTap: () => _showSnackbar(context, msg),
+      onTap: () => Navigator.pushNamed(context, route),
       child: Column(
         children: [
           Material(
-            color: const Color(0xFF2D1F5E),
+            color: AppColors.primary.withAlpha(24),
             borderRadius: BorderRadius.circular(16),
             child: InkWell(
-              onTap: () => _showSnackbar(context, msg),
+              onTap: () => Navigator.pushNamed(context, route),
               borderRadius: BorderRadius.circular(16),
-              splashColor: const Color(0xFF9B6FFF).withOpacity(0.3),
+              splashColor: AppColors.primary.withAlpha(80),
               child: SizedBox(
                 width: 52,
                 height: 52,
-                child: Icon(icon, color: const Color(0xFF9B6FFF), size: 24),
+                child: Icon(icon, color: AppColors.primary, size: 24),
               ),
             ),
           ),
