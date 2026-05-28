@@ -1,4 +1,4 @@
-const authService = require('../services/auth.service');
+const authService = require("../services/auth.service");
 
 function userDTO(user) {
   if (!user) {
@@ -7,10 +7,10 @@ function userDTO(user) {
 
   return {
     id: user.id || user.userId,
-    nome: user.nome || '',
-    email: user.email || '',
-    telefone: user.telefone || '',
-    fotoPerfil: user.fotoPerfil || '',
+    nome: user.nome || "",
+    email: user.email || "",
+    telefone: user.telefone || "",
+    fotoPerfil: user.fotoPerfil || "",
     cpf: user.cpf || null,
     dataCriacao: user.dataCriacao || null,
   };
@@ -23,12 +23,12 @@ function accountDTO(account) {
 
   return {
     id: account.id || account.accountId,
-    userId: account.userId || '',
-    agencia: account.agencia || '',
-    numeroConta: account.numeroConta || '',
+    userId: account.userId || "",
+    agencia: account.agencia || "",
+    numeroConta: account.numeroConta || "",
     saldo: Number(account.saldo || 0),
-    status: account.status || '',
-    tipoConta: account.tipoConta || '',
+    status: account.status || "",
+    tipoConta: account.tipoConta || "",
     dataCriacao: account.dataCriacao || null,
   };
 }
@@ -40,9 +40,9 @@ function userSettingsDTO(settings) {
 
   return {
     id: settings.id || settings.userSettingsId,
-    userId: settings.userId || '',
+    userId: settings.userId || "",
     biometriaAtiva: settings.biometriaAtiva ?? false,
-    idioma: settings.idioma || 'pt-BR',
+    idioma: settings.idioma || "pt-BR",
     notificacoesAtivas: settings.notificacoesAtivas ?? true,
     temaEscuro: settings.temaEscuro ?? false,
   };
@@ -76,7 +76,7 @@ async function login(req, res, next) {
 
 async function me(req, res, next) {
   try {
-    const userId = req.headers['x-user-id'] || req.query.userId;
+    const userId = req.headers["x-user-id"] || req.query.userId;
     const user = await authService.getCurrentUser(userId);
 
     return res.status(200).json(userDTO(user));

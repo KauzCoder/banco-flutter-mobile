@@ -1,4 +1,4 @@
-const accountService = require('../services/account.service');
+const accountService = require("../services/account.service");
 
 function accountDTO(account) {
   if (!account) {
@@ -7,19 +7,19 @@ function accountDTO(account) {
 
   return {
     id: account.id || account.accountId,
-    userId: account.userId || '',
-    agencia: account.agencia || '',
-    numeroConta: account.numeroConta || '',
+    userId: account.userId || "",
+    agencia: account.agencia || "",
+    numeroConta: account.numeroConta || "",
     saldo: Number(account.saldo || 0),
-    status: account.status || '',
-    tipoConta: account.tipoConta || '',
+    status: account.status || "",
+    tipoConta: account.tipoConta || "",
     dataCriacao: account.dataCriacao || null,
   };
 }
 
 async function getBalance(req, res, next) {
   try {
-    const userId = req.headers['x-user-id'] || req.query.userId;
+    const userId = req.headers["x-user-id"] || req.query.userId;
     const balance = await accountService.getBalance(userId);
 
     return res.status(200).json(balance);
@@ -30,7 +30,7 @@ async function getBalance(req, res, next) {
 
 async function getSummary(req, res, next) {
   try {
-    const userId = req.headers['x-user-id'] || req.query.userId;
+    const userId = req.headers["x-user-id"] || req.query.userId;
     const summary = await accountService.getSummary(userId);
 
     return res.status(200).json({

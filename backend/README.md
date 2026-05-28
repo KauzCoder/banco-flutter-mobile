@@ -34,6 +34,7 @@ duplicados e manter as respostas previsiveis.
 ### Padrao de campos por entidade
 
 **Usuario**
+
 - `id`
 - `nome`
 - `email`
@@ -43,6 +44,7 @@ duplicados e manter as respostas previsiveis.
 - `dataCriacao`
 
 **Conta**
+
 - `id`
 - `userId`
 - `agencia`
@@ -53,6 +55,7 @@ duplicados e manter as respostas previsiveis.
 - `dataCriacao`
 
 **Chave Pix**
+
 - `id`
 - `userId`
 - `accountId`
@@ -62,6 +65,7 @@ duplicados e manter as respostas previsiveis.
 - `dataCriacao`
 
 **Configuracoes do usuario**
+
 - `id`
 - `userId`
 - `biometriaAtiva`
@@ -70,6 +74,7 @@ duplicados e manter as respostas previsiveis.
 - `temaEscuro`
 
 **Transferencia**
+
 - `id`
 - `fromUserId`
 - `contaOrigemId`
@@ -85,6 +90,7 @@ duplicados e manter as respostas previsiveis.
 ### Aliases aceitos na entrada
 
 Os services normalizam os dados antes de validar e salvar. Exemplos:
+
 - `name` -> `nome`
 - `password` ou `senha` -> `password`
 - `amount` -> `valor`
@@ -102,13 +108,13 @@ expor campos internos e garante consistencia.
 
 ```json
 {
-	"id": "pixKeyId",
-	"userId": "userId",
-	"accountId": "accountId",
-	"tipo": "email",
-	"valor": "ana.lima@example.com",
-	"ativa": true,
-	"dataCriacao": "2026-05-28T00:00:00.000Z"
+  "id": "pixKeyId",
+  "userId": "userId",
+  "accountId": "accountId",
+  "tipo": "email",
+  "valor": "ana.lima@example.com",
+  "ativa": true,
+  "dataCriacao": "2026-05-28T00:00:00.000Z"
 }
 ```
 
@@ -116,16 +122,16 @@ expor campos internos e garante consistencia.
 
 ```json
 {
-	"id": "transactionId",
-	"fromUserId": "userId",
-	"contaOrigemId": "accountIdOrigem",
-	"contaDestinoId": "accountIdDestino",
-	"nomeRecebedor": "Bruno Costa",
-	"chavePixRecebedor": "+55 11 99999-0002",
-	"descricao": "Pagamento de almoco",
-	"status": "concluida",
-	"tipo": "pix",
-	"valor": 42.9,
-	"dataHora": "2026-05-28T00:00:00.000Z"
+  "id": "transactionId",
+  "fromUserId": "userId",
+  "contaOrigemId": "accountIdOrigem",
+  "contaDestinoId": "accountIdDestino",
+  "nomeRecebedor": "Bruno Costa",
+  "chavePixRecebedor": "+55 11 99999-0002",
+  "descricao": "Pagamento de almoco",
+  "status": "concluida",
+  "tipo": "pix",
+  "valor": 42.9,
+  "dataHora": "2026-05-28T00:00:00.000Z"
 }
 ```
