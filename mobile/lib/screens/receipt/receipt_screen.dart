@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import '../../widgets/common_widgets.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class ReceiptScreen extends StatelessWidget {
   const ReceiptScreen({super.key});
@@ -123,7 +124,7 @@ class ReceiptScreen extends StatelessWidget {
             const SizedBox(height: 12),
             CustomButton(
               label: 'Voltar para Home',
-              onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+              onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
               backgroundColor: AppColors.darkBgSecondary,
               textColor: AppColors.darkText,
             ),

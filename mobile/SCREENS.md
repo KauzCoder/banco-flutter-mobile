@@ -191,13 +191,13 @@ core/
 
 1. Importe o arquivo de rotas:
 ```dart
-import 'routes.dart';
+import 'core/routes/app_routes.dart';
 ```
 
 2. Configure as rotas no MaterialApp:
 ```dart
 MaterialApp(
-  routes: AppRoutes.getRoutes(),
+  routes: AppRoutes.routes,
   initialRoute: AppRoutes.login,
   theme: AppTheme.darkTheme(),
 )

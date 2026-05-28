@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class TransactionsHistoryScreen extends StatefulWidget {
   const TransactionsHistoryScreen({super.key});
@@ -61,7 +62,7 @@ class _TransactionsHistoryScreenState extends State<TransactionsHistoryScreen> {
               itemBuilder: (context, index) {
                 return _buildTransactionItem(
                   index: index,
-                  onTap: () => Navigator.pushNamed(context, '/receipt'),
+                  onTap: () => Navigator.pushNamed(context, AppRoutes.receipt),
                 );
               },
             ),

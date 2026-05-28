@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import '../../widgets/common_widgets.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class TransferScreen extends StatefulWidget {
   const TransferScreen({super.key});
@@ -37,7 +38,7 @@ class _TransferScreenState extends State<TransferScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         setState(() => _isLoading = false);
-        Navigator.pushNamed(context, '/receipt');
+        Navigator.pushNamed(context, AppRoutes.receipt);
       }
     });
   }

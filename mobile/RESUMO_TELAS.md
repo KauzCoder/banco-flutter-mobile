@@ -247,7 +247,7 @@
 │   ├── loading_screen.dart ........... ⏳ Loading
 │   └── feedback_screen.dart .......... ✅ Feedback
 │
-├── routes.dart ........................ 🔗 Sistema de Rotas
+├── core/routes/app_routes.dart ........ 🔗 Sistema de Rotas
 ├── SCREENS.md ......................... 📖 Documentação
 └── RESUMO_TELAS.md .................... 📋 Este arquivo
 ```

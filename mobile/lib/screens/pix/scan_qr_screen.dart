@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import '../../widgets/common_widgets.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class ScanQRScreen extends StatefulWidget {
   const ScanQRScreen({super.key});
@@ -166,7 +167,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                   CustomButton(
                     label: 'Processar PIX',
                     onPressed: () {
-                      Navigator.pushNamed(context, '/transfer');
+                      Navigator.pushNamed(context, AppRoutes.transfer);
                     },
                   ),
                 ],

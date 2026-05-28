@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import '../../widgets/common_widgets.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class PixAreaScreen extends StatelessWidget {
   const PixAreaScreen({super.key});
@@ -56,7 +57,7 @@ class PixAreaScreen extends StatelessWidget {
             const SizedBox(height: 12),
             CustomButton(
               label: 'Meu QR Code',
-              onPressed: () => Navigator.pushNamed(context, '/my-qr-code'),
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.myQrCode),
               backgroundColor: AppColors.secondary,
               textColor: Colors.black,
               icon: Icons.qr_code_2,
@@ -64,14 +65,14 @@ class PixAreaScreen extends StatelessWidget {
             const SizedBox(height: 12),
             CustomButton(
               label: 'Escanear QR Code',
-              onPressed: () => Navigator.pushNamed(context, '/scan-qr'),
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.scanQr),
               backgroundColor: AppColors.primary,
               icon: Icons.photo_camera,
             ),
             const SizedBox(height: 12),
             CustomButton(
               label: 'Transferência PIX',
-              onPressed: () => Navigator.pushNamed(context, '/transfer'),
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.transfer),
               backgroundColor: AppColors.accent,
               icon: Icons.send,
             ),
