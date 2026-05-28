@@ -1,18 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/core/constants/app_constants.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/widgets/cards/balance_card.dart';
 import 'package:flutter_aplication_bank/widgets/cards/module_tile.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  bool _hideBalance = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppConstants.appName),
+        title: const Text(''),
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF8B5CF6),
+                Color(0xFF6D28D9),
+              ],
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             tooltip: 'Perfil',
@@ -21,33 +40,33 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Card(
-            color: colorScheme.primary,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Saldo disponível',
-                    style: TextStyle(color: colorScheme.onPrimary),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'R\$ 0,00',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: colorScheme.onPrimary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF0D0D0D),
+              Color(0xFF1A1A1A),
+            ],
           ),
-          const SizedBox(height: 12),
+        ),
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          children: [
+          // Balance Card
+          BalanceCard(
+            balance: 'R\$ 50.540,00',
+            userName: 'Olá, Kauã',
+            hideBalance: _hideBalance,
+            onEyePressed: () {
+              setState(() {
+                _hideBalance = !_hideBalance;
+              });
+            },
+          ),
+          const SizedBox(height: 24),
+          // Menu Options
           const ModuleTile(
             icon: Icons.account_balance_wallet_outlined,
             title: 'Conta',
@@ -78,7 +97,8 @@ class HomeScreen extends StatelessWidget {
             subtitle: 'Acesso do cliente',
             routeName: AppRoutes.login,
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
