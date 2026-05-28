@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Pasta reservada para a API Node.js + Express.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --use-system-ca src/server.js",
+    "test:firebase": "node --use-system-ca -e \"const { admin, db } = require('./src/config/firebase'); console.log(JSON.stringify({ firebaseApps: admin.apps.length, projectId: db._settings.projectId || 'loaded' }))\"",
+    "test:health": "node --use-system-ca -e \"const healthService = require('./src/services/health.service'); healthService.getHealthStatus().then((data) => console.log(JSON.stringify(data))).catch((error) => { console.error(error); process.exit(1); })\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.10.0"
+  }
+}

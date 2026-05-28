@@ -40,6 +40,9 @@ mobile/.flutter-plugins-dependencies
 /mobile/coverage/
 backend/node_modules/
 backend/.env
+backend/src/config/.env
+backend/firebase-service-account.json
+backend/*firebase-adminsdk*.json
 
 # Symbolication related
 app.*.symbols
@@ -54,3 +57,5 @@ app.*.map.json
 /mobile/android/app/debug
 /mobile/android/app/profile
 /mobile/android/app/release
+
+firebase-service-account.json
