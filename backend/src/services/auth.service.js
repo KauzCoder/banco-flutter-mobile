@@ -1,20 +1,20 @@
-const accountRepository = require('../repositories/account.repository');
-const userSettingsRepository = require('../repositories/user-settings.repository');
-const userRepository = require('../repositories/user.repository');
+const accountRepository = require("../repositories/account.repository");
+const userSettingsRepository = require("../repositories/user-settings.repository");
+const userRepository = require("../repositories/user.repository");
 
 function normalizeRegisterInput(data) {
   return {
-    nome: data.nome || data.name || '',
-    email: data.email || '',
-    password: data.password || data.senha || '',
+    nome: data.nome || data.name || "",
+    email: data.email || "",
+    password: data.password || data.senha || "",
     cpf: data.cpf || null,
   };
 }
 
 function normalizeLoginInput(data) {
   return {
-    email: data.email || '',
-    password: data.password || data.senha || '',
+    email: data.email || "",
+    password: data.password || data.senha || "",
   };
 }
 
@@ -28,7 +28,7 @@ async function registerUser(data) {
   const { nome, email, password, cpf } = normalizeRegisterInput(data);
 
   if (!nome || !email || !password) {
-    const error = new Error('Nome, email e senha sao obrigatorios.');
+    const error = new Error("Nome, email e senha sao obrigatorios.");
     error.statusCode = 400;
     throw error;
   }
@@ -36,7 +36,7 @@ async function registerUser(data) {
   const existingUser = await userRepository.findUserByEmail(email);
 
   if (existingUser) {
-    const error = new Error('Email ja cadastrado.');
+    const error = new Error("Email ja cadastrado.");
     error.statusCode = 409;
     throw error;
   }
@@ -64,7 +64,7 @@ async function loginUser(data) {
   const { email, password } = normalizeLoginInput(data);
 
   if (!email || !password) {
-    const error = new Error('Email e senha sao obrigatorios.');
+    const error = new Error("Email e senha sao obrigatorios.");
     error.statusCode = 400;
     throw error;
   }
@@ -72,7 +72,7 @@ async function loginUser(data) {
   const user = await userRepository.findUserByEmail(email);
 
   if (!user || user.password !== password) {
-    const error = new Error('Email ou senha invalidos.');
+    const error = new Error("Email ou senha invalidos.");
     error.statusCode = 401;
     throw error;
   }
@@ -84,7 +84,7 @@ async function loginUser(data) {
 
 async function getCurrentUser(userId) {
   if (!userId) {
-    const error = new Error('Informe o userId.');
+    const error = new Error("Informe o userId.");
     error.statusCode = 400;
     throw error;
   }
@@ -92,7 +92,7 @@ async function getCurrentUser(userId) {
   const user = await userRepository.findUserById(userId);
 
   if (!user) {
-    const error = new Error('Usuario nao encontrado.');
+    const error = new Error("Usuario nao encontrado.");
     error.statusCode = 404;
     throw error;
   }

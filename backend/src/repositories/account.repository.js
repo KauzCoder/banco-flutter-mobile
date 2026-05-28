@@ -1,18 +1,18 @@
-const { db } = require('../config/firebase');
+const { db } = require("../config/firebase");
 
-const collection = db.collection('accounts');
+const collection = db.collection("accounts");
 
 async function createAccount(accountData) {
   const docRef = collection.doc();
 
   await docRef.set({
     accountId: docRef.id,
-    agencia: accountData.agencia || '0001',
+    agencia: accountData.agencia || "0001",
     numeroConta: accountData.numeroConta || String(Date.now()).slice(-8),
     saldo: Number(accountData.saldo || 0),
-    status: accountData.status || 'ativa',
-    tipoConta: accountData.tipoConta || 'corrente',
-    userId: accountData.userId || '',
+    status: accountData.status || "ativa",
+    tipoConta: accountData.tipoConta || "corrente",
+    userId: accountData.userId || "",
     dataCriacao: new Date(),
   });
 
@@ -33,7 +33,10 @@ async function findAccountById(id) {
 }
 
 async function findAccountByUserId(userId) {
-  const snapshot = await collection.where('userId', '==', userId).limit(1).get();
+  const snapshot = await collection
+    .where("userId", "==", userId)
+    .limit(1)
+    .get();
 
   if (snapshot.empty) {
     return null;
