@@ -56,6 +56,9 @@ async function register(req, res, next) {
       user: userDTO(result.user),
       account: accountDTO(result.account),
       settings: userSettingsDTO(result.settings),
+      token: result.token,
+      refreshToken: result.refreshToken,
+      expiresIn: result.expiresIn,
     });
   } catch (error) {
     return next(error);
@@ -68,6 +71,23 @@ async function login(req, res, next) {
 
     return res.status(200).json({
       user: userDTO(result.user),
+      token: result.token,
+      refreshToken: result.refreshToken,
+      expiresIn: result.expiresIn,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function refresh(req, res, next) {
+  try {
+    const result = await authService.refreshToken(req.body);
+
+    return res.status(200).json({
+      token: result.token,
+      refreshToken: result.refreshToken,
+      expiresIn: result.expiresIn,
     });
   } catch (error) {
     return next(error);
@@ -76,7 +96,7 @@ async function login(req, res, next) {
 
 async function me(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.query.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.query.userId;
     const user = await authService.getCurrentUser(userId);
 
     return res.status(200).json(userDTO(user));
@@ -88,5 +108,6 @@ async function me(req, res, next) {
 module.exports = {
   login,
   me,
+  refresh,
   register,
 };

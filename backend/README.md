@@ -18,12 +18,73 @@ Pasta reservada para a API Node.js + Express.
 
 - `POST /auth/register`
 - `POST /auth/login`
+- `POST /auth/refresh`
 - `GET /auth/me`
 - `GET /account/balance`
 - `GET /account/summary`
 - `GET /quotes`
 - `POST /transfers`
 - `GET /transfers/history`
+
+## Autenticacao (Firebase Auth JWT)
+
+Todas as rotas sao protegidas por Firebase Auth, **exceto**:
+
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /auth/refresh`
+- `GET /health`
+
+### Variaveis de ambiente
+
+No arquivo `.env` do backend:
+
+```
+FIREBASE_API_KEY=SUACHAVEWEB
+```
+
+> A `FIREBASE_API_KEY` e a chave Web do seu projeto Firebase (Project Settings > General).
+
+### Como usar o token
+
+As rotas de login e register retornam:
+
+- `token` (ID Token JWT)
+- `refreshToken`
+- `expiresIn` (segundos)
+
+Para acessar as rotas protegidas, envie:
+
+```
+Authorization: Bearer SEU_ID_TOKEN
+```
+
+Exemplo (curl):
+
+```
+curl -H "Authorization: Bearer SEU_ID_TOKEN" http://localhost:3000/account/summary
+```
+
+### Refresh token
+
+Para renovar o `token`, use o `refreshToken` retornado no login/register:
+
+```
+POST /auth/refresh
+{
+  "refreshToken": "SEU_REFRESH_TOKEN"
+}
+```
+
+Resposta:
+
+```
+{
+  "token": "NOVO_ID_TOKEN",
+  "refreshToken": "NOVO_REFRESH_TOKEN",
+  "expiresIn": 3600
+}
+```
 
 ## Padronizacao de campos (API e Firestore)
 

@@ -18,7 +18,7 @@ function pixKeyDTO(pixKey) {
 
 async function createPixKey(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.body.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.body.userId;
     const pixKey = await pixKeyService.createPixKey({
       ...req.body,
       userId,
@@ -32,7 +32,7 @@ async function createPixKey(req, res, next) {
 
 async function getPixKeys(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.query.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.query.userId;
     const pixKeys = await pixKeyService.getPixKeys(userId);
 
     return res.status(200).json(pixKeys.map(pixKeyDTO));

@@ -3,7 +3,9 @@ const { db } = require("../config/firebase");
 const collection = db.collection("users");
 
 async function createUser(userData) {
-  const docRef = collection.doc();
+  const docRef = userData.userId
+    ? collection.doc(userData.userId)
+    : collection.doc();
 
   await docRef.set({
     userId: docRef.id,
@@ -11,7 +13,6 @@ async function createUser(userData) {
     email: userData.email || "",
     telefone: userData.telefone || "",
     fotoPerfil: userData.fotoPerfil || "",
-    password: userData.password || "",
     cpf: userData.cpf || null,
     dataCriacao: new Date(),
   });

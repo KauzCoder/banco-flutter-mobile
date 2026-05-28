@@ -22,7 +22,8 @@ function transferDTO(transfer) {
 
 async function createTransfer(req, res, next) {
   try {
-    const fromUserId = req.headers["x-user-id"] || req.body.fromUserId;
+    const fromUserId =
+      req.userId || req.headers["x-user-id"] || req.body.fromUserId;
     const transfer = await transferService.createTransfer({
       ...req.body,
       fromUserId,
@@ -36,7 +37,7 @@ async function createTransfer(req, res, next) {
 
 async function getHistory(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.query.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.query.userId;
     const transfers = await transferService.getTransferHistory(userId);
 
     return res.status(200).json(transfers.map(transferDTO));

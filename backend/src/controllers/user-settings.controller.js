@@ -17,7 +17,7 @@ function userSettingsDTO(settings) {
 
 async function getUserSettings(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.query.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.query.userId;
     const settings = await userSettingsService.getUserSettings(userId);
 
     return res.status(200).json(userSettingsDTO(settings));
@@ -28,7 +28,7 @@ async function getUserSettings(req, res, next) {
 
 async function updateUserSettings(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.body.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.body.userId;
     const settings = await userSettingsService.updateUserSettings(
       userId,
       req.body,

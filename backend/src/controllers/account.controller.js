@@ -19,7 +19,7 @@ function accountDTO(account) {
 
 async function getBalance(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.query.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.query.userId;
     const balance = await accountService.getBalance(userId);
 
     return res.status(200).json(balance);
@@ -30,7 +30,7 @@ async function getBalance(req, res, next) {
 
 async function getSummary(req, res, next) {
   try {
-    const userId = req.headers["x-user-id"] || req.query.userId;
+    const userId = req.userId || req.headers["x-user-id"] || req.query.userId;
     const summary = await accountService.getSummary(userId);
 
     return res.status(200).json({
