@@ -1,8 +1,17 @@
 const accountRepository = require('../repositories/account.repository');
 const pixKeyRepository = require('../repositories/pix-key.repository');
 
+function normalizePixKeyInput(data) {
+  return {
+    userId: data.userId || null,
+    tipo: data.tipo || data.type || '',
+    valor: data.valor || data.value || '',
+    ativa: data.ativa,
+  };
+}
+
 async function createPixKey(data) {
-  const { userId, tipo, valor } = data;
+  const { userId, tipo, valor, ativa } = normalizePixKeyInput(data);
 
   if (!userId || !tipo || !valor) {
     const error = new Error('userId, tipo e valor sao obrigatorios.');
@@ -23,7 +32,7 @@ async function createPixKey(data) {
     userId,
     tipo,
     valor,
-    ativa: data.ativa,
+    ativa,
   });
 }
 

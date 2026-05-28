@@ -7,12 +7,12 @@ async function createUser(userData) {
 
   await docRef.set({
     userId: docRef.id,
-    nome: userData.nome || userData.name || '',
+    nome: userData.nome || '',
     email: userData.email || '',
     telefone: userData.telefone || '',
     fotoPerfil: userData.fotoPerfil || '',
     password: userData.password || '',
-    ...userData,
+    cpf: userData.cpf || null,
     dataCriacao: new Date(),
   });
 

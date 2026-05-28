@@ -1,12 +1,24 @@
 const accountRepository = require('../repositories/account.repository');
 const transferRepository = require('../repositories/transfer.repository');
 
-async function createTransfer(data) {
-  const { fromUserId, toAccountId, contaDestinoId, amount, valor, description, descricao } = data;
-  const destinationAccountId = toAccountId || contaDestinoId;
-  const numericAmount = Number(amount || valor);
+function normalizeTransferInput(data) {
+  return {
+    fromUserId: data.fromUserId || data.userId || null,
+    contaDestinoId: data.contaDestinoId || data.toAccountId || null,
+    valor: Number(data.valor ?? data.amount ?? 0),
+    descricao: data.descricao ?? data.description ?? '',
+    nomeRecebedor: data.nomeRecebedor || '',
+    chavePixRecebedor: data.chavePixRecebedor || '',
+    tipo: data.tipo || 'transferencia',
+  };
+}
 
-  if (!fromUserId || !destinationAccountId || !numericAmount) {
+async function createTransfer(data) {
+  const input = normalizeTransferInput(data);
+  const destinationAccountId = input.contaDestinoId;
+  const numericAmount = input.valor;
+
+  if (!input.fromUserId || !destinationAccountId || !numericAmount) {
     const error = new Error('fromUserId, contaDestinoId e valor sao obrigatorios.');
     error.statusCode = 400;
     throw error;
@@ -18,7 +30,7 @@ async function createTransfer(data) {
     throw error;
   }
 
-  const fromAccount = await accountRepository.findAccountByUserId(fromUserId);
+  const fromAccount = await accountRepository.findAccountByUserId(input.fromUserId);
   const toAccount = await accountRepository.findAccountById(destinationAccountId);
 
   if (!fromAccount) {
@@ -43,16 +55,17 @@ async function createTransfer(data) {
   await accountRepository.updateBalance(toAccount.id, (toAccount.saldo || 0) + numericAmount);
 
   return transferRepository.createTransfer({
-    fromUserId,
+    fromUserId: input.fromUserId,
     fromAccountId: fromAccount.id,
     toAccountId: destinationAccountId,
     contaOrigemId: fromAccount.id,
     contaDestinoId: destinationAccountId,
-    amount: numericAmount,
     valor: numericAmount,
-    description: description || descricao || null,
-    descricao: descricao || description || '',
+    descricao: input.descricao,
+    nomeRecebedor: input.nomeRecebedor,
+    chavePixRecebedor: input.chavePixRecebedor,
     status: 'concluida',
+    tipo: input.tipo,
   });
 }
 

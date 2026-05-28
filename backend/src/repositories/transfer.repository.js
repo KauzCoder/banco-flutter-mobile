@@ -7,6 +7,7 @@ async function createTransfer(transferData) {
 
   await docRef.set({
     transactionId: docRef.id,
+    fromUserId: transferData.fromUserId || '',
     chavePixRecebedor: transferData.chavePixRecebedor || '',
     contaDestinoId: transferData.contaDestinoId || transferData.toAccountId || '',
     contaOrigemId: transferData.contaOrigemId || transferData.fromAccountId || '',
@@ -15,7 +16,6 @@ async function createTransfer(transferData) {
     status: transferData.status || 'concluida',
     tipo: transferData.tipo || 'transferencia',
     valor: Number(transferData.valor || transferData.amount || 0),
-    ...transferData,
     dataHora: new Date(),
   });
 

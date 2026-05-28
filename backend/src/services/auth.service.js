@@ -2,6 +2,22 @@ const accountRepository = require('../repositories/account.repository');
 const userSettingsRepository = require('../repositories/user-settings.repository');
 const userRepository = require('../repositories/user.repository');
 
+function normalizeRegisterInput(data) {
+  return {
+    nome: data.nome || data.name || '',
+    email: data.email || '',
+    password: data.password || data.senha || '',
+    cpf: data.cpf || null,
+  };
+}
+
+function normalizeLoginInput(data) {
+  return {
+    email: data.email || '',
+    password: data.password || data.senha || '',
+  };
+}
+
 function removePassword(user) {
   const { password, ...userWithoutPassword } = user;
 
@@ -9,9 +25,9 @@ function removePassword(user) {
 }
 
 async function registerUser(data) {
-  const { name, email, password, cpf } = data;
+  const { nome, email, password, cpf } = normalizeRegisterInput(data);
 
-  if (!name || !email || !password) {
+  if (!nome || !email || !password) {
     const error = new Error('Nome, email e senha sao obrigatorios.');
     error.statusCode = 400;
     throw error;
@@ -26,7 +42,7 @@ async function registerUser(data) {
   }
 
   const user = await userRepository.createUser({
-    name,
+    nome,
     email,
     password,
     cpf: cpf || null,
@@ -45,7 +61,7 @@ async function registerUser(data) {
 }
 
 async function loginUser(data) {
-  const { email, password } = data;
+  const { email, password } = normalizeLoginInput(data);
 
   if (!email || !password) {
     const error = new Error('Email e senha sao obrigatorios.');

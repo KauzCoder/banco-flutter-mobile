@@ -13,7 +13,6 @@ async function createAccount(accountData) {
     status: accountData.status || 'ativa',
     tipoConta: accountData.tipoConta || 'corrente',
     userId: accountData.userId || '',
-    ...accountData,
     dataCriacao: new Date(),
   });
 
