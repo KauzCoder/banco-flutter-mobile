@@ -19,26 +19,14 @@ import 'package:flutter_aplication_bank/screens/cards/cards_screen.dart';
 import 'package:flutter_aplication_bank/screens/pix/pix_screen.dart';
 import 'package:flutter_aplication_bank/screens/loading_screen.dart';
 import 'package:flutter_aplication_bank/screens/feedback_screen.dart';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import 'package:flutter_aplication_bank/screens/pay/pay_screen.dart';
-
-class AppRoutes {
-  const AppRoutes._();
-  static const pay = '/pay';
-=======
-=======
->>>>>>> d067bdf92017132354ec420e88474a23df331e64
 import 'package:flutter_aplication_bank/screens/oneboarding/oneboarding_screen.dart';
 
 class AppRoutes {
   const AppRoutes._();
 
-  static const oneboarding = '/oneboarding';
-<<<<<<< HEAD
->>>>>>> d067bdf92017132354ec420e88474a23df331e64
-=======
->>>>>>> d067bdf92017132354ec420e88474a23df331e64
+  static const String pay = '/pay';
+  static const String oneboarding = '/oneboarding';
   static const String login = '/login';
   static const String home = '/home';
   static const String quotes = '/quotes';
@@ -63,15 +51,8 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> get routes {
     return {
-<<<<<<< HEAD
-<<<<<<< HEAD
       pay: (_) => const PayScreen(),
-=======
       oneboarding: (_) => const OneboardingScreen(),
->>>>>>> d067bdf92017132354ec420e88474a23df331e64
-=======
-      oneboarding: (_) => const OneboardingScreen(),
->>>>>>> d067bdf92017132354ec420e88474a23df331e64
       login: (_) => const LoginScreen(),
       home: (_) => const HomeScreen(),
       quotes: (_) => const QuotesScreen(),
