@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node --use-system-ca src/server.js",
+    "seed:firebase": "node --use-system-ca src/seed/seed.js",
     "test:firebase": "node --use-system-ca -e \"const { admin, db } = require('./src/config/firebase'); console.log(JSON.stringify({ firebaseApps: admin.apps.length, projectId: db._settings.projectId || 'loaded' }))\"",
     "test:health": "node --use-system-ca -e \"const healthService = require('./src/services/health.service'); healthService.getHealthStatus().then((data) => console.log(JSON.stringify(data))).catch((error) => { console.error(error); process.exit(1); })\""
   },
