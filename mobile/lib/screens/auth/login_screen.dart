@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -15,7 +16,6 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-<<<<<<< HEAD
                 Container(
                   width: 50,
                   height: 50,
@@ -33,13 +33,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-=======
-                Image.asset(
-                  'assets/images/quantum_inner_icon.png',
-                  width: 44,
-                  height: 44,
-                  fit: BoxFit.contain,
->>>>>>> 87aa6b649d959686652602a5cea67e8ca47304e4
                 ),
                 const SizedBox(width: 12),
                 const Text(
@@ -59,7 +52,7 @@ class LoginScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF1E1C24),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.05)),
+                border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.05)),
               ),
               child: Row(
                 children: [
@@ -94,7 +87,7 @@ class LoginScreen extends StatelessWidget {
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/home'),
+                onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF9151F5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                 child: const Text("Continuar", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ),

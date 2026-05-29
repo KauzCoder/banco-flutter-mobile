@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class SingInScreen extends StatelessWidget {
   const SingInScreen({super.key});
@@ -60,7 +61,7 @@ class SingInScreen extends StatelessWidget {
               const Spacer(),
               Center(
                 child: TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/register'),
+                  onPressed: () => Navigator.pushNamed(context, AppRoutes.register),
                   child: RichText(text: const TextSpan(children: [TextSpan(text: "Criar uma conta ", style: TextStyle(color: Colors.white)), TextSpan(text: "Registrar-se", style: TextStyle(color: Color(0xFF6C3FE3), fontWeight: FontWeight.bold))])),
                 ),
               ),
@@ -85,7 +86,7 @@ class SingInScreen extends StatelessWidget {
           hintText: hint, hintStyle: const TextStyle(color: Colors.white54),
           prefixIcon: Icon(icon, color: Colors.white54),
           suffixIcon: suffix != null ? Icon(suffix, color: Colors.white54) : null,
-          filled: true, fillColor: Colors.white.withOpacity(0.05),
+          filled: true, fillColor: const Color.fromRGBO(255, 255, 255, 0.05),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         ),
       ),

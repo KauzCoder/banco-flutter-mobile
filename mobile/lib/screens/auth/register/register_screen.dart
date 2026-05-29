@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -40,8 +41,8 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 55,
-                  child: ElevatedButton(S
-                    onPressed: () {},
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF9151F5),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -52,7 +53,7 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Center(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.login),
                     child: const Text("Eu já tenho uma conta", style: TextStyle(color: Colors.white54)),
                   ),
                 ),
@@ -75,7 +76,7 @@ class RegisterScreen extends StatelessWidget {
           hintStyle: const TextStyle(color: Colors.white54),
           prefixIcon: Icon(icon, color: Colors.white54),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.05),
+          fillColor: const Color.fromRGBO(255, 255, 255, 0.05),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         ),
       ),
@@ -87,7 +88,7 @@ class RegisterScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(color: const Color.fromRGBO(255, 255, 255, 0.05), borderRadius: BorderRadius.circular(12)),
         child: Row(
           children: [
             const Text("🇮🇹", style: TextStyle(fontSize: 20)), // Simulação da bandeira
