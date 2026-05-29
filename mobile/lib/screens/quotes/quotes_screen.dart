@@ -72,29 +72,50 @@ class _QuotesScreenState extends State<QuotesScreen> {
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: AppConstants.paddingMedium),
-            child: Icon(Icons.pie_chart_outline, color: AppColors.darkText, size: 24),
+            child: Icon(
+              Icons.pie_chart_outline,
+              color: AppColors.darkText,
+              size: 24,
+            ),
           ),
         ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppConstants.paddingMedium),
         children: [
-          Row(
-            children: [
-              for (final tab in tabs) ...[
-                _buildTab(tab),
-                const SizedBox(width: 8),
-              ],
-            ],
-          ),
-          const SizedBox(height: 20),
           Container(
-            height: 170,
-            padding: const EdgeInsets.all(AppConstants.paddingMedium),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.paddingSmall,
+              vertical: AppConstants.paddingSmall,
+            ),
             decoration: BoxDecoration(
               color: AppColors.darkBgSecondary,
               borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
-              border: Border.all(color: AppColors.darkBorder),
+              border: Border.all(color: AppColors.purpleGradient.colors.last),
+            ),
+            child: Row(
+              children: [
+                for (final tab in tabs) ...[
+                  _buildTab(tab),
+                  const SizedBox(width: 8),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            height: 220,
+            padding: const EdgeInsets.all(AppConstants.paddingMedium),
+            decoration: BoxDecoration(
+              gradient: AppColors.purpleGradient,
+              borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.purpleGradient.colors.last.withAlpha((0.25 * 255).round()),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,38 +123,42 @@ class _QuotesScreenState extends State<QuotesScreen> {
                 const Text(
                   'Cotação em tempo real',
                   style: TextStyle(
-                    color: AppColors.darkText,
-                    fontSize: 16,
+                    color: Colors.white,
+                    fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 6),
                 const Text(
                   'Dados fornecidos em tempo real através da Awesome API',
-                  style: TextStyle(
-                    color: AppColors.darkTextSecondary,
-                    fontSize: 12,
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  height: 110,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.darkBg,
+                    borderRadius: BorderRadius.circular(
+                      AppConstants.radiusLarge,
+                    ),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Gráfico de cotações',
+                      style: TextStyle(color: Colors.white38, fontSize: 12),
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 14),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 12,
-                      height: 12,
-                      decoration: const BoxDecoration(
-                        color: AppColors.success,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    const Text(
-                      'Atualização Agora',
-                      style: TextStyle(
-                        color: AppColors.darkTextSecondary,
-                        fontSize: 12,
-                      ),
-                    ),
+                    _buildIndicatorDot(isActive: selectedTab == 'Todas'),
+                    const SizedBox(width: 6),
+                    _buildIndicatorDot(isActive: selectedTab == 'Favoritas'),
+                    const SizedBox(width: 6),
+                    _buildIndicatorDot(isActive: selectedTab == 'Moedas'),
                   ],
                 ),
               ],
@@ -187,18 +212,19 @@ class _QuotesScreenState extends State<QuotesScreen> {
                 style: TextStyle(color: AppColors.darkTextSecondary),
               ),
             )
-          else ...filteredQuotes.map(_buildQuoteItem),
+          else
+            ...filteredQuotes.map(_buildQuoteItem),
           const SizedBox(height: 24),
           GestureDetector(
             onTap: controller.fetchQuotes,
             child: Container(
               height: 56,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: AppColors.secondary,
                 borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withAlpha((0.25 * 255).round()),
+                    color: AppColors.secondary.withAlpha((0.25 * 255).round()),
                     blurRadius: 18,
                     offset: const Offset(0, 8),
                   ),
@@ -216,6 +242,50 @@ class _QuotesScreenState extends State<QuotesScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 18),
+          Container(
+            padding: const EdgeInsets.all(AppConstants.paddingMedium),
+            decoration: BoxDecoration(
+              gradient: AppColors.purpleGradient,
+              borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    gradient: AppColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(
+                      AppConstants.radiusLarge,
+                    ),
+                  ),
+                  child: const Icon(Icons.shield, color: Colors.white),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Cotação em tempo real',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Dados fornecidos em tempo real através da Awesome API',
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -231,7 +301,9 @@ class _QuotesScreenState extends State<QuotesScreen> {
         decoration: BoxDecoration(
           color: isSelected ? AppColors.secondary : AppColors.darkBgSecondary,
           borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-          border: Border.all(color: isSelected ? AppColors.secondary : AppColors.darkBorder),
+          border: Border.all(
+            color: isSelected ? AppColors.secondary : AppColors.darkBorder,
+          ),
         ),
         child: Text(
           label,
@@ -241,6 +313,17 @@ class _QuotesScreenState extends State<QuotesScreen> {
             fontWeight: FontWeight.w700,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildIndicatorDot({required bool isActive}) {
+    return Container(
+      width: isActive ? 12 : 8,
+      height: isActive ? 12 : 8,
+      decoration: BoxDecoration(
+        color: isActive ? AppColors.secondary : AppColors.darkTextSecondary,
+        shape: BoxShape.circle,
       ),
     );
   }
@@ -314,15 +397,21 @@ class _QuotesScreenState extends State<QuotesScreen> {
               Row(
                 children: [
                   Icon(
-                    quote.changePositive ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-                    color: quote.changePositive ? AppColors.success : AppColors.error,
+                    quote.changePositive
+                        ? Icons.arrow_upward_rounded
+                        : Icons.arrow_downward_rounded,
+                    color: quote.changePositive
+                        ? AppColors.success
+                        : AppColors.error,
                     size: 14,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     quote.change,
                     style: TextStyle(
-                      color: quote.changePositive ? AppColors.success : AppColors.error,
+                      color: quote.changePositive
+                          ? AppColors.success
+                          : AppColors.error,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),
@@ -336,7 +425,9 @@ class _QuotesScreenState extends State<QuotesScreen> {
             onTap: () => _toggleFavorite(quote.symbol),
             child: Icon(
               isFavorite ? Icons.star : Icons.star_border,
-              color: isFavorite ? AppColors.secondary : AppColors.darkTextSecondary,
+              color: isFavorite
+                  ? AppColors.secondary
+                  : AppColors.darkTextSecondary,
             ),
           ),
         ],

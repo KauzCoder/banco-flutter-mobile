@@ -97,7 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const Text(
                 'Saldo principal',
-                style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const Spacer(),
               const Icon(Icons.more_horiz, color: Colors.white70),
@@ -108,7 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text(
                 _hideBalance ? 'R\$ ••••••' : 'R\$ 50.540,00',
-                style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w800),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(width: 10),
               GestureDetector(
@@ -135,10 +143,20 @@ class _HomeScreenState extends State<HomeScreen> {
               color: const Color(0xFF22C55E),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text('+25%', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700)),
+            child: const Text(
+              '+25%',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
           const SizedBox(height: 4),
-          const Text('Ultimo Mês', style: TextStyle(color: Colors.white60, fontSize: 11)),
+          const Text(
+            'Ultimo Mês',
+            style: TextStyle(color: Colors.white60, fontSize: 11),
+          ),
           const SizedBox(height: 16),
           const Divider(color: Colors.white24),
           const SizedBox(height: 12),
@@ -146,15 +164,33 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _balanceInfo('Disponível em Conta', 'R\$ 50.540,00'),
               const Spacer(),
-              _balanceInfo('Ultima Atualização', 'Hoje, 09:41', dotColor: const Color(0xFF22C55E)),
+              _balanceInfo(
+                'Ultima Atualização',
+                'Hoje, 09:41',
+                dotColor: const Color(0xFF22C55E),
+              ),
             ],
           ),
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _flowCard(Icons.arrow_downward_rounded, 'Entrada do Mês', 'R\$ 6.350,00', const Color(0xFF22C55E))),
+              Expanded(
+                child: _flowCard(
+                  Icons.arrow_downward_rounded,
+                  'Entrada do Mês',
+                  'R\$ 6.350,00',
+                  const Color(0xFF22C55E),
+                ),
+              ),
               const SizedBox(width: 10),
-              Expanded(child: _flowCard(Icons.arrow_upward_rounded, 'Saída do Mês', 'R\$ 2.860,00', const Color(0xFFEF4444))),
+              Expanded(
+                child: _flowCard(
+                  Icons.arrow_upward_rounded,
+                  'Saída do Mês',
+                  'R\$ 2.860,00',
+                  const Color(0xFFEF4444),
+                ),
+              ),
             ],
           ),
         ],
@@ -169,14 +205,31 @@ class _HomeScreenState extends State<HomeScreen> {
         Row(
           children: [
             if (dotColor != null) ...[
-              Container(width: 7, height: 7, decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle)),
+              Container(
+                width: 7,
+                height: 7,
+                decoration: BoxDecoration(
+                  color: dotColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
               const SizedBox(width: 4),
             ],
-            Text(label, style: const TextStyle(color: Colors.white60, fontSize: 11)),
+            Text(
+              label,
+              style: const TextStyle(color: Colors.white60, fontSize: 11),
+            ),
           ],
         ),
         const SizedBox(height: 2),
-        Text(value, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ],
     );
   }
@@ -191,7 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: [
           Container(
-            width: 32, height: 32,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             child: Icon(icon, color: Colors.white, size: 16),
           ),
@@ -199,8 +253,18 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: const TextStyle(color: Colors.white60, fontSize: 10)),
-              Text(value, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700)),
+              Text(
+                label,
+                style: const TextStyle(color: Colors.white60, fontSize: 10),
+              ),
+              Text(
+                value,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ],
           ),
         ],
@@ -211,11 +275,27 @@ class _HomeScreenState extends State<HomeScreen> {
   // ───── QUICK ACTIONS ─────
   Widget _buildQuickActions(BuildContext context) {
     final items = [
-      {'icon': Icons.compare_arrows_rounded, 'label': 'Pix &\nTransferir', 'route': AppRoutes.pix},
-      {'icon': Icons.view_week_rounded, 'label': 'Pagar', 'route': AppRoutes.pay},
-      {'icon': Icons.monetization_on_outlined, 'label': 'Emprestimos', 'route': null},
+      {
+        'icon': Icons.compare_arrows_rounded,
+        'label': 'Pix &\nTransferir',
+        'route': AppRoutes.pix,
+      },
+      {
+        'icon': Icons.view_week_rounded,
+        'label': 'Pagar',
+        'route': AppRoutes.pay,
+      },
+      {
+        'icon': Icons.monetization_on_outlined,
+        'label': 'Emprestimos',
+        'route': null,
+      },
       {'icon': Icons.show_chart_rounded, 'label': 'Investir', 'route': null},
-      {'icon': Icons.savings_outlined, 'label': 'Meu\nPorquinho', 'route': null},
+      {
+        'icon': Icons.savings_outlined,
+        'label': 'Meu\nPorquinho',
+        'route': null,
+      },
     ];
 
     return Container(
@@ -245,7 +325,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: const Color(0xFFCBFF4D),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Icon(item['icon'] as IconData, color: const Color(0xFF6B3FE4), size: 28),
+                    child: Icon(
+                      item['icon'] as IconData,
+                      color: const Color(0xFF6B3FE4),
+                      size: 28,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Text(
@@ -276,16 +360,33 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Row(
             children: [
-              const Text('Cotacao de moedas', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
+              const Text(
+                'Cotacao de moedas',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               const Spacer(),
             ],
           ),
           const SizedBox(height: 4),
           Row(
             children: [
-              Container(width: 7, height: 7, decoration: const BoxDecoration(color: Color(0xFF22C55E), shape: BoxShape.circle)),
+              Container(
+                width: 7,
+                height: 7,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF22C55E),
+                  shape: BoxShape.circle,
+                ),
+              ),
               const SizedBox(width: 6),
-              const Text('Atualização Agora', style: TextStyle(color: Colors.white54, fontSize: 11)),
+              const Text(
+                'Atualização Agora',
+                style: TextStyle(color: Colors.white54, fontSize: 11),
+              ),
             ],
           ),
           const SizedBox(height: 14),
@@ -296,9 +397,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Align(
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: () {},
+              onTap: () => Navigator.pushNamed(context, AppRoutes.quotes),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF6B3FE4),
                   borderRadius: BorderRadius.circular(12),
@@ -306,7 +410,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Ver cotacoes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13)),
+                    Text(
+                      'Ver cotacoes',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
                     SizedBox(width: 4),
                     Icon(Icons.chevron_right, color: Colors.white, size: 18),
                   ],
@@ -323,26 +434,57 @@ class _HomeScreenState extends State<HomeScreen> {
     return Row(
       children: [
         Container(
-          width: 36, height: 36,
-          decoration: const BoxDecoration(color: Color(0xFF22C55E), shape: BoxShape.circle),
+          width: 36,
+          height: 36,
+          decoration: const BoxDecoration(
+            color: Color(0xFF22C55E),
+            shape: BoxShape.circle,
+          ),
         ),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
-            Text(code, style: const TextStyle(color: Colors.white54, fontSize: 11)),
+            Text(
+              name,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              code,
+              style: const TextStyle(color: Colors.white54, fontSize: 11),
+            ),
           ],
         ),
         const Spacer(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(value, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
+            Text(
+              value,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             Row(
               children: [
-                const Icon(Icons.arrow_upward_rounded, color: Color(0xFF22C55E), size: 12),
-                Text(change, style: const TextStyle(color: Color(0xFF22C55E), fontSize: 11)),
+                const Icon(
+                  Icons.arrow_upward_rounded,
+                  color: Color(0xFF22C55E),
+                  size: 12,
+                ),
+                Text(
+                  change,
+                  style: const TextStyle(
+                    color: Color(0xFF22C55E),
+                    fontSize: 11,
+                  ),
+                ),
               ],
             ),
           ],
@@ -362,24 +504,45 @@ class _HomeScreenState extends State<HomeScreen> {
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Transações Recentes', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700)),
-                  Text('Hoje', style: TextStyle(color: Colors.white54, fontSize: 12)),
+                  Text(
+                    'Transações Recentes',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    'Hoje',
+                    style: TextStyle(color: Colors.white54, fontSize: 12),
+                  ),
                 ],
               ),
               const Spacer(),
               GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.transactions),
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.transactions),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xFF2A2A2A)),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Row(
                     children: [
-                      Text('Ver tudo', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                      Text(
+                        'Ver tudo',
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
                       SizedBox(width: 4),
-                      Icon(Icons.chevron_right, color: Colors.white70, size: 16),
+                      Icon(
+                        Icons.chevron_right,
+                        color: Colors.white70,
+                        size: 16,
+                      ),
                     ],
                   ),
                 ),
@@ -421,7 +584,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: [
           Container(
-            width: 44, height: 44,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               color: const Color(0xFF1A1040),
               borderRadius: BorderRadius.circular(12),
@@ -437,8 +601,18 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
-                Text(time, style: const TextStyle(color: Colors.white54, fontSize: 11)),
+                Text(
+                  name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  time,
+                  style: const TextStyle(color: Colors.white54, fontSize: 11),
+                ),
               ],
             ),
           ),
@@ -479,17 +653,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _navItem(IconData icon, bool active, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Icon(icon, color: active ? const Color(0xFF6B3FE4) : const Color(0xFF6B3FE4).withAlpha(128), size: 28),
+      child: Icon(
+        icon,
+        color: active
+            ? const Color(0xFF6B3FE4)
+            : const Color(0xFF6B3FE4).withAlpha(128),
+        size: 28,
+      ),
     );
   }
 
   Widget _navQrBtn() {
     return Container(
-      width: 58, height: 58,
+      width: 58,
+      height: 58,
       decoration: BoxDecoration(
         color: const Color(0xFF6B3FE4),
         borderRadius: BorderRadius.circular(18),
-        boxShadow: [BoxShadow(color: const Color(0xFF6B3FE4).withAlpha(102), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF6B3FE4).withAlpha(102),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: const Icon(Icons.qr_code_2_rounded, color: Colors.white, size: 30),
     );
