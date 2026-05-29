@@ -45,6 +45,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -58,6 +60,22 @@ flutter:
 
   assets:
     - assets/images/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/quantum_app_icon.png"
+  adaptive_icon_background: "#141318"
+  adaptive_icon_foreground: "assets/images/quantum_app_icon.png"
+
+flutter_native_splash:
+  color: "#141318"
+  image: "assets/images/quantum_inner_icon.png"
+  android: true
+  ios: true
+  android_12:
+    color: "#141318"
+    image: "assets/images/quantum_inner_icon.png"
 
   # To add assets to your application, add an assets section, like this:
   # assets:*/

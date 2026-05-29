@@ -15,7 +15,12 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.circle, color: Color(0xFF9151F5), size: 40),
+                Image.asset(
+                  'assets/images/quantum_inner_icon.png',
+                  width: 44,
+                  height: 44,
+                  fit: BoxFit.contain,
+                ),
                 const SizedBox(width: 12),
                 const Text("QUANTUM", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
               ],
