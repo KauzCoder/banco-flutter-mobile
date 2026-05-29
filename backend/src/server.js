@@ -1,4 +1,11 @@
-require("dotenv").config();
+const path = require("path");
+const dotenv = require("dotenv");
+
+dotenv.config();
+dotenv.config({
+  path: path.join(__dirname, "config", ".env"),
+  override: false,
+});
 
 const app = require("./app");
 
