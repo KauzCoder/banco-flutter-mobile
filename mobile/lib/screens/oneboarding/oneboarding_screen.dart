@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/core/theme/app_colors.dart';
 
 class OneboardingScreen extends StatefulWidget {
   const OneboardingScreen({super.key});
@@ -14,21 +15,24 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
 
   final List<_OneboardingData> _pages = [
     _OneboardingData(
-      title: 'O pagamento mais\nrápido do mundo',
-      subtitle: 'Integre múltiplos métodos de pagamento para agilizar o processo rapidamente',
-      icon: Icons.phone_android_rounded,
+      title: 'Investimentos\nInteligentes',
+      subtitle: 'Faça Seu Dinheiro Trabalhar para Você, Rendimento maior que a poupança, Fundos, CDBs e Tesouro Direto, Assessoria financeira gratuita.',
+      imageAsset: 'assets/images/123f479ea6f8cd7e6f51f39f9c46fe6345e2289c.png',
+      fallbackIcon: Icons.phone_android_rounded,
       accentColor: const Color(0xFFCBFF4D),
     ),
     _OneboardingData(
-      title: 'A plataforma mais\nsegura para o cliente',
-      subtitle: 'Reconhecimento de impressão digital, reconhecimento facial e mais, mantendo você completamente seguro',
-      icon: Icons.security_rounded,
+      title: 'Pagamento mais\nrapido do mundo',
+      subtitle: 'Integre múltiplos métodos de pagamento para agilizar o processo rapidamente',
+      imageAsset: 'assets/images/3ea56df9459a0f2731195dbdb5951573840f4d05 (1).png',
+      fallbackIcon: Icons.security_rounded,
       accentColor: const Color(0xFF9B6FFF),
     ),
     _OneboardingData(
-      title: 'Investimentos\nInteligentes',
-      subtitle: 'Faça Seu Dinheiro Trabalhar para Você, Rendimento maior que a poupança, Fundos, CDBs e Tesouro Direto, Assessoria financeira gratuita.',
-      icon: Icons.show_chart_rounded,
+      title: 'A plataforma mais\nsegura para o cliente',
+      subtitle: 'Reconhecimento de impressão digital, reconhecimento facial e mais, mantendo você completamente seguro.',
+      imageAsset: 'assets/images/6135364dda317a9b880cf13ee65cf0b78e7829ac.png',
+      fallbackIcon: Icons.show_chart_rounded,
       accentColor: const Color(0xFFCBFF4D),
     ),
   ];
@@ -53,7 +57,7 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D1A),
+      backgroundColor: AppColors.primary,
       body: Stack(
         children: [
           Container(
@@ -63,8 +67,8 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
                 center: Alignment.topCenter,
                 radius: 1.0,
                 colors: [
-                  Color(0xFF3D1A6E),
-                  Color(0xFF0D0D1A),
+                  AppColors.secondary,
+                  AppColors.primary,
                 ],
               ),
             ),
@@ -94,7 +98,7 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
                       height: 8,
                       decoration: BoxDecoration(
                         color: isActive
-                            ? const Color(0xFF7B3FE4)
+                            ? AppColors.secondary
                             : const Color(0xFF2A2A45),
                         borderRadius: BorderRadius.circular(4),
                       ),
@@ -142,7 +146,7 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
                     child: ElevatedButton(
                       onPressed: _nextPage,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF7B3FE4),
+                        backgroundColor: AppColors.secondary,
                         foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -170,24 +174,21 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
 
   Widget _buildIllustration(_OneboardingData data) {
     return Center(
-      child: Container(
-        width: 240,
-        height: 240,
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E1040),
-          borderRadius: BorderRadius.circular(40),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF7B3FE4).withOpacity(0.3),
-              blurRadius: 40,
-              spreadRadius: 10,
-            ),
-          ],
-        ),
-        child: Icon(
-          data.icon,
-          size: 100,
-          color: data.accentColor,
+      child: SizedBox(
+        width: 1500,
+        height: 1000,
+        child: Image.asset(
+          data.imageAsset,
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stackTrace) {
+            return Center(
+              child: Icon(
+                data.fallbackIcon,
+                size: 100,
+                color: data.accentColor,
+              ),
+            );
+          },
         ),
       ),
     );
@@ -197,13 +198,15 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
 class _OneboardingData {
   final String title;
   final String subtitle;
-  final IconData icon;
+  final String imageAsset;
+  final IconData fallbackIcon;
   final Color accentColor;
 
   _OneboardingData({
     required this.title,
     required this.subtitle,
-    required this.icon,
+    required this.imageAsset,
+    required this.fallbackIcon,
     required this.accentColor,
   });
 }

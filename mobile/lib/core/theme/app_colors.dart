@@ -4,10 +4,10 @@ class AppColors {
   const AppColors._();
 
   // Primary colors
-  static const primary = Color(0xFF006B5F);
-  static const primaryVariant = Color(0xFF00463E);
-  static const secondary = Color(0xFF00A087);
-  static const secondaryVariant = Color(0xFF007F67);
+  static const primary = Color(0xFF161622);
+  static const primaryVariant = Color(0xFF0E0E1A);
+  static const secondary = Color(0xFFC172FF);
+  static const secondaryVariant = Color(0xFF8E4EF7);
   
   // New gradient colors for design
   static const gradientPurpleStart = Color(0xFF8B5CF6);
