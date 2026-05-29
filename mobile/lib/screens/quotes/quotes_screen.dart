@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_aplication_bank/controllers/quote_controller.dart';
+import 'package:flutter_aplication_bank/models/quote_model.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 
@@ -12,57 +15,26 @@ class QuotesScreen extends StatefulWidget {
 class _QuotesScreenState extends State<QuotesScreen> {
   final tabs = ['Todas', 'Favoritas', 'Moedas', 'Criptomoedas'];
   String selectedTab = 'Todas';
-  final favorites = <String>{'USD', 'Kwanza', 'Iene'};
+  final favorites = <String>{'USD', 'KZ', 'JPY'};
 
-  final quotes = [
-    {
-      'symbol': 'USD',
-      'name': 'Dólar Americano',
-      'price': 5.30,
-      'change': '+0,86%',
-      'changePositive': true,
-      'category': 'Moedas',
-    },
-    {
-      'symbol': 'KZ',
-      'name': 'Kwanza',
-      'price': 2.30,
-      'change': '+0,78%',
-      'changePositive': true,
-      'category': 'Moedas',
-    },
-    {
-      'symbol': 'USD',
-      'name': 'Dólar',
-      'price': 1.30,
-      'change': '-0,12%',
-      'changePositive': false,
-      'category': 'Moedas',
-    },
-    {
-      'symbol': 'JPY',
-      'name': 'Iene',
-      'price': 4.30,
-      'change': '+0,36%',
-      'changePositive': true,
-      'category': 'Moedas',
-    },
-    {
-      'symbol': 'BTC',
-      'name': 'Bitcoin',
-      'price': 132_400.00,
-      'change': '+2,90%',
-      'changePositive': true,
-      'category': 'Criptomoedas',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final controller = context.read<QuoteController>();
+      if (controller.quotes.isEmpty && !controller.isLoading) {
+        controller.fetchQuotes();
+      }
+    });
+  }
 
-  List<Map<String, dynamic>> get filteredQuotes {
+  List<QuoteModel> _filterQuotes(List<QuoteModel> quotes) {
     if (selectedTab == 'Todas') return quotes;
     if (selectedTab == 'Favoritas') {
-      return quotes.where((quote) => favorites.contains(quote['symbol'])).toList();
+      return quotes.where((quote) => favorites.contains(quote.symbol)).toList();
     }
-    return quotes.where((quote) => quote['category'] == selectedTab).toList();
+    return quotes.where((quote) => quote.category == selectedTab).toList();
   }
 
   void _toggleFavorite(String symbol) {
@@ -77,6 +49,9 @@ class _QuotesScreenState extends State<QuotesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<QuoteController>();
+    final filteredQuotes = _filterQuotes(controller.quotes);
+
     return Scaffold(
       backgroundColor: AppColors.darkBg,
       appBar: AppBar(
@@ -174,14 +149,48 @@ class _QuotesScreenState extends State<QuotesScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          ...filteredQuotes.map(_buildQuoteItem),
+          if (controller.isLoading)
+            Container(
+              padding: const EdgeInsets.all(AppConstants.paddingMedium),
+              decoration: BoxDecoration(
+                color: AppColors.darkBgSecondary,
+                borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+                border: Border.all(color: AppColors.darkBorder),
+              ),
+              child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),
+            )
+          else if (controller.error != null)
+            Container(
+              padding: const EdgeInsets.all(AppConstants.paddingMedium),
+              decoration: BoxDecoration(
+                color: AppColors.error.withAlpha(30),
+                borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+                border: Border.all(color: AppColors.error),
+              ),
+              child: Text(
+                controller.error!,
+                style: const TextStyle(color: AppColors.error),
+              ),
+            )
+          else if (filteredQuotes.isEmpty)
+            Container(
+              padding: const EdgeInsets.all(AppConstants.paddingMedium),
+              decoration: BoxDecoration(
+                color: AppColors.darkBgSecondary,
+                borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+                border: Border.all(color: AppColors.darkBorder),
+              ),
+              child: const Text(
+                'Nenhuma cotação disponível para essa categoria.',
+                style: TextStyle(color: AppColors.darkTextSecondary),
+              ),
+            )
+          else ...filteredQuotes.map(_buildQuoteItem),
           const SizedBox(height: 24),
           GestureDetector(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Atualizando cotações...')),
-              );
-            },
+            onTap: controller.fetchQuotes,
             child: Container(
               height: 56,
               decoration: BoxDecoration(
@@ -197,7 +206,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
               ),
               child: const Center(
                 child: Text(
-                  'Ver cotações',
+                  'Atualizar cotações',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -236,9 +245,8 @@ class _QuotesScreenState extends State<QuotesScreen> {
     );
   }
 
-  Widget _buildQuoteItem(Map<String, dynamic> quote) {
-    final symbol = quote['symbol'] as String;
-    final isFavorite = favorites.contains(symbol);
+  Widget _buildQuoteItem(QuoteModel quote) {
+    final isFavorite = favorites.contains(quote.symbol);
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(AppConstants.paddingMedium),
@@ -258,7 +266,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
             ),
             child: Center(
               child: Text(
-                symbol[0],
+                quote.symbol[0],
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -273,7 +281,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  symbol,
+                  quote.symbol,
                   style: const TextStyle(
                     color: AppColors.darkText,
                     fontSize: 14,
@@ -282,7 +290,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  quote['name'].toString(),
+                  quote.name,
                   style: const TextStyle(
                     color: AppColors.darkTextSecondary,
                     fontSize: 12,
@@ -295,7 +303,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                'R\$ ${quote['price']}',
+                'R\$ ${quote.price}',
                 style: const TextStyle(
                   color: AppColors.darkText,
                   fontSize: 14,
@@ -306,15 +314,15 @@ class _QuotesScreenState extends State<QuotesScreen> {
               Row(
                 children: [
                   Icon(
-                    quote['changePositive'] == true ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-                    color: quote['changePositive'] == true ? AppColors.success : AppColors.error,
+                    quote.changePositive ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
+                    color: quote.changePositive ? AppColors.success : AppColors.error,
                     size: 14,
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    quote['change'].toString(),
+                    quote.change,
                     style: TextStyle(
-                      color: quote['changePositive'] == true ? AppColors.success : AppColors.error,
+                      color: quote.changePositive ? AppColors.success : AppColors.error,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),
@@ -325,7 +333,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
           ),
           const SizedBox(width: 10),
           GestureDetector(
-            onTap: () => _toggleFavorite(symbol),
+            onTap: () => _toggleFavorite(quote.symbol),
             child: Icon(
               isFavorite ? Icons.star : Icons.star_border,
               color: isFavorite ? AppColors.secondary : AppColors.darkTextSecondary,
