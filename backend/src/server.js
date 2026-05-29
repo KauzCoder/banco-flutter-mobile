@@ -1,18 +1,16 @@
-const express = require('express');
-const cors = require('cors');
-const routes = require('./routes');
+const path = require("path");
+const dotenv = require("dotenv");
 
-const app = express();
-const port = process.env.PORT || 3333;
-
-app.use(cors());
-app.use(express.json());
-app.use('/api', routes);
-
-app.use((req, res) => {
-  res.status(404).json({ error: 'Endpoint não encontrado' });
+dotenv.config();
+dotenv.config({
+  path: path.join(__dirname, "config", ".env"),
+  override: false,
 });
 
-app.listen(port, () => {
-  console.log(`Backend rodando em http://localhost:${port}/api`);
+const app = require("./app");
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
