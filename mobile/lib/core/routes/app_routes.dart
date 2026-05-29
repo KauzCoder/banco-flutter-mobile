@@ -16,15 +16,16 @@ import 'package:flutter_aplication_bank/screens/settings/language_screen.dart';
 import 'package:flutter_aplication_bank/screens/account/payments_screen.dart';
 import 'package:flutter_aplication_bank/screens/account/account_screen.dart';
 import 'package:flutter_aplication_bank/screens/cards/cards_screen.dart';
-import 'package:flutter_aplication_bank/screens/pix/pix_screen.dart';
 import 'package:flutter_aplication_bank/screens/loading_screen.dart';
 import 'package:flutter_aplication_bank/screens/feedback_screen.dart';
+import 'package:flutter_aplication_bank/screens/pay/pay_screen.dart';
 import 'package:flutter_aplication_bank/screens/oneboarding/oneboarding_screen.dart';
 
 class AppRoutes {
   const AppRoutes._();
 
-  static const oneboarding = '/oneboarding';
+  static const String pay = '/pay';
+  static const String oneboarding = '/oneboarding';
   static const String login = '/login';
   static const String home = '/home';
   static const String quotes = '/quotes';
@@ -49,16 +50,20 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> get routes {
     return {
+      pay: (_) => const PayScreen(),
       oneboarding: (_) => const OneboardingScreen(),
       login: (_) => const LoginScreen(),
       home: (_) => const HomeScreen(),
       quotes: (_) => const QuotesScreen(),
-      transfer: (_) => const TransferScreen(),
+      transfer: (context) {
+        final section = ModalRoute.of(context)?.settings.arguments as String?;
+        return TransferScreen(initialSection: section ?? 'Escanear');
+      },
       receipt: (_) => const ReceiptScreen(),
       transactionsHistory: (_) => const TransactionsHistoryScreen(),
       account: (_) => const AccountScreen(),
       transactions: (_) => const TransactionsScreen(),
-      pix: (_) => const PixScreen(),
+      pix: (_) => const PixAreaScreen(),
       cards: (_) => const CardsScreen(),
       pixArea: (_) => const PixAreaScreen(),
       scanQr: (_) => const ScanQRScreen(),
