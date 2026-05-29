@@ -15,62 +15,80 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.circle, color: Color(0xFF9151F5), size: 40),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF9151F5),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Q",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(width: 12),
-                const Text("QUANTUM", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
+                const Text(
+                  "QUANTUM", 
+                  style: TextStyle(
+                    color: Colors.white, 
+                    fontSize: 32, 
+                    fontWeight: FontWeight.bold, 
+                    letterSpacing: 1.5
+                  )
+                ),
               ],
             ),
             const SizedBox(height: 60),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFF211D2D),
-                borderRadius: BorderRadius.circular(16),
+                color: const Color(0xFF1E1C24),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.white.withOpacity(0.05)),
               ),
               child: Row(
                 children: [
-                  const CircleAvatar(backgroundColor: Colors.grey, radius: 24),
-                  const SizedBox(width: 12),
+                  const CircleAvatar(backgroundColor: Color(0xFF322A45), radius: 25, child: Icon(Icons.person, color: Colors.white54)),
+                  const SizedBox(width: 15),
                   const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Kauã M. Fragoso", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                        Text("***.074.162-**", style: TextStyle(color: Colors.grey, fontSize: 12)),
+                        Text("Kauã M. Fragoso", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                        SizedBox(height: 4),
+                        Text("***.074.162-85", style: TextStyle(color: Colors.white54, fontSize: 13)),
                       ],
                     ),
                   ),
-                  OutlinedButton(onPressed: () {}, child: const Text("Trocar", style: TextStyle(color: Colors.white))),
+                  TextButton(onPressed: () {}, child: const Text("Trocar", style: TextStyle(color: Color(0xFF9151F5), fontWeight: FontWeight.bold))),
                 ],
               ),
             ),
             const SizedBox(height: 20),
             Container(
               width: double.infinity,
-              height: 55,
+              height: 60,
               decoration: BoxDecoration(
-                color: const Color(0xFF211D2D),
+                color: const Color(0xFF1E1C24),
                 borderRadius: BorderRadius.circular(16),
               ),
+              child: const Center(child: Text("••••••••", style: TextStyle(color: Colors.white54, fontSize: 20))),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 30),
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 55,
               child: ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context, '/home'),
                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF9151F5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                child: const Text("Continue", style: TextStyle(color: Colors.white, fontSize: 16)),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(side: const BorderSide(color: Color(0xFF9151F5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                child: const Text("Esqueci minha senha", style: TextStyle(color: Colors.white, fontSize: 16)),
+                child: const Text("Continuar", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
