@@ -15,6 +15,7 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+<<<<<<< HEAD
                 Container(
                   width: 50,
                   height: 50,
@@ -32,6 +33,13 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+=======
+                Image.asset(
+                  'assets/images/quantum_inner_icon.png',
+                  width: 44,
+                  height: 44,
+                  fit: BoxFit.contain,
+>>>>>>> 87aa6b649d959686652602a5cea67e8ca47304e4
                 ),
                 const SizedBox(width: 12),
                 const Text(
