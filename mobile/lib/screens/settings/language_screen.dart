@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
-import '../../core/constants.dart';
+import 'package:flutter_aplication_bank/controllers/profile_controller.dart';
+import 'package:flutter_aplication_bank/screens/settings/settings_widgets.dart';
+import 'package:provider/provider.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
@@ -10,107 +11,160 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  String _selectedLanguage = 'Português';
+  final _searchController = TextEditingController();
+
+  final List<_LanguageOption> _languages = const [
+    _LanguageOption(code: 'pt-BR', label: 'Português', flag: '🇧🇷'),
+    _LanguageOption(code: 'en-AU', label: 'Austrália', flag: '🇦🇺'),
+    _LanguageOption(code: 'fr-FR', label: 'Francês', flag: '🇫🇷'),
+    _LanguageOption(code: 'es-ES', label: 'Espanhol', flag: '🇪🇸'),
+    _LanguageOption(code: 'hy-AM', label: 'América', flag: '🇦🇲'),
+    _LanguageOption(code: 'vi-VN', label: 'Vietnã', flag: '🇻🇳'),
+  ];
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final languages = [
-      {'name': 'Português', 'flag': '🇧🇷'},
-      {'name': 'English', 'flag': '🇺🇸'},
-      {'name': 'Español', 'flag': '🇪🇸'},
-      {'name': 'Français', 'flag': '🇫🇷'},
-      {'name': 'Deutsch', 'flag': '🇩🇪'},
-      {'name': '中文', 'flag': '🇨🇳'},
-      {'name': '日本語', 'flag': '🇯🇵'},
-      {'name': '한국어', 'flag': '🇰🇷'},
-    ];
+    return Consumer<ProfileController>(
+      builder: (context, controller, _) {
+        final query = _searchController.text.toLowerCase();
+        final filtered = _languages
+            .where((language) => language.label.toLowerCase().contains(query))
+            .toList();
 
-    return Scaffold(
-      backgroundColor: AppColors.darkBg,
-      appBar: AppBar(
-        backgroundColor: AppColors.darkBg,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
-        ),
-        title: const Text(
-          'Idioma',
-          style: TextStyle(
-            color: AppColors.darkText,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(AppConstants.paddingMedium),
-        itemCount: languages.length,
-        itemBuilder: (context, index) {
-          final language = languages[index];
-          final isSelected = _selectedLanguage == language['name'];
-
-          return GestureDetector(
-            onTap: () {
-              setState(() => _selectedLanguage = language['name']!);
-              final navigator = Navigator.of(context);
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (mounted) {
-                  navigator.pop();
-                }
-              });
-            },
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(AppConstants.paddingMedium),
-              decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary.withAlpha((0.2 * 255).round()) : AppColors.darkBgSecondary,
-                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.darkBorder,
-                  width: isSelected ? 2 : 1,
+        return ProfileScaffold(
+          title: 'Idioma',
+          child: Column(
+            children: [
+              TextField(
+                controller: _searchController,
+                onChanged: (_) => setState(() {}),
+                cursorColor: profileBlue,
+                style: const TextStyle(color: profileText, fontSize: 16),
+                decoration: InputDecoration(
+                  hintText: 'Pesquisar Idioma',
+                  hintStyle: const TextStyle(
+                    color: profileMutedText,
+                    fontSize: 16,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.search_rounded,
+                    color: profileMutedText,
+                    size: 32,
+                  ),
+                  filled: true,
+                  fillColor: profileInput,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: const BorderSide(color: profileBlue),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 22,
+                  ),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        language['flag']!,
-                        style: const TextStyle(fontSize: 32),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        language['name']!,
-                        style: TextStyle(
-                          color: isSelected ? AppColors.primary : AppColors.darkText,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (isSelected)
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 16,
-                      ),
-                    ),
-                ],
+              const SizedBox(height: 42),
+              ...filtered.map(
+                (language) => _LanguageRow(
+                  language: language,
+                  isSelected: controller.settings?.idioma == language.code,
+                  onTap: controller.isSubmitting
+                      ? null
+                      : () => controller.updateLanguage(language.code),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _LanguageRow extends StatelessWidget {
+  const _LanguageRow({
+    required this.language,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final _LanguageOption language;
+  final bool isSelected;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 96,
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: profileDivider)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 64,
+              height: 64,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              clipBehavior: Clip.antiAlias,
+              child: Text(language.flag, style: const TextStyle(fontSize: 44)),
+            ),
+            const SizedBox(width: 28),
+            Expanded(
+              child: Text(
+                language.label,
+                style: const TextStyle(
+                  color: profileText,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-          );
-        },
+            if (isSelected)
+              Container(
+                width: 36,
+                height: 36,
+                decoration: const BoxDecoration(
+                  color: profileBlue,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: profileText,
+                  size: 26,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
+}
+
+class _LanguageOption {
+  const _LanguageOption({
+    required this.code,
+    required this.label,
+    required this.flag,
+  });
+
+  final String code;
+  final String label;
+  final String flag;
 }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_aplication_bank/controllers/quote_controller.dart';
 import 'package:flutter_aplication_bank/models/quote_model.dart';
+import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
+import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 
@@ -54,31 +57,23 @@ class _QuotesScreenState extends State<QuotesScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.darkBg,
-      appBar: AppBar(
-        backgroundColor: AppColors.darkBg,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
-        ),
-        title: const Text(
-          'Cotação de Moedas',
-          style: TextStyle(
-            color: AppColors.darkText,
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: AppConstants.paddingMedium),
-            child: Icon(
-              Icons.pie_chart_outline,
-              color: AppColors.darkText,
-              size: 24,
+      bottomNavigationBar: const AppBottomNavBar(
+        currentItem: AppBottomNavItem.quotes,
+      ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(64),
+        child: SafeArea(
+          bottom: false,
+          child: AppScreenHeader(
+            title: 'Cotação de Moedas',
+            onBackPressed: () => Navigator.maybePop(context),
+            trailing: AppHeaderIconButton(
+              icon: Icons.pie_chart_outline,
+              onTap: () {},
+              backgroundColor: AppColors.darkBgSecondary,
             ),
           ),
-        ],
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppConstants.paddingMedium),
@@ -111,7 +106,9 @@ class _QuotesScreenState extends State<QuotesScreen> {
               borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.purpleGradient.colors.last.withAlpha((0.25 * 255).round()),
+                  color: AppColors.purpleGradient.colors.last.withAlpha(
+                    (0.25 * 255).round(),
+                  ),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -251,16 +248,10 @@ class _QuotesScreenState extends State<QuotesScreen> {
             ),
             child: Row(
               children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(
-                      AppConstants.radiusLarge,
-                    ),
-                  ),
-                  child: const Icon(Icons.shield, color: Colors.white),
+                SvgPicture.asset(
+                  'assets/svgs/solar_shield-bold-duotone.svg',
+                  width: 34,
+                  height: 34,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -272,13 +263,13 @@ class _QuotesScreenState extends State<QuotesScreen> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                       SizedBox(height: 4),
                       Text(
                         'Dados fornecidos em tempo real através da Awesome API',
-                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                        style: TextStyle(color: Colors.white70, fontSize: 10),
                       ),
                     ],
                   ),

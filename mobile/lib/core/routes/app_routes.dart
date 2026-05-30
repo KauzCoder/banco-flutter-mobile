@@ -11,10 +11,11 @@ import 'package:flutter_aplication_bank/screens/transactions/transactions_histor
 import 'package:flutter_aplication_bank/screens/pix/pix_area_screen.dart';
 import 'package:flutter_aplication_bank/screens/pix/scan_qr_screen.dart';
 import 'package:flutter_aplication_bank/screens/pix/my_qr_code_screen.dart';
+import 'package:flutter_aplication_bank/screens/profile/edit_profile_screen.dart';
 import 'package:flutter_aplication_bank/screens/profile/profile_screen.dart';
-import 'package:flutter_aplication_bank/screens/settings/settings_screen.dart';
 import 'package:flutter_aplication_bank/screens/settings/change_password_screen.dart';
 import 'package:flutter_aplication_bank/screens/settings/language_screen.dart';
+import 'package:flutter_aplication_bank/screens/settings/settings_screen.dart';
 import 'package:flutter_aplication_bank/screens/account/payments_screen.dart';
 import 'package:flutter_aplication_bank/screens/account/account_screen.dart';
 import 'package:flutter_aplication_bank/screens/cards/cards_screen.dart';
@@ -41,6 +42,7 @@ class AppRoutes {
   static const String myQrCode = '/my-qr-code';
   static const String profile = '/profile';
   static const String settings = '/settings';
+  static const String editProfile = '/edit-profile';
   static const String changePassword = '/change-password';
   static const String language = '/language';
   static const String payments = '/payments';
@@ -75,6 +77,7 @@ class AppRoutes {
       myQrCode: (_) => const MyQRCodeScreen(),
       profile: (_) => const ProfileScreen(),
       settings: (_) => const SettingsScreen(),
+      editProfile: (_) => const EditProfileScreen(),
       changePassword: (_) => const ChangePasswordScreen(),
       language: (_) => const LanguageScreen(),
       payments: (_) => const PaymentsScreen(),
