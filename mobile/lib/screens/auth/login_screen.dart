@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -51,7 +52,11 @@ class LoginScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF1E1C24),
                 borderRadius: BorderRadius.circular(20),
+<<<<<<< HEAD
                 border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+=======
+                border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.05)),
+>>>>>>> origin/frontend-neto
               ),
               child: Row(
                 children: [
@@ -107,6 +112,7 @@ class LoginScreen extends StatelessWidget {
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
+<<<<<<< HEAD
                 onPressed: () => Navigator.pushNamed(context, '/home'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF9151F5),
@@ -116,6 +122,11 @@ class LoginScreen extends StatelessWidget {
                   "Continuar",
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
+=======
+                onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF9151F5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                child: const Text("Continuar", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+>>>>>>> origin/frontend-neto
               ),
             ),
           ],

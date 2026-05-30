@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import '../../widgets/common_widgets.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/controllers/transfer_controller.dart';
+import 'package:flutter_aplication_bank/models/transfer_request.dart';
 
 class TransferScreen extends StatefulWidget {
   final String initialSection;
@@ -16,7 +19,6 @@ class TransferScreen extends StatefulWidget {
 class _TransferScreenState extends State<TransferScreen> {
   final _recipientController = TextEditingController();
   final _messageController = TextEditingController();
-  bool _isLoading = false;
   String _selectedSection = 'Escanear';
   String _amount = '';
   String _selectedContact = 'Adicionar';
@@ -69,6 +71,12 @@ class _TransferScreenState extends State<TransferScreen> {
     return formatted;
   }
 
+  double get _amountValue {
+    final digits = _amount.replaceAll(',', '');
+    final value = int.tryParse(digits) ?? 0;
+    return value / 100;
+  }
+
   void _handleActionTap(String label) {
     if (label == 'Pix') {
       _selectSection('Digitar');
@@ -79,20 +87,31 @@ class _TransferScreenState extends State<TransferScreen> {
     );
   }
 
-  void _handlePayment() {
+  Future<void> _handlePayment() async {
     if (_recipientController.text.isEmpty || _amount.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Informe destinatário e valor')), 
+        const SnackBar(content: Text('Informe destinatário e valor')),
       );
       return;
     }
 
-    setState(() => _isLoading = true);
-    Future.delayed(const Duration(seconds: 2), () {
+    final request = TransferRequest(
+      recipient: _recipientController.text.trim(),
+      amount: _amountValue,
+      message: _messageController.text.trim(),
+      type: 'PIX',
+    );
+
+    try {
+      await context.read<TransferController>().sendTransfer(request);
       if (!mounted) return;
-      setState(() => _isLoading = false);
       Navigator.pushNamed(context, AppRoutes.receipt);
-    });
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+    }
   }
 
   @override
@@ -308,6 +327,8 @@ class _TransferScreenState extends State<TransferScreen> {
   }
 
   Widget _buildPixAreaSection() {
+    final transferController = context.watch<TransferController>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -411,10 +432,18 @@ class _TransferScreenState extends State<TransferScreen> {
         const SizedBox(height: 20),
         _buildKeypad(),
         const SizedBox(height: 20),
+        if (transferController.error != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Text(
+              transferController.error!,
+              style: const TextStyle(color: AppColors.error, fontSize: 13),
+            ),
+          ),
         CustomButton(
           label: 'Transferir',
           onPressed: _handlePayment,
-          isLoading: _isLoading,
+          isLoading: transferController.isSubmitting,
           backgroundColor: AppColors.success,
           icon: Icons.send,
         ),
