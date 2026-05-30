@@ -6,7 +6,6 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Gradiente de fundo igual à imagem
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -31,7 +30,6 @@ class RegisterScreen extends StatelessWidget {
                 _buildInputField("Nome completo", Icons.person_outline),
                 _buildInputField("Email address", Icons.email_outlined),
                 
-                // Campo de Telefone com bandeira (simulado)
                 _buildPhoneField(),
                 
                 _buildInputField("Senha", Icons.lock_outline, obscure: true),
@@ -40,7 +38,7 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 55,
-                  child: ElevatedButton(S
+                  child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF9151F5),
@@ -75,7 +73,7 @@ class RegisterScreen extends StatelessWidget {
           hintStyle: const TextStyle(color: Colors.white54),
           prefixIcon: Icon(icon, color: Colors.white54),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.05),
+          fillColor: Colors.white.withValues(alpha: 0.05),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         ),
       ),
@@ -87,10 +85,10 @@ class RegisterScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12)),
         child: Row(
           children: [
-            const Text("🇮🇹", style: TextStyle(fontSize: 20)), // Simulação da bandeira
+            const Text("🇮🇹", style: TextStyle(fontSize: 20)),
             const SizedBox(width: 8),
             const Text("+55", style: TextStyle(color: Colors.white)),
             const SizedBox(width: 8),

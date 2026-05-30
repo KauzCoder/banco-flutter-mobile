@@ -15,7 +15,6 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-<<<<<<< HEAD
                 Container(
                   width: 50,
                   height: 50,
@@ -33,23 +32,16 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-=======
-                Image.asset(
-                  'assets/images/quantum_inner_icon.png',
-                  width: 44,
-                  height: 44,
-                  fit: BoxFit.contain,
->>>>>>> 87aa6b649d959686652602a5cea67e8ca47304e4
                 ),
                 const SizedBox(width: 12),
                 const Text(
-                  "QUANTUM", 
+                  "QUANTUM",
                   style: TextStyle(
-                    color: Colors.white, 
-                    fontSize: 32, 
-                    fontWeight: FontWeight.bold, 
-                    letterSpacing: 1.5
-                  )
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                  ),
                 ),
               ],
             ),
@@ -59,23 +51,39 @@ class LoginScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF1E1C24),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.05)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
               child: Row(
                 children: [
-                  const CircleAvatar(backgroundColor: Color(0xFF322A45), radius: 25, child: Icon(Icons.person, color: Colors.white54)),
+                  const CircleAvatar(
+                    backgroundColor: Color(0xFF322A45),
+                    radius: 25,
+                    child: Icon(Icons.person, color: Colors.white54),
+                  ),
                   const SizedBox(width: 15),
                   const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Kauã M. Fragoso", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                        Text(
+                          "Kauã M. Fragoso",
+                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
                         SizedBox(height: 4),
-                        Text("***.074.162-85", style: TextStyle(color: Colors.white54, fontSize: 13)),
+                        Text(
+                          "***.074.162-85",
+                          style: TextStyle(color: Colors.white54, fontSize: 13),
+                        ),
                       ],
                     ),
                   ),
-                  TextButton(onPressed: () {}, child: const Text("Trocar", style: TextStyle(color: Color(0xFF9151F5), fontWeight: FontWeight.bold))),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      "Trocar",
+                      style: TextStyle(color: Color(0xFF9151F5), fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -87,7 +95,12 @@ class LoginScreen extends StatelessWidget {
                 color: const Color(0xFF1E1C24),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Center(child: Text("••••••••", style: TextStyle(color: Colors.white54, fontSize: 20))),
+              child: const Center(
+                child: Text(
+                  "••••••••",
+                  style: TextStyle(color: Colors.white54, fontSize: 20),
+                ),
+              ),
             ),
             const SizedBox(height: 30),
             SizedBox(
@@ -95,8 +108,14 @@ class LoginScreen extends StatelessWidget {
               height: 55,
               child: ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context, '/home'),
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF9151F5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                child: const Text("Continuar", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF9151F5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+                child: const Text(
+                  "Continuar",
+                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ],

@@ -85,7 +85,7 @@ class SingInScreen extends StatelessWidget {
           hintText: hint, hintStyle: const TextStyle(color: Colors.white54),
           prefixIcon: Icon(icon, color: Colors.white54),
           suffixIcon: suffix != null ? Icon(suffix, color: Colors.white54) : null,
-          filled: true, fillColor: Colors.white.withOpacity(0.05),
+          filled: true, fillColor: Colors.white.withValues(alpha: 0.05),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         ),
       ),
