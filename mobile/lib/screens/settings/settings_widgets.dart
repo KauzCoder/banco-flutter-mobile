@@ -227,48 +227,6 @@ class ProfileMenuRow extends StatelessWidget {
   }
 }
 
-class ProfilePrimaryButton extends StatelessWidget {
-  const ProfilePrimaryButton({
-    required this.label,
-    required this.onPressed,
-    this.isLoading = false,
-    super.key,
-  });
-
-  final String label;
-  final VoidCallback? onPressed;
-  final bool isLoading;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 64,
-      child: ElevatedButton(
-        onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: profileBlue,
-          disabledBackgroundColor: profileBlue.withValues(alpha: 0.5),
-          foregroundColor: profileText,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
-          ),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
-        child: isLoading
-            ? const SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: profileText,
-                ),
-              )
-            : Text(label),
-      ),
-    );
-  }
-}
-
 String languageLabel(String code) {
   return switch (code) {
     'pt-BR' => 'Português',

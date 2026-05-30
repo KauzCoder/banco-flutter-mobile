@@ -10,7 +10,7 @@ class PayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       bottomNavigationBar: const AppBottomNavBar(
         currentItem: AppBottomNavItem.pay,
       ),
@@ -62,7 +62,7 @@ class PayScreen extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      color: AppColors.darkBgSecondary,
+      color: const Color.fromARGB(255, 61, 61, 61),
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         onTap: onTap,

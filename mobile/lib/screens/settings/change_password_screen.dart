@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/controllers/profile_controller.dart';
 import 'package:flutter_aplication_bank/screens/settings/settings_widgets.dart';
+import 'package:flutter_aplication_bank/widgets/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -108,7 +109,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
               ),
               const SizedBox(height: 80),
-              ProfilePrimaryButton(
+              CustomButton(
                 label: 'Alterar Senha',
                 isLoading: controller.isSubmitting,
                 onPressed: () => _submit(controller),

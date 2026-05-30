@@ -60,7 +60,11 @@ class SettingsScreen extends StatelessWidget {
                 onTap: () =>
                     Navigator.pushNamed(context, AppRoutes.changePassword),
               ),
-              ProfileMenuRow(title: 'Política de Privacidade', onTap: () {}),
+              ProfileMenuRow(
+                title: 'Política de Privacidade',
+                onTap: () =>
+                    Navigator.pushNamed(context, AppRoutes.privacyPolicy),
+              ),
               const SizedBox(height: 24),
               const Text(
                 'Escolha quais dados você compartilha conosco',

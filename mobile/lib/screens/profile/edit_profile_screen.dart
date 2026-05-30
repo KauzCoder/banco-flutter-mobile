@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/controllers/profile_controller.dart';
 import 'package:flutter_aplication_bank/models/user_profile.dart';
 import 'package:flutter_aplication_bank/screens/settings/settings_widgets.dart';
+import 'package:flutter_aplication_bank/widgets/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -72,6 +73,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  Future<void> _pickBirthDate() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _currentBirthDate(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: profileBlue,
+              surface: profileInput,
+              onSurface: profileText,
+            ),
+            dialogTheme: const DialogThemeData(backgroundColor: profileInput),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate == null) {
+      return;
+    }
+
+    setState(() {
+      _dayController.text = pickedDate.day.toString().padLeft(2, '0');
+      _monthController.text = _monthName(pickedDate.month);
+      _yearController.text = pickedDate.year.toString();
+    });
+  }
+
+  DateTime _currentBirthDate() {
+    final day = int.tryParse(_dayController.text.trim()) ?? 28;
+    final month = _monthNumber(_monthController.text.trim()) ?? 9;
+    final year = int.tryParse(_yearController.text.trim()) ?? 2000;
+
+    return DateTime(year, month, day);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileController>(
@@ -82,18 +123,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           title: 'Meu Perfil',
           child: Column(
             children: [
-              ProfileAvatar(radius: 90, imageUrl: profile?.fotoPerfil ?? ''),
-              const SizedBox(height: 34),
+              ProfileAvatar(radius: 64, imageUrl: profile?.fotoPerfil ?? ''),
+              const SizedBox(height: 22),
               Text(
                 profile?.nome ?? 'Carregando...',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: profileText,
-                  fontSize: 28,
+                  fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 64),
+              const SizedBox(height: 36),
               ProfileEditField(
                 label: 'Nome Completo',
                 icon: Icons.account_circle_outlined,
@@ -117,7 +158,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   'Data de Nascimento',
                   style: TextStyle(
                     color: profileMutedText,
-                    fontSize: 22,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -126,29 +167,51 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: ProfileSmallField(controller: _dayController),
+                    child: ProfileSmallField(
+                      controller: _dayController,
+                      onTap: _pickBirthDate,
+                    ),
                   ),
-                  const SizedBox(width: 44),
+                  const SizedBox(width: 24),
                   Expanded(
-                    child: ProfileSmallField(controller: _monthController),
+                    child: ProfileSmallField(
+                      controller: _monthController,
+                      onTap: _pickBirthDate,
+                    ),
                   ),
-                  const SizedBox(width: 44),
+                  const SizedBox(width: 24),
                   Expanded(
-                    child: ProfileSmallField(controller: _yearController),
+                    child: ProfileSmallField(
+                      controller: _yearController,
+                      onTap: _pickBirthDate,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  InkWell(
+                    onTap: _pickBirthDate,
+                    borderRadius: BorderRadius.circular(18),
+                    child: const Padding(
+                      padding: EdgeInsets.all(6),
+                      child: Icon(
+                        Icons.calendar_month_rounded,
+                        color: profileBlue,
+                        size: 22,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 86),
+              const SizedBox(height: 48),
               Text(
                 _joinedAt(profile),
                 style: const TextStyle(
                   color: profileMutedText,
-                  fontSize: 18,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 36),
-              ProfilePrimaryButton(
+              const SizedBox(height: 28),
+              CustomButton(
                 label: 'Salvar',
                 isLoading: controller.isSubmitting,
                 onPressed: () => _save(controller),
@@ -178,7 +241,7 @@ class ProfileEditField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 28),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -186,21 +249,21 @@ class ProfileEditField extends StatelessWidget {
             label,
             style: const TextStyle(
               color: profileMutedText,
-              fontSize: 22,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              Icon(icon, color: profileMutedText, size: 32),
-              const SizedBox(width: 24),
+              Icon(icon, color: profileMutedText, size: 24),
+              const SizedBox(width: 16),
               Expanded(
                 child: TextField(
                   controller: controller,
                   keyboardType: keyboardType,
                   cursorColor: profileBlue,
-                  style: const TextStyle(color: profileText, fontSize: 22),
+                  style: const TextStyle(color: profileText, fontSize: 16),
                   decoration: const InputDecoration(
                     filled: false,
                     fillColor: Colors.transparent,
@@ -222,17 +285,20 @@ class ProfileEditField extends StatelessWidget {
 }
 
 class ProfileSmallField extends StatelessWidget {
-  const ProfileSmallField({required this.controller, super.key});
+  const ProfileSmallField({required this.controller, this.onTap, super.key});
 
   final TextEditingController controller;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       textAlign: TextAlign.center,
+      readOnly: onTap != null,
+      onTap: onTap,
       cursorColor: profileBlue,
-      style: const TextStyle(color: profileText, fontSize: 22),
+      style: const TextStyle(color: profileText, fontSize: 16),
       decoration: const InputDecoration(
         filled: false,
         fillColor: Colors.transparent,
@@ -253,6 +319,57 @@ class ProfileSmallField extends StatelessWidget {
       ),
     );
   }
+}
+
+String _monthName(int month) {
+  const months = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
+  ];
+
+  return months[month - 1];
+}
+
+int? _monthNumber(String monthName) {
+  const months = {
+    'janeiro': 1,
+    'jan': 1,
+    'fevereiro': 2,
+    'fev': 2,
+    'março': 3,
+    'marco': 3,
+    'mar': 3,
+    'abril': 4,
+    'abr': 4,
+    'maio': 5,
+    'mai': 5,
+    'junho': 6,
+    'jun': 6,
+    'julho': 7,
+    'jul': 7,
+    'agosto': 8,
+    'ago': 8,
+    'setembro': 9,
+    'set': 9,
+    'outubro': 10,
+    'out': 10,
+    'novembro': 11,
+    'nov': 11,
+    'dezembro': 12,
+    'dez': 12,
+  };
+
+  return months[monthName.toLowerCase()];
 }
 
 String _joinedAt(UserProfile? profile) {

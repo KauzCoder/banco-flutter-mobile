@@ -56,7 +56,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
     final filteredQuotes = _filterQuotes(controller.quotes);
 
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       bottomNavigationBar: const AppBottomNavBar(
         currentItem: AppBottomNavItem.quotes,
       ),
@@ -70,7 +70,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
             trailing: AppHeaderIconButton(
               icon: Icons.pie_chart_outline,
               onTap: () {},
-              backgroundColor: AppColors.darkBgSecondary,
+              backgroundColor: const Color.fromARGB(255, 0, 0, 0),
             ),
           ),
         ),
@@ -84,7 +84,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
               vertical: AppConstants.paddingSmall,
             ),
             decoration: BoxDecoration(
-              color: AppColors.darkBgSecondary,
+              color: const Color.fromARGB(255, 0, 0, 0),
               borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
               border: Border.all(color: AppColors.purpleGradient.colors.last),
             ),
@@ -135,7 +135,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
                   height: 110,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.darkBg,
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     borderRadius: BorderRadius.circular(
                       AppConstants.radiusLarge,
                     ),

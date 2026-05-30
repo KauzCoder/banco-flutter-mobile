@@ -15,6 +15,7 @@ import 'package:flutter_aplication_bank/screens/profile/edit_profile_screen.dart
 import 'package:flutter_aplication_bank/screens/profile/profile_screen.dart';
 import 'package:flutter_aplication_bank/screens/settings/change_password_screen.dart';
 import 'package:flutter_aplication_bank/screens/settings/language_screen.dart';
+import 'package:flutter_aplication_bank/screens/settings/privacy_policy_screen.dart';
 import 'package:flutter_aplication_bank/screens/settings/settings_screen.dart';
 import 'package:flutter_aplication_bank/screens/account/payments_screen.dart';
 import 'package:flutter_aplication_bank/screens/account/account_screen.dart';
@@ -45,6 +46,7 @@ class AppRoutes {
   static const String editProfile = '/edit-profile';
   static const String changePassword = '/change-password';
   static const String language = '/language';
+  static const String privacyPolicy = '/privacy-policy';
   static const String payments = '/payments';
   static const String account = '/account';
   static const String transactions = '/transactions';
@@ -80,6 +82,7 @@ class AppRoutes {
       editProfile: (_) => const EditProfileScreen(),
       changePassword: (_) => const ChangePasswordScreen(),
       language: (_) => const LanguageScreen(),
+      privacyPolicy: (_) => const PrivacyPolicyScreen(),
       payments: (_) => const PaymentsScreen(),
       loading: (_) => const LoadingScreen(),
       feedback: (_) => const FeedbackScreen(),
