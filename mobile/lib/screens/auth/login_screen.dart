@@ -50,13 +50,9 @@ class LoginScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFF1E1C24),
+                color: const Color(0xFF141318), // Cor do fundo ajustada
                 borderRadius: BorderRadius.circular(20),
-<<<<<<< HEAD
                 border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-=======
-                border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.05)),
->>>>>>> origin/frontend-neto
               ),
               child: Row(
                 children: [
@@ -83,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.signIn),
                     child: const Text(
                       "Trocar",
                       style: TextStyle(color: Color(0xFF9151F5), fontWeight: FontWeight.bold),
@@ -93,17 +89,20 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              height: 60,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E1C24),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Center(
-                child: Text(
-                  "••••••••",
-                  style: TextStyle(color: Colors.white54, fontSize: 20),
+            // Campo de senha substituindo o Container de bolinhas
+            TextField(
+              obscureText: true, // Isso censura a senha como ••••••••
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white, fontSize: 20),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1C24),
+                hintText: "Digite sua senha",
+                hintStyle: const TextStyle(color: Colors.white24),
+                contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
@@ -112,8 +111,7 @@ class LoginScreen extends StatelessWidget {
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-<<<<<<< HEAD
-                onPressed: () => Navigator.pushNamed(context, '/home'),
+                onPressed: () => Navigator.pushNamed(context, AppRoutes.home),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF9151F5),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -122,11 +120,6 @@ class LoginScreen extends StatelessWidget {
                   "Continuar",
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-=======
-                onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF9151F5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                child: const Text("Continuar", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
->>>>>>> origin/frontend-neto
               ),
             ),
           ],

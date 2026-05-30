@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/screens/auth/login_screen.dart';
+import 'package:flutter_aplication_bank/screens/auth/login/singin_screen.dart';
 import 'package:flutter_aplication_bank/screens/auth/register/register_screen.dart';
 import 'package:flutter_aplication_bank/screens/home/home_screen.dart';
 import 'package:flutter_aplication_bank/screens/quotes/quotes_screen.dart';
@@ -28,6 +29,7 @@ class AppRoutes {
   static const String pay = '/pay';
   static const String oneboarding = '/oneboarding';
   static const String login = '/login';
+  static const String signIn = '/sign-in';
   static const String register = '/register';
   static const String home = '/home';
   static const String quotes = '/quotes';
@@ -48,13 +50,13 @@ class AppRoutes {
   static const String cards = '/cards';
   static const String loading = '/loading';
   static const String feedback = '/feedback';
-  static const String error = '/error';
 
   static Map<String, WidgetBuilder> get routes {
     return {
       pay: (_) => const PayScreen(),
       oneboarding: (_) => const OneboardingScreen(),
       login: (_) => const LoginScreen(),
+      signIn: (_) => const SingInScreen(),
       register: (_) => const RegisterScreen(),
       home: (_) => const HomeScreen(),
       quotes: (_) => const QuotesScreen(),
@@ -78,7 +80,6 @@ class AppRoutes {
       payments: (_) => const PaymentsScreen(),
       loading: (_) => const LoadingScreen(),
       feedback: (_) => const FeedbackScreen(),
-      error: (_) => const ErrorScreen(message: 'Erro ao processar requisição'),
     };
   }
 }

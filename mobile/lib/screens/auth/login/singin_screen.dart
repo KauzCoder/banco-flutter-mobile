@@ -29,9 +29,20 @@ class SingInScreen extends StatelessWidget {
               _buildInputField("Senha", Icons.lock_outline, obscure: true, suffix: Icons.remove_red_eye_outlined),
               
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Checkbox(value: false, onChanged: (_) {}, side: const BorderSide(color: Colors.white54)),
-                  const Text("Lembrar-me", style: TextStyle(color: Colors.white54)),
+                  Row(
+                    children: [
+                      Checkbox(value: false, onChanged: (_) {}, side: const BorderSide(color: Colors.white54)),
+                      const Text("Lembrar-me", style: TextStyle(color: Colors.white54)),
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Adicione aqui a navegação para a tela de recuperação de senha
+                    },
+                    child: const Text("Esqueci a senha", style: TextStyle(color: Color(0xFF6C3FE3))),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -40,29 +51,25 @@ class SingInScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 55,
                 child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF6C3FE3), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.login),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF6C3FE3), 
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
+                  ),
                   child: const Text("ENTRAR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ),
-              const SizedBox(height: 20),
-              Center(child: TextButton(onPressed: () {}, child: const Text("Esqueci minha senha", style: TextStyle(color: Color(0xFF6C3FE3))))),
-              const SizedBox(height: 20),
-              const Center(child: Text("- OU continuar com -", style: TextStyle(color: Colors.white54))),
-              const SizedBox(height: 20),
               
-              Row(
-                children: [
-                  Expanded(child: _buildSocialButton("Google", Icons.g_mobiledata)),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildSocialButton("Facebook", Icons.facebook)),
-                ],
-              ),
               const Spacer(),
               Center(
                 child: TextButton(
                   onPressed: () => Navigator.pushNamed(context, AppRoutes.register),
-                  child: RichText(text: const TextSpan(children: [TextSpan(text: "Criar uma conta ", style: TextStyle(color: Colors.white)), TextSpan(text: "Registrar-se", style: TextStyle(color: Color(0xFF6C3FE3), fontWeight: FontWeight.bold))])),
+                  child: RichText(
+                    text: const TextSpan(children: [
+                      TextSpan(text: "Criar uma conta ", style: TextStyle(color: Colors.white)), 
+                      TextSpan(text: "Registrar-se", style: TextStyle(color: Color(0xFF6C3FE3), fontWeight: FontWeight.bold))
+                    ])
+                  ),
                 ),
               ),
               const Padding(
@@ -86,23 +93,10 @@ class SingInScreen extends StatelessWidget {
           hintText: hint, hintStyle: const TextStyle(color: Colors.white54),
           prefixIcon: Icon(icon, color: Colors.white54),
           suffixIcon: suffix != null ? Icon(suffix, color: Colors.white54) : null,
-<<<<<<< HEAD
           filled: true, fillColor: Colors.white.withValues(alpha: 0.05),
-=======
-          filled: true, fillColor: const Color.fromRGBO(255, 255, 255, 0.05),
->>>>>>> origin/frontend-neto
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         ),
       ),
-    );
-  }
-
-  Widget _buildSocialButton(String text, IconData icon) {
-    return OutlinedButton.icon(
-      onPressed: () {},
-      icon: Icon(icon, color: Colors.white),
-      label: Text(text, style: const TextStyle(color: Colors.white)),
-      style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white54), padding: const EdgeInsets.symmetric(vertical: 12)),
     );
   }
 }

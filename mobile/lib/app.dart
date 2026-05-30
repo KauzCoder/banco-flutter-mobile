@@ -12,25 +12,10 @@ class BancoDigitalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return MaterialApp(
-      title: AppConstants.appName,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      initialRoute: AppRoutes.oneboarding,
-      routes: AppRoutes.routes,
-      onUnknownRoute: (_) {
-        return MaterialPageRoute<void>(builder: (_) => const HomeScreen());
-      },
-=======
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<QuoteController>(
-          create: (_) => QuoteController()..fetchQuotes(),
-        ),
-        ChangeNotifierProvider<TransferController>(
-          create: (_) => TransferController(),
-        ),
+        ChangeNotifierProvider(create: (_) => QuoteController()),
+        ChangeNotifierProvider(create: (_) => TransferController()),
       ],
       child: MaterialApp(
         title: AppConstants.appName,
@@ -42,7 +27,6 @@ class BancoDigitalApp extends StatelessWidget {
           return MaterialPageRoute<void>(builder: (_) => const HomeScreen());
         },
       ),
->>>>>>> origin/frontend-neto
     );
   }
 }

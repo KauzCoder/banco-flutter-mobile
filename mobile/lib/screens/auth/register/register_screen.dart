@@ -7,7 +7,10 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF141318),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -22,43 +25,51 @@ class RegisterScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white), onPressed: () => Navigator.pop(context)),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
                 const SizedBox(height: 30),
-                const Text("Crie uma conta", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
-                const Text("Faça login com segurança na sua conta", style: TextStyle(color: Colors.white54, fontSize: 14)),
+                const Text(
+                  "Crie uma conta",
+                  style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  "Faça seu cadastro abaixo",
+                  style: TextStyle(color: Colors.white54, fontSize: 14),
+                ),
                 const SizedBox(height: 40),
-                
                 _buildInputField("Nome completo", Icons.person_outline),
                 _buildInputField("Email address", Icons.email_outlined),
-                
                 _buildPhoneField(),
-                
                 _buildInputField("Senha", Icons.lock_outline, obscure: true),
-                
                 const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-<<<<<<< HEAD
-                    onPressed: () {},
-=======
-                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
->>>>>>> origin/frontend-neto
+                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.login),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF9151F5),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
-                    child: const Text("Crie uma Conta", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      "Crie uma Conta",
+                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Center(
                   child: TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.login),
-                    child: const Text("Eu já tenho uma conta", style: TextStyle(color: Colors.white54)),
+                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.signIn),
+                    child: const Text(
+                      "Eu já tenho uma conta",
+                      style: TextStyle(color: Colors.white54),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -78,11 +89,7 @@ class RegisterScreen extends StatelessWidget {
           hintStyle: const TextStyle(color: Colors.white54),
           prefixIcon: Icon(icon, color: Colors.white54),
           filled: true,
-<<<<<<< HEAD
           fillColor: Colors.white.withValues(alpha: 0.05),
-=======
-          fillColor: const Color.fromRGBO(255, 255, 255, 0.05),
->>>>>>> origin/frontend-neto
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         ),
       ),
@@ -92,21 +99,26 @@ class RegisterScreen extends StatelessWidget {
   Widget _buildPhoneField() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-<<<<<<< HEAD
-        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12)),
-=======
-        decoration: BoxDecoration(color: const Color.fromRGBO(255, 255, 255, 0.05), borderRadius: BorderRadius.circular(12)),
->>>>>>> origin/frontend-neto
-        child: Row(
-          children: [
-            const Text("🇮🇹", style: TextStyle(fontSize: 20)),
-            const SizedBox(width: 8),
-            const Text("+55", style: TextStyle(color: Colors.white)),
-            const SizedBox(width: 8),
-            const Expanded(child: TextField(style: TextStyle(color: Colors.white), decoration: InputDecoration(hintText: "Digite o número", hintStyle: TextStyle(color: Colors.white54), border: InputBorder.none))),
-          ],
+      child: TextField(
+        keyboardType: TextInputType.phone,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          hintText: "(00) 90000-0000",
+          hintStyle: const TextStyle(color: Colors.white54),
+          prefixIcon: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("🇧🇷", style: TextStyle(fontSize: 20)),
+                SizedBox(width: 8),
+                Text("+55", style: TextStyle(color: Colors.white)),
+              ],
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.white.withValues(alpha: 0.05),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         ),
       ),
     );
