@@ -56,9 +56,9 @@ class PayScreen extends StatelessWidget {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(12),
+                  shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.chevron_left_rounded,
@@ -88,18 +88,19 @@ class PayScreen extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      color: AppColors.darkBgSecondary,
-      borderRadius: BorderRadius.circular(14),
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(18),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        splashColor: AppColors.primary.withAlpha(50),
-        highlightColor: AppColors.primary.withAlpha(30),
+        borderRadius: BorderRadius.circular(18),
+        splashColor: AppColors.primary.withAlpha(40),
+        highlightColor: AppColors.primary.withAlpha(20),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.darkBorder, width: 0.5),
+            color: AppColors.darkBgSecondary,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.secondary, width: 1.8),
           ),
           child: Row(
             children: [
@@ -108,8 +109,8 @@ class PayScreen extends StatelessWidget {
                   label,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -160,24 +161,37 @@ class PayScreen extends StatelessWidget {
       onTap: () => Navigator.pushNamed(context, route),
       child: Column(
         children: [
-          Material(
-            color: AppColors.primary.withAlpha(24),
-            borderRadius: BorderRadius.circular(16),
-            child: InkWell(
-              onTap: () => Navigator.pushNamed(context, route),
-              borderRadius: BorderRadius.circular(16),
-              splashColor: AppColors.primary.withAlpha(80),
-              child: SizedBox(
-                width: 52,
-                height: 52,
-                child: Icon(icon, color: AppColors.primary, size: 24),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: const Color(0xFFFFD700),
+                width: 2.3,
+              ),
+            ),
+            child: Material(
+              color: const Color(0xFF8041FF),
+              shape: const CircleBorder(),
+              child: InkWell(
+                onTap: () => Navigator.pushNamed(context, route),
+                customBorder: const CircleBorder(),
+                splashColor: Colors.white24,
+                child: SizedBox(
+                  width: 56,
+                  height: 56,
+                  child: Icon(icon, color: const Color(0xFFCE91FF), size: 26),
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Text(
             label,
-            style: const TextStyle(color: Color(0xFF8A8AA8), fontSize: 12),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),

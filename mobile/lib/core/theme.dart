@@ -28,7 +28,7 @@ class AppColors {
   static const Color warning = Color(0xFFF59E0B);
 
   // Neutral Colors
-  static const Color darkBg = Color(0xFF1F1F1F);
+  static const Color darkBg = Color(0xFF000000);
   static const Color darkBgSecondary = Color(0xFF2D2D2D);
   static const Color darkBgTertiary = Color(0xFF3D3D3D);
   static const Color darkText = Color(0xFFFFFFFF);

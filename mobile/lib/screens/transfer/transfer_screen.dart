@@ -22,6 +22,8 @@ class _TransferScreenState extends State<TransferScreen> {
   String _selectedSection = 'Escanear';
   String _amount = '';
   String _selectedContact = 'Adicionar';
+  String _selectedCard = 'Cartão 1';
+  String _selectedCardNumber = '•••• 4587';
 
   final contacts = ['Adicionar', 'Maria', 'Jean', 'Ryan', 'Neto', 'Yan'];
 
@@ -30,6 +32,11 @@ class _TransferScreenState extends State<TransferScreen> {
     {'icon': Icons.phone_android_outlined, 'label': 'Recargas', 'color': AppColors.primaryLight},
     {'icon': Icons.request_quote_outlined, 'label': 'Cobrar', 'color': AppColors.accent},
     {'icon': Icons.receipt_long_outlined, 'label': 'Boleto', 'color': AppColors.secondaryDark},
+  ];
+
+  final List<Map<String, String>> _cards = [
+    {'label': 'Cartão 1', 'number': '•••• 4587'},
+    {'label': 'Cartão 2', 'number': '•••• 1234'},
   ];
 
   @override
@@ -83,7 +90,76 @@ class _TransferScreenState extends State<TransferScreen> {
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$label em desenvolvimento')), 
+      SnackBar(content: Text('$label em desenvolvimento')),
+    );
+  }
+
+  void _showCardMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1A0D35),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Selecionar Cartão',
+              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 16),
+            ..._cards.map((card) => GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedCard = card['label']!;
+                  _selectedCardNumber = card['number']!;
+                });
+                Navigator.pop(context);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  color: _selectedCard == card['label']
+                      ? Colors.white.withAlpha(40)
+                      : Colors.white.withAlpha(20),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _selectedCard == card['label']
+                        ? AppColors.primary
+                        : Colors.white.withAlpha(40),
+                    width: _selectedCard == card['label'] ? 2 : 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                   Image.asset(
+                      'assets/images/solar_card-2-bold.png',
+                      width: 24,
+                      height: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(card['label']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                        Text(card['number']!, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                      ],
+                    ),
+                    const Spacer(),
+                    if (_selectedCard == card['label'])
+                      const Icon(Icons.check_circle, color: AppColors.primary, size: 20),
+                  ],
+                ),
+              ),
+            )),
+          ],
+        ),
+      ),
     );
   }
 
@@ -117,53 +193,50 @@ class _TransferScreenState extends State<TransferScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
+      backgroundColor: const Color(0xFF000000),
       appBar: AppBar(
-        backgroundColor: AppColors.darkBg,
+        backgroundColor: const Color(0xFF000000),
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         elevation: 0,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: const BoxDecoration(
+                color: Color(0xFF6C3FC7),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+                size: 22,
+              ),
+            ),
+          ),
         ),
-        title: Text(
-          _selectedSection == 'Digitar' ? 'Área PIX' : 'Transferências',
-          style: const TextStyle(
-            color: AppColors.darkText,
+        title: const Text(
+          'Área Pix',
+          style: TextStyle(
+            color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w700,
           ),
         ),
-        actions: [
-          GestureDetector(
-            onTap: () {},
-            child: const Padding(
-              padding: EdgeInsets.only(right: AppConstants.paddingMedium),
-              child: Icon(Icons.notifications_none, color: AppColors.darkText),
-            ),
-          ),
-        ],
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppConstants.paddingMedium),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildSectionSelector(),
-                  const SizedBox(height: 20),
-                  if (_selectedSection == 'Escanear') ...[
-                    _buildScanSection(),
-                  ] else ...[
-                    _buildPixAreaSection(),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          _buildBottomNav(),
-        ],
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(AppConstants.paddingMedium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 8),
+            _buildPixAreaSection(),
+          ],
+        ),
       ),
     );
   }
@@ -195,13 +268,7 @@ class _TransferScreenState extends State<TransferScreen> {
             children: [
               Icon(icon, color: selected ? Colors.black : AppColors.darkText, size: 22),
               const SizedBox(width: 10),
-              Text(
-                label,
-                style: TextStyle(
-                  color: selected ? Colors.black : AppColors.darkText,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              Text(label, style: TextStyle(color: selected ? Colors.black : AppColors.darkText, fontWeight: FontWeight.w700)),
             ],
           ),
         ),
@@ -213,14 +280,7 @@ class _TransferScreenState extends State<TransferScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Pagamentos',
-          style: TextStyle(
-            color: AppColors.darkText,
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        const Text('Pagamentos', style: TextStyle(color: AppColors.darkText, fontSize: 18, fontWeight: FontWeight.w700)),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -265,22 +325,9 @@ class _TransferScreenState extends State<TransferScreen> {
               child: Icon(icon, color: Colors.black, size: 24),
             ),
             const Spacer(),
-            Text(
-              title,
-              style: const TextStyle(
-                color: AppColors.darkText,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            Text(title, style: const TextStyle(color: AppColors.darkText, fontSize: 16, fontWeight: FontWeight.w700)),
             const SizedBox(height: 6),
-            const Text(
-              'Prático e rápido',
-              style: TextStyle(
-                color: AppColors.darkTextSecondary,
-                fontSize: 12,
-              ),
-            ),
+            const Text('Prático e rápido', style: TextStyle(color: AppColors.darkTextSecondary, fontSize: 12)),
           ],
         ),
       ),
@@ -311,15 +358,7 @@ class _TransferScreenState extends State<TransferScreen> {
               child: Icon(icon, color: Colors.black, size: 18),
             ),
             const SizedBox(height: 12),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.darkText,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            Text(label, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.darkText, fontSize: 12, fontWeight: FontWeight.w600)),
           ],
         ),
       ),
@@ -332,20 +371,14 @@ class _TransferScreenState extends State<TransferScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Área PIX',
-          style: TextStyle(
-            color: AppColors.darkText,
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        const Text('Área PIX', style: TextStyle(color: AppColors.darkText, fontSize: 18, fontWeight: FontWeight.w700)),
         const SizedBox(height: 14),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: contacts.map((contact) {
               final isSelected = contact == _selectedContact;
+              final isAdicionar = contact == 'Adicionar';
               return GestureDetector(
                 onTap: () => setState(() => _selectedContact = contact),
                 child: Container(
@@ -353,34 +386,37 @@ class _TransferScreenState extends State<TransferScreen> {
                   width: 58,
                   child: Column(
                     children: [
-                      Container(
-                        width: 58,
-                        height: 58,
-                        decoration: BoxDecoration(
-                          color: isSelected ? AppColors.primary : AppColors.darkBgSecondary,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.darkBorder),
-                        ),
-                        child: Center(
-                          child: Text(
-                            contact.substring(0, 1),
-                            style: TextStyle(
-                              color: isSelected ? Colors.white : AppColors.darkText,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
+                      isAdicionar
+                          ? DashedCircle(
+                              size: 58,
+                              color: AppColors.darkTextSecondary,
+                              child: Icon(
+                                Icons.add,
+                                color: isSelected ? Colors.white : AppColors.darkTextSecondary,
+                                size: 28,
+                              ),
+                            )
+                          : Container(
+                              width: 58,
+                              height: 58,
+                              decoration: BoxDecoration(
+                                color: isSelected ? AppColors.primary : AppColors.darkBgSecondary,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppColors.darkBorder),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  contact.substring(0, 1),
+                                  style: TextStyle(
+                                    color: isSelected ? Colors.black : Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 6),
-                      Text(
-                        contact,
-                        style: const TextStyle(
-                          color: AppColors.darkTextSecondary,
-                          fontSize: 12,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      Text(contact, style: const TextStyle(color: AppColors.darkTextSecondary, fontSize: 12), overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ),
@@ -389,46 +425,80 @@ class _TransferScreenState extends State<TransferScreen> {
           ),
         ),
         const SizedBox(height: 20),
-        _buildInputField('Quem vai receber', 'Nome, CPF/CNPJ ou Chave Pix', _recipientController),
+        _InputField(
+          label: 'Quem vai receber',
+          hint: 'Nome, CPF/CNPJ ou Chave Pix',
+          controller: _recipientController,
+        ),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 24),
           decoration: BoxDecoration(
-            gradient: AppColors.purpleGradient,
+            gradient: const LinearGradient(
+              colors: [Color(0xFF3D168C), Color(0xFF110626)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
             borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+            border: Border.all(
+              color: Colors.white.withAlpha(40),
+              width: 1.5,
+            ),
           ),
           child: Column(
             children: [
-              const Text(
-                'Valor',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
+              GestureDetector(
+                onTap: () => _showCardMenu(context),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(30),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                     Image.asset(
+                        'assets/images/solar_card-2-bold.png',
+                        width: 20,
+                        height: 20,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        _selectedCardNumber,
+                        style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white, size: 16),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
               Text(
                 'R\$ $_formattedAmount',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800,
-                ),
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 4),
               Text(
                 'Valor',
-                style: TextStyle(
-                  color: Colors.white.withAlpha((0.7 * 255).round()),
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: Colors.white.withAlpha((0.7 * 255).round()), fontSize: 12),
               ),
             ],
           ),
         ),
         const SizedBox(height: 16),
-        _buildInputField('Escreva uma mensagem', 'Mensagem opcional', _messageController, maxLines: 1),
+        _InputField(
+          label: '',
+          hint: 'Escreva uma mensagem',
+          controller: _messageController,
+          prefixIcon: Image.asset(  
+            'assets/images/chat_bubble_outline_rounded.png',
+            width: 20,
+            height: 20,
+             ),
+        ),
         const SizedBox(height: 20),
         _buildKeypad(),
         const SizedBox(height: 20),
@@ -440,123 +510,259 @@ class _TransferScreenState extends State<TransferScreen> {
               style: const TextStyle(color: AppColors.error, fontSize: 13),
             ),
           ),
-        CustomButton(
-          label: 'Transferir',
-          onPressed: _handlePayment,
-          isLoading: transferController.isSubmitting,
-          backgroundColor: AppColors.success,
-          icon: Icons.send,
-        ),
+        _buildTransferButton(transferController),
+        const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildInputField(String label, String hint, TextEditingController controller, {int maxLines = 1}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            color: AppColors.darkTextSecondary,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
+  Widget _buildTransferButton(TransferController transferController) {
+    return GestureDetector(
+      onTap: _handlePayment,
+      child: Container(
+        height: 56,
+        decoration: BoxDecoration(
+          color: AppColors.success,
+          borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
         ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          maxLines: maxLines,
-          style: const TextStyle(color: AppColors.darkText),
-          decoration: InputDecoration(
-            hintText: hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-              borderSide: const BorderSide(color: AppColors.darkBorder),
-            ),
-          ),
-        ),
-      ],
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: transferController.isSubmitting
+            ? const Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Transferir',
+                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'R\$ $_formattedAmount',
+                        style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+                    ],
+                  ),
+                ],
+              ),
+      ),
     );
   }
 
   Widget _buildKeypad() {
     final keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', 'del'];
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      children: keys.map((key) {
-        return SizedBox(
-          width: (MediaQuery.of(context).size.width - 72) / 3,
-          height: 58,
-          child: ElevatedButton(
-            onPressed: () => _appendAmount(key),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.darkBgSecondary,
-              foregroundColor: AppColors.darkText,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-              ),
-            ),
-            child: key == 'del'
-                ? const Icon(Icons.backspace_outlined)
-                : Text(
-                    key,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildBottomNav() {
     return Container(
-      color: AppColors.darkBgSecondary,
-      padding: const EdgeInsets.symmetric(horizontal: AppConstants.paddingMedium, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavIcon(Icons.home_filled, () => Navigator.pushNamed(context, AppRoutes.home)),
-          _buildNavIcon(Icons.attach_money_rounded, () => Navigator.pushNamed(context, AppRoutes.pay)),
-          _buildNavButton(),
-          _buildNavIcon(Icons.show_chart_rounded, () => Navigator.pushNamed(context, AppRoutes.quotes)),
-          _buildNavIcon(Icons.more_horiz_rounded, () => Navigator.pushNamed(context, AppRoutes.settings)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavIcon(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Icon(icon, color: AppColors.secondary, size: 28),
-    );
-  }
-
-  Widget _buildNavButton() {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.scanQr),
-      child: Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: AppColors.purpleGradient,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withAlpha((0.3 * 255).round()),
-              blurRadius: 18,
-              offset: const Offset(0, 6),
-            ),
-          ],
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF1A0840), Color(0xFF0A0318)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
         ),
-        child: const Icon(Icons.qr_code_2_rounded, color: Colors.white, size: 30),
+        borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+        border: Border.all(
+          color: Colors.white.withAlpha(40),
+          width: 1.5,
+        ),
+      ),
+      child: Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        alignment: WrapAlignment.center,
+        children: keys.map((key) {
+          return SizedBox(
+            width: (MediaQuery.of(context).size.width - 96) / 3,
+            height: 58,
+            child: ElevatedButton(
+              onPressed: () => _appendAmount(key),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.secondary,
+                foregroundColor: Colors.black,
+                alignment: Alignment.center,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+                ),
+              ),
+              child: key == 'del'
+                  ? const Icon(Icons.backspace_outlined, color: Colors.black)
+                  : Text(
+                      key,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
+                    ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
 }
 
+class DashedCircle extends StatelessWidget {
+  final double size;
+  final Color color;
+  final Widget child;
+
+  const DashedCircle({
+    super.key,
+    required this.size,
+    required this.color,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: CustomPaint(
+        painter: _DashedCirclePainter(color: color),
+        child: Center(child: child),
+      ),
+    );
+  }
+}
+
+class _DashedCirclePainter extends CustomPainter {
+  final Color color;
+
+  _DashedCirclePainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2 - 2;
+    const dashCount = 20;
+    const dashAngle = 2 * 3.14159 / dashCount;
+    const gapFraction = 0.4;
+
+    for (int i = 0; i < dashCount; i++) {
+      final startAngle = i * dashAngle;
+      final sweepAngle = dashAngle * (1 - gapFraction);
+      canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        startAngle,
+        sweepAngle,
+        false,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _InputField extends StatefulWidget {
+  final String label;
+  final String hint;
+  final TextEditingController controller;
+  final int maxLines;
+  final Widget? prefixIcon;
+
+  const _InputField({
+    required this.label,
+    required this.hint,
+    required this.controller,
+    this.maxLines = 1,
+    this.prefixIcon,
+  });
+
+  @override
+  State<_InputField> createState() => _InputFieldState();
+}
+
+class _InputFieldState extends State<_InputField> {
+  bool _hasFocus = false;
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    widget.controller.addListener(_onChanged);
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    setState(() => _hasFocus = _focusNode.hasFocus);
+  }
+
+  void _onChanged() => setState(() {});
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onChanged);
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final hasText = widget.controller.text.isNotEmpty;
+    final showHint = !hasText && !_hasFocus;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label.isNotEmpty)
+          Text(
+            widget.label,
+            style: const TextStyle(
+              color: AppColors.secondary,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        if (widget.label.isNotEmpty) const SizedBox(height: 8),
+        TextField(
+          controller: widget.controller,
+          focusNode: _focusNode,
+          maxLines: widget.maxLines,
+          style: const TextStyle(color: AppColors.darkText),
+          decoration: InputDecoration(
+            hintText: showHint ? widget.hint : null,
+            hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
+            prefixIcon: widget.prefixIcon,
+            filled: true,
+            fillColor: AppColors.darkBgSecondary,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+            suffixIcon: hasText
+                ? IconButton(
+                    onPressed: () => widget.controller.clear(),
+                    icon: const Icon(Icons.close_rounded, color: Color(0xFFA4A4AE), size: 22),
+                  )
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+              borderSide: const BorderSide(color: AppColors.secondary, width: 1.3),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+              borderSide: const BorderSide(color: AppColors.secondary, width: 1.3),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
+              borderSide: const BorderSide(color: AppColors.secondary, width: 2),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
