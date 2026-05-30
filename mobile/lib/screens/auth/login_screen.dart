@@ -7,7 +7,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: const Color(0xFF000000),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -16,17 +16,10 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                Image.asset(
+                  "assets/images/icon-app.png",
                   width: 58,
                   height: 58,
-              
-                  child: Center(
-                    child: Image.asset(
-                      "assets/images/icon-app.png",
-                      width: 58,
-                      height: 58,
-                    ),
-                  ),
                 ),
                 const SizedBox(width: 12),
                 const Text(
@@ -44,7 +37,7 @@ class LoginScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFF141318), // Cor do fundo ajustada
+                color: const Color(0xFF141318),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
@@ -93,17 +86,16 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Campo de senha substituindo o Container de bolinhas
             TextField(
-              obscureText: true, // Isso censura a senha como ••••••••
-              textAlign: TextAlign.left,
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              obscureText: true,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white, fontSize: 20, letterSpacing: 5),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFF1E1C24),
                 hintText: "Digite sua senha",
-                hintStyle: const TextStyle(color: Colors.white24),
-                contentPadding: EdgeInsets.all(16),
+                hintStyle: const TextStyle(color: Colors.white24, letterSpacing: 0.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 20),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide.none,
@@ -129,6 +121,17 @@ class LoginScreen extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                "Esqueci minha senha",
+                style: TextStyle(
+                  color: Colors.white54,
+                  fontSize: 14,
                 ),
               ),
             ),
