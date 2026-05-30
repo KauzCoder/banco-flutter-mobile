@@ -17,20 +17,14 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 50,
-                  height: 50,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF9151F5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Q",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  width: 58,
+                  height: 58,
+              
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/icon-app.png",
+                      width: 58,
+                      height: 58,
                     ),
                   ),
                 ),
@@ -68,7 +62,11 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Kauã M. Fragoso",
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         SizedBox(height: 4),
                         Text(
@@ -79,10 +77,16 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.signIn),
+                    onPressed: () => Navigator.pushReplacementNamed(
+                      context,
+                      AppRoutes.signIn,
+                    ),
                     child: const Text(
                       "Trocar",
-                      style: TextStyle(color: Color(0xFF9151F5), fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Color(0xFF9151F5),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -92,14 +96,14 @@ class LoginScreen extends StatelessWidget {
             // Campo de senha substituindo o Container de bolinhas
             TextField(
               obscureText: true, // Isso censura a senha como ••••••••
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white, fontSize: 20),
+              textAlign: TextAlign.left,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFF1E1C24),
                 hintText: "Digite sua senha",
                 hintStyle: const TextStyle(color: Colors.white24),
-                contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                contentPadding: EdgeInsets.all(16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide.none,
@@ -114,11 +118,17 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () => Navigator.pushNamed(context, AppRoutes.home),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF9151F5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
                 child: const Text(
                   "Continuar",
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
