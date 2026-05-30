@@ -16,10 +16,9 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: 58,
                   height: 58,
-              
                   child: Center(
                     child: Image.asset(
                       "assets/images/icon-app.png",
