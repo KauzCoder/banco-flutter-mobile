@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_aplication_bank/controllers/profile_controller.dart';
 import 'package:flutter_aplication_bank/controllers/quote_controller.dart';
 import 'package:flutter_aplication_bank/controllers/transfer_controller.dart';
 import 'package:flutter_aplication_bank/core/constants/app_constants.dart';
@@ -16,6 +17,9 @@ class BancoDigitalApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => QuoteController()),
         ChangeNotifierProvider(create: (_) => TransferController()),
+        ChangeNotifierProvider(
+          create: (_) => ProfileController()..loadProfileData(),
+        ),
       ],
       child: MaterialApp(
         title: AppConstants.appName,

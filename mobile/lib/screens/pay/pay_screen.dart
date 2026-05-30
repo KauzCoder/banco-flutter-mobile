@@ -1,5 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
+import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
 import '../../core/theme.dart';
 
 class PayScreen extends StatelessWidget {
@@ -8,11 +10,17 @@ class PayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      bottomNavigationBar: const AppBottomNavBar(
+        currentItem: AppBottomNavItem.pay,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(context),
+            AppScreenHeader(
+              title: 'Pagamentos',
+              onBackPressed: () => Navigator.maybePop(context),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -23,13 +31,18 @@ class PayScreen extends StatelessWidget {
                     _buildOptionTile(
                       icon: Icons.qr_code_scanner_rounded,
                       label: 'Escanear',
-                      onTap: () => Navigator.pushNamed(context, AppRoutes.scanQr),
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.scanQr),
                     ),
                     const SizedBox(height: 10),
                     _buildOptionTile(
                       icon: Icons.keyboard_rounded,
                       label: 'Digitar',
-                      onTap: () => Navigator.pushNamed(context, AppRoutes.transfer, arguments: 'Digitar'),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        AppRoutes.transfer,
+                        arguments: 'Digitar',
+                      ),
                     ),
                     const SizedBox(height: 28),
                     _buildQuickActions(context),
@@ -43,52 +56,13 @@ class PayScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: () => Navigator.maybePop(context),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.chevron_left_rounded,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-            ),
-          ),
-          const Text(
-            'Pagamentos',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.2,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildOptionTile({
     required IconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
     return Material(
-      color: AppColors.darkBgSecondary,
+      color: const Color.fromARGB(255, 61, 61, 61),
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         onTap: onTap,
@@ -128,9 +102,21 @@ class PayScreen extends StatelessWidget {
   Widget _buildQuickActions(BuildContext context) {
     final actions = [
       {'icon': Icons.pix, 'label': 'Pix', 'route': AppRoutes.pix},
-      {'icon': Icons.phone_android_rounded, 'label': 'Recargas', 'route': AppRoutes.payments},
-      {'icon': Icons.storefront_rounded, 'label': 'Cobrar', 'route': AppRoutes.transfer},
-      {'icon': Icons.barcode_reader, 'label': 'Boleto', 'route': AppRoutes.payments},
+      {
+        'icon': Icons.phone_android_rounded,
+        'label': 'Recargas',
+        'route': AppRoutes.payments,
+      },
+      {
+        'icon': Icons.storefront_rounded,
+        'label': 'Cobrar',
+        'route': AppRoutes.transfer,
+      },
+      {
+        'icon': Icons.barcode_reader,
+        'label': 'Boleto',
+        'route': AppRoutes.payments,
+      },
     ];
 
     return Row(

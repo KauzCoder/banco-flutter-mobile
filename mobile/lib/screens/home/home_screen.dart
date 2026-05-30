@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,8 +15,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D0D),
-      bottomNavigationBar: _buildBottomNav(context),
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      bottomNavigationBar: const AppBottomNavBar(
+        currentItem: AppBottomNavItem.home,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -626,59 +629,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  // ───── BOTTOM NAV ─────
-  Widget _buildBottomNav(BuildContext context) {
-    return Container(
-      height: 80,
-      decoration: const BoxDecoration(
-        color: Color(0xFFCBFF4D),
-        border: Border(top: BorderSide(color: Color(0xFFB8F000), width: 0.5)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _navItem(Icons.home_rounded, true, () {}),
-          _navItem(Icons.attach_money_rounded, false, () {}),
-          _navQrBtn(),
-          _navItem(Icons.show_chart_rounded, false, () {}),
-          _navItem(Icons.more_horiz_rounded, false, () {}),
-        ],
-      ),
-    );
-  }
-
-  Widget _navItem(IconData icon, bool active, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Icon(
-        icon,
-        color: active
-            ? const Color(0xFF6B3FE4)
-            : const Color(0xFF6B3FE4).withAlpha(128),
-        size: 28,
-      ),
-    );
-  }
-
-  Widget _navQrBtn() {
-    return Container(
-      width: 58,
-      height: 58,
-      decoration: BoxDecoration(
-        color: const Color(0xFF6B3FE4),
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF6B3FE4).withAlpha(102),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: const Icon(Icons.qr_code_2_rounded, color: Colors.white, size: 30),
     );
   }
 }

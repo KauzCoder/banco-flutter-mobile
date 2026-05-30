@@ -6,6 +6,7 @@ import '../../widgets/common_widgets.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 import 'package:flutter_aplication_bank/controllers/transfer_controller.dart';
 import 'package:flutter_aplication_bank/models/transfer_request.dart';
+import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
 
 class TransferScreen extends StatefulWidget {
   final String initialSection;
@@ -26,10 +27,26 @@ class _TransferScreenState extends State<TransferScreen> {
   final contacts = ['Adicionar', 'Maria', 'Jean', 'Ryan', 'Neto', 'Yan'];
 
   final quickActions = [
-    {'icon': Icons.attach_money_rounded, 'label': 'Pix', 'color': AppColors.secondary},
-    {'icon': Icons.phone_android_outlined, 'label': 'Recargas', 'color': AppColors.primaryLight},
-    {'icon': Icons.request_quote_outlined, 'label': 'Cobrar', 'color': AppColors.accent},
-    {'icon': Icons.receipt_long_outlined, 'label': 'Boleto', 'color': AppColors.secondaryDark},
+    {
+      'icon': Icons.attach_money_rounded,
+      'label': 'Pix',
+      'color': AppColors.secondary,
+    },
+    {
+      'icon': Icons.phone_android_outlined,
+      'label': 'Recargas',
+      'color': AppColors.primaryLight,
+    },
+    {
+      'icon': Icons.request_quote_outlined,
+      'label': 'Cobrar',
+      'color': AppColors.accent,
+    },
+    {
+      'icon': Icons.receipt_long_outlined,
+      'label': 'Boleto',
+      'color': AppColors.secondaryDark,
+    },
   ];
 
   @override
@@ -82,9 +99,9 @@ class _TransferScreenState extends State<TransferScreen> {
       _selectSection('Digitar');
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$label em desenvolvimento')), 
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$label em desenvolvimento')));
   }
 
   Future<void> _handlePayment() async {
@@ -108,9 +125,9 @@ class _TransferScreenState extends State<TransferScreen> {
       Navigator.pushNamed(context, AppRoutes.receipt);
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     }
   }
 
@@ -162,7 +179,7 @@ class _TransferScreenState extends State<TransferScreen> {
               ),
             ),
           ),
-          _buildBottomNav(),
+          const AppBottomNavBar(currentItem: AppBottomNavItem.qr),
         ],
       ),
     );
@@ -188,12 +205,18 @@ class _TransferScreenState extends State<TransferScreen> {
           decoration: BoxDecoration(
             color: selected ? AppColors.secondary : AppColors.darkBgSecondary,
             borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            border: Border.all(color: selected ? AppColors.secondary : AppColors.darkBorder),
+            border: Border.all(
+              color: selected ? AppColors.secondary : AppColors.darkBorder,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: selected ? Colors.black : AppColors.darkText, size: 22),
+              Icon(
+                icon,
+                color: selected ? Colors.black : AppColors.darkText,
+                size: 22,
+              ),
               const SizedBox(width: 10),
               Text(
                 label,
@@ -224,9 +247,23 @@ class _TransferScreenState extends State<TransferScreen> {
         const SizedBox(height: 20),
         Row(
           children: [
-            Expanded(child: _buildActionCard('Escanear QR', Icons.qr_code, AppColors.primary, () => Navigator.pushNamed(context, AppRoutes.scanQr))),
+            Expanded(
+              child: _buildActionCard(
+                'Escanear QR',
+                Icons.qr_code,
+                AppColors.primary,
+                () => Navigator.pushNamed(context, AppRoutes.scanQr),
+              ),
+            ),
             const SizedBox(width: 12),
-            Expanded(child: _buildActionCard('Digitar', Icons.keyboard, AppColors.secondary, () => _selectSection('Digitar'))),
+            Expanded(
+              child: _buildActionCard(
+                'Digitar',
+                Icons.keyboard,
+                AppColors.secondary,
+                () => _selectSection('Digitar'),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 24),
@@ -234,14 +271,23 @@ class _TransferScreenState extends State<TransferScreen> {
           spacing: 12,
           runSpacing: 12,
           children: quickActions.map((action) {
-            return _buildQuickAction(action['icon'] as IconData, action['label'] as String, action['color'] as Color);
+            return _buildQuickAction(
+              action['icon'] as IconData,
+              action['label'] as String,
+              action['color'] as Color,
+            );
           }).toList(),
         ),
       ],
     );
   }
 
-  Widget _buildActionCard(String title, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildActionCard(
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -357,7 +403,9 @@ class _TransferScreenState extends State<TransferScreen> {
                         width: 58,
                         height: 58,
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColors.primary : AppColors.darkBgSecondary,
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.darkBgSecondary,
                           shape: BoxShape.circle,
                           border: Border.all(color: AppColors.darkBorder),
                         ),
@@ -365,7 +413,9 @@ class _TransferScreenState extends State<TransferScreen> {
                           child: Text(
                             contact.substring(0, 1),
                             style: TextStyle(
-                              color: isSelected ? Colors.white : AppColors.darkText,
+                              color: isSelected
+                                  ? Colors.white
+                                  : AppColors.darkText,
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                             ),
@@ -389,7 +439,11 @@ class _TransferScreenState extends State<TransferScreen> {
           ),
         ),
         const SizedBox(height: 20),
-        _buildInputField('Quem vai receber', 'Nome, CPF/CNPJ ou Chave Pix', _recipientController),
+        _buildInputField(
+          'Quem vai receber',
+          'Nome, CPF/CNPJ ou Chave Pix',
+          _recipientController,
+        ),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
@@ -402,10 +456,7 @@ class _TransferScreenState extends State<TransferScreen> {
             children: [
               const Text(
                 'Valor',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.white70, fontSize: 14),
               ),
               const SizedBox(height: 16),
               Text(
@@ -428,7 +479,12 @@ class _TransferScreenState extends State<TransferScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        _buildInputField('Escreva uma mensagem', 'Mensagem opcional', _messageController, maxLines: 1),
+        _buildInputField(
+          'Escreva uma mensagem',
+          'Mensagem opcional',
+          _messageController,
+          maxLines: 1,
+        ),
         const SizedBox(height: 20),
         _buildKeypad(),
         const SizedBox(height: 20),
@@ -451,7 +507,12 @@ class _TransferScreenState extends State<TransferScreen> {
     );
   }
 
-  Widget _buildInputField(String label, String hint, TextEditingController controller, {int maxLines = 1}) {
+  Widget _buildInputField(
+    String label,
+    String hint,
+    TextEditingController controller, {
+    int maxLines = 1,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -481,7 +542,20 @@ class _TransferScreenState extends State<TransferScreen> {
   }
 
   Widget _buildKeypad() {
-    final keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', 'del'];
+    final keys = [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '000',
+      '0',
+      'del',
+    ];
     return Wrap(
       spacing: 10,
       runSpacing: 10,
@@ -512,51 +586,4 @@ class _TransferScreenState extends State<TransferScreen> {
       }).toList(),
     );
   }
-
-  Widget _buildBottomNav() {
-    return Container(
-      color: AppColors.darkBgSecondary,
-      padding: const EdgeInsets.symmetric(horizontal: AppConstants.paddingMedium, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavIcon(Icons.home_filled, () => Navigator.pushNamed(context, AppRoutes.home)),
-          _buildNavIcon(Icons.attach_money_rounded, () => Navigator.pushNamed(context, AppRoutes.pay)),
-          _buildNavButton(),
-          _buildNavIcon(Icons.show_chart_rounded, () => Navigator.pushNamed(context, AppRoutes.quotes)),
-          _buildNavIcon(Icons.more_horiz_rounded, () => Navigator.pushNamed(context, AppRoutes.settings)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavIcon(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Icon(icon, color: AppColors.secondary, size: 28),
-    );
-  }
-
-  Widget _buildNavButton() {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.scanQr),
-      child: Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: AppColors.purpleGradient,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withAlpha((0.3 * 255).round()),
-              blurRadius: 18,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: const Icon(Icons.qr_code_2_rounded, color: Colors.white, size: 30),
-      ),
-    );
-  }
 }
-
