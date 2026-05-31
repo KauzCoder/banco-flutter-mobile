@@ -12,7 +12,7 @@ class ScanQRScreen extends StatefulWidget {
 }
 
 class _ScanQRScreenState extends State<ScanQRScreen> {
-  String _selected = 'ler'; 
+  String _selected = 'ler';
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
         child: Column(
           children: [
             _buildHeader(context),
-            Expanded(
-              child: Center(
-                child: _buildScanFrame(),
-              ),
-            ),
+            Expanded(child: Center(child: _buildScanFrame())),
             _buildBottomButtons(context),
           ],
         ),
@@ -78,7 +74,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -95,36 +91,74 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
       child: Stack(
         children: [
           Positioned(
-            top: 0, left: 0,
-            child: _buildCorner(color, cornerSize, cornerWidth, top: true, left: true),
+            top: 0,
+            left: 0,
+            child: _buildCorner(
+              color,
+              cornerSize,
+              cornerWidth,
+              top: true,
+              left: true,
+            ),
           ),
           Positioned(
-            top: 0, right: 0,
-            child: _buildCorner(color, cornerSize, cornerWidth, top: true, left: false),
+            top: 0,
+            right: 0,
+            child: _buildCorner(
+              color,
+              cornerSize,
+              cornerWidth,
+              top: true,
+              left: false,
+            ),
           ),
           Positioned(
-            bottom: 0, left: 0,
-            child: _buildCorner(color, cornerSize, cornerWidth, top: false, left: true),
+            bottom: 0,
+            left: 0,
+            child: _buildCorner(
+              color,
+              cornerSize,
+              cornerWidth,
+              top: false,
+              left: true,
+            ),
           ),
           Positioned(
-            bottom: 0, right: 0,
-            child: _buildCorner(color, cornerSize, cornerWidth, top: false, left: false),
+            bottom: 0,
+            right: 0,
+            child: _buildCorner(
+              color,
+              cornerSize,
+              cornerWidth,
+              top: false,
+              left: false,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCorner(Color color, double size, double width, {required bool top, required bool left}) {
+  Widget _buildCorner(
+    Color color,
+    double size,
+    double width, {
+    required bool top,
+    required bool left,
+  }) {
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         border: Border(
           top: top ? BorderSide(color: color, width: width) : BorderSide.none,
-          bottom: !top ? BorderSide(color: color, width: width) : BorderSide.none,
+          bottom: !top
+              ? BorderSide(color: color, width: width)
+              : BorderSide.none,
           left: left ? BorderSide(color: color, width: width) : BorderSide.none,
-          right: !left ? BorderSide(color: color, width: width) : BorderSide.none,
+          right: !left
+              ? BorderSide(color: color, width: width)
+              : BorderSide.none,
         ),
         borderRadius: BorderRadius.only(
           topLeft: top && left ? const Radius.circular(10) : Radius.zero,

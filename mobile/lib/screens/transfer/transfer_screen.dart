@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
-import '../../widgets/common_widgets.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 import 'package:flutter_aplication_bank/controllers/transfer_controller.dart';
 import 'package:flutter_aplication_bank/models/transfer_request.dart';
-import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
 
 class TransferScreen extends StatefulWidget {
   final String initialSection;
@@ -20,7 +18,6 @@ class TransferScreen extends StatefulWidget {
 class _TransferScreenState extends State<TransferScreen> {
   final _recipientController = TextEditingController();
   final _messageController = TextEditingController();
-  String _selectedSection = 'Escanear';
   String _amount = '';
   String _selectedContact = 'Adicionar';
   String _selectedCard = 'Cartão 1';
@@ -28,33 +25,16 @@ class _TransferScreenState extends State<TransferScreen> {
 
   final contacts = ['Adicionar', 'Maria', 'Jean', 'Ryan', 'Neto', 'Yan'];
 
-  final quickActions = [
-    {'icon': Icons.attach_money_rounded, 'label': 'Pix', 'color': AppColors.secondary},
-    {'icon': Icons.phone_android_outlined, 'label': 'Recargas', 'color': AppColors.primaryLight},
-    {'icon': Icons.request_quote_outlined, 'label': 'Cobrar', 'color': AppColors.accent},
-    {'icon': Icons.receipt_long_outlined, 'label': 'Boleto', 'color': AppColors.secondaryDark},
-  ];
-
   final List<Map<String, String>> _cards = [
     {'label': 'Cartão 1', 'number': '•••• 4587'},
     {'label': 'Cartão 2', 'number': '•••• 1234'},
   ];
 
   @override
-  void initState() {
-    super.initState();
-    _selectedSection = widget.initialSection;
-  }
-
-  @override
   void dispose() {
     _recipientController.dispose();
     _messageController.dispose();
     super.dispose();
-  }
-
-  void _selectSection(String section) {
-    setState(() => _selectedSection = section);
   }
 
   void _appendAmount(String value) {
@@ -83,16 +63,6 @@ class _TransferScreenState extends State<TransferScreen> {
     final digits = _amount.replaceAll(',', '');
     final value = int.tryParse(digits) ?? 0;
     return value / 100;
-  }
-
-  void _handleActionTap(String label) {
-    if (label == 'Pix') {
-      _selectSection('Digitar');
-      return;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$label em desenvolvimento')),
-    );
   }
 
   void _showCardMenu(BuildContext context) {
@@ -236,155 +206,6 @@ class _TransferScreenState extends State<TransferScreen> {
           children: [
             const SizedBox(height: 8),
             _buildPixAreaSection(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionSelector() {
-    return Row(
-      children: [
-        _buildSectionButton('Escanear', Icons.qr_code_scanner_outlined),
-        const SizedBox(width: 12),
-        _buildSectionButton('Digitar', Icons.keyboard_outlined),
-      ],
-    );
-  }
-
-  Widget _buildSectionButton(String label, IconData icon) {
-    final selected = _selectedSection == label;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => _selectSection(label),
-        child: Container(
-          height: 58,
-          decoration: BoxDecoration(
-            color: selected ? AppColors.secondary : AppColors.darkBgSecondary,
-            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            border: Border.all(
-              color: selected ? AppColors.secondary : AppColors.darkBorder,
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: selected ? Colors.black : AppColors.darkText, size: 22),
-              const SizedBox(width: 10),
-              Text(label, style: TextStyle(color: selected ? Colors.black : AppColors.darkText, fontWeight: FontWeight.w700)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildScanSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Pagamentos', style: TextStyle(color: AppColors.darkText, fontSize: 18, fontWeight: FontWeight.w700)),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionCard(
-                'Escanear QR',
-                Icons.qr_code,
-                AppColors.primary,
-                () => Navigator.pushNamed(context, AppRoutes.scanQr),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildActionCard(
-                'Digitar',
-                Icons.keyboard,
-                AppColors.secondary,
-                () => _selectSection('Digitar'),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 24),
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: quickActions.map((action) {
-            return _buildQuickAction(
-              action['icon'] as IconData,
-              action['label'] as String,
-              action['color'] as Color,
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionCard(
-    String title,
-    IconData icon,
-    Color color,
-    VoidCallback onTap,
-  ) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 140,
-        padding: const EdgeInsets.all(AppConstants.paddingMedium),
-        decoration: BoxDecoration(
-          color: AppColors.darkBgSecondary,
-          borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
-          border: Border.all(color: AppColors.darkBorder),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-              ),
-              child: Icon(icon, color: Colors.black, size: 24),
-            ),
-            const Spacer(),
-            Text(title, style: const TextStyle(color: AppColors.darkText, fontSize: 16, fontWeight: FontWeight.w700)),
-            const SizedBox(height: 6),
-            const Text('Prático e rápido', style: TextStyle(color: AppColors.darkTextSecondary, fontSize: 12)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildQuickAction(IconData icon, String label, Color color) {
-    return GestureDetector(
-      onTap: () => _handleActionTap(label),
-      child: Container(
-        width: 80,
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        decoration: BoxDecoration(
-          color: AppColors.darkBgSecondary,
-          borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-          border: Border.all(color: AppColors.darkBorder),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 34,
-              height: 34,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-              ),
-              child: Icon(icon, color: Colors.black, size: 18),
-            ),
-            const SizedBox(height: 12),
-            Text(label, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.darkText, fontSize: 12, fontWeight: FontWeight.w600)),
           ],
         ),
       ),
@@ -697,14 +518,12 @@ class _InputField extends StatefulWidget {
   final String label;
   final String hint;
   final TextEditingController controller;
-  final int maxLines;
   final Widget? prefixIcon;
 
   const _InputField({
     required this.label,
     required this.hint,
     required this.controller,
-    this.maxLines = 1,
     this.prefixIcon,
   });
 
@@ -759,7 +578,7 @@ class _InputFieldState extends State<_InputField> {
         TextField(
           controller: widget.controller,
           focusNode: _focusNode,
-          maxLines: widget.maxLines,
+          maxLines: 1,
           style: const TextStyle(color: AppColors.darkText),
           decoration: InputDecoration(
             hintText: showHint ? widget.hint : null,
