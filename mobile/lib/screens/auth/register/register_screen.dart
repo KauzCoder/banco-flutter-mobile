@@ -30,9 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _emailController.text.trim(),
         _senhaController.text.trim(),
       );
-      if (mounted) Navigator.pushReplacementNamed(context, AppRoutes.home);
+      if (mounted) Navigator.pushReplacementNamed(context, AppRoutes.login);
     } catch (e) {
-      setState(() => _erro = 'Erro ao criar conta. Verifique os dados.');
+      setState(() => _erro = 'Erro ao criar conta. Verifique os dados informados.');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

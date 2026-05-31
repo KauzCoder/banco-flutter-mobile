@@ -50,6 +50,24 @@ async function findAccountByUserId(userId) {
   };
 }
 
+async function findAccountByNumber(numeroConta) {
+  const snapshot = await collection
+    .where("numeroConta", "==", numeroConta)
+    .limit(1)
+    .get();
+
+  if (snapshot.empty) {
+    return null;
+  }
+
+  const doc = snapshot.docs[0];
+
+  return {
+    id: doc.id,
+    ...doc.data(),
+  };
+}
+
 async function updateBalance(accountId, saldo) {
   await collection.doc(accountId).update({
     saldo,
@@ -62,6 +80,7 @@ async function updateBalance(accountId, saldo) {
 module.exports = {
   createAccount,
   findAccountById,
+  findAccountByNumber,
   findAccountByUserId,
   updateBalance,
 };

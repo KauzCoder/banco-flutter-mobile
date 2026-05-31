@@ -29,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     AuthService.logout();
     Navigator.pushNamedAndRemoveUntil(
       context,
-      AppRoutes.signIn,
+      AppRoutes.login,
       (route) => false,
     );
   }

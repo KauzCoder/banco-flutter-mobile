@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
 
 class MyQRCodeScreen extends StatefulWidget {
   const MyQRCodeScreen({super.key});
@@ -19,7 +20,19 @@ class _MyQRCodeScreenState extends State<MyQRCodeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(context),
+            AppScreenHeader(
+              title: 'Scanner',
+              onBackPressed: () => Navigator.maybePop(context),
+              trailing: AppHeaderIconButton(
+                icon: Icons.image_outlined,
+                backgroundColor: Colors.transparent,
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Imagem do QR Code salva!')),
+                  );
+                },
+              ),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -59,7 +72,9 @@ class _MyQRCodeScreenState extends State<MyQRCodeScreen> {
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                        borderRadius: BorderRadius.circular(
+                          AppConstants.radiusLarge,
+                        ),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withAlpha(60),
@@ -73,10 +88,16 @@ class _MyQRCodeScreenState extends State<MyQRCodeScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: const Color(0xFFF2F2F2),
-                            borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                            borderRadius: BorderRadius.circular(
+                              AppConstants.radiusMedium,
+                            ),
                           ),
                           child: const Center(
-                            child: Icon(Icons.qr_code_2, size: 180, color: AppColors.primary),
+                            child: Icon(
+                              Icons.qr_code_2,
+                              size: 180,
+                              color: AppColors.primary,
+                            ),
                           ),
                         ),
                       ),
@@ -103,59 +124,6 @@ class _MyQRCodeScreenState extends State<MyQRCodeScreen> {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: () => Navigator.maybePop(context),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.chevron_left_rounded,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-            ),
-          ),
-          const Text(
-            'Scanner',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Imagem do QR Code salva!')),
-                );
-              },
-              child: const Icon(
-                Icons.image_outlined,
-                color: Colors.white,
-                size: 26,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildBottomButtons(BuildContext context) {
     final isLer = _selected == 'ler';
     final isMeu = _selected == 'meucodigo';
@@ -169,7 +137,6 @@ class _MyQRCodeScreenState extends State<MyQRCodeScreen> {
       ),
       child: Row(
         children: [
-          
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -188,7 +155,9 @@ class _MyQRCodeScreenState extends State<MyQRCodeScreen> {
                 child: Text(
                   'Ler',
                   style: TextStyle(
-                    color: isLer ? const Color(0xFF552F9F) : Colors.white, // 👈 cor da letra
+                    color: isLer
+                        ? const Color(0xFF552F9F)
+                        : Colors.white, // 👈 cor da letra
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
                   ),
@@ -196,7 +165,7 @@ class _MyQRCodeScreenState extends State<MyQRCodeScreen> {
               ),
             ),
           ),
-          
+
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,

@@ -194,7 +194,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       padding: EdgeInsets.all(6),
                       child: Icon(
                         Icons.calendar_month_rounded,
-                        color: profileBlue,
+                        color: Color.fromARGB(255, 126, 13, 255),
                         size: 22,
                       ),
                     ),

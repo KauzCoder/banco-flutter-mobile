@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 
-enum AppBottomNavItem { home, pay, qr, quotes, settings }
+enum AppBottomNavItem { home, transactions, qr, quotes, settings }
 
 class AppBottomNavBar extends StatelessWidget {
   const AppBottomNavBar({required this.currentItem, super.key});
 
-  final AppBottomNavItem currentItem;
+  final AppBottomNavItem? currentItem;
 
   static const _barColor = Color(0xFFDBFF2F);
   static const _purple = Color(0xFF8A35FF);
@@ -38,9 +38,9 @@ class AppBottomNavBar extends StatelessWidget {
                       onTap: () => _openRoute(context, AppRoutes.home),
                     ),
                     _NavIcon(
-                      icon: Icons.attach_money_rounded,
-                      isActive: currentItem == AppBottomNavItem.pay,
-                      onTap: () => _openRoute(context, AppRoutes.pay),
+                      icon: Icons.receipt_long_outlined,
+                      isActive: currentItem == AppBottomNavItem.transactions,
+                      onTap: () => _openRoute(context, AppRoutes.transactions),
                     ),
                     const SizedBox(width: 82),
                     _NavIcon(

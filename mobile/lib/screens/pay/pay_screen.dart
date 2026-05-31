@@ -11,9 +11,7 @@ class PayScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-      bottomNavigationBar: const AppBottomNavBar(
-        currentItem: AppBottomNavItem.pay,
-      ),
+      bottomNavigationBar: const AppBottomNavBar(currentItem: null),
       body: SafeArea(
         child: Column(
           children: [
@@ -150,7 +148,7 @@ class PayScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFFFD700), width: 2.3),
+              border: Border.all(color: AppColors.secondary, width: 2.3),
             ),
             child: Material(
               color: const Color(0xFF8041FF),

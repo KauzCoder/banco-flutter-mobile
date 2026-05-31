@@ -25,6 +25,7 @@ async function seed() {
       clearCollection("users"),
       clearCollection("accounts"),
       clearCollection("pixKeys"),
+      clearCollection("cards"),
       clearCollection("transactions"),
       clearCollection("userSettings"),
     ]);
@@ -33,8 +34,9 @@ async function seed() {
       users: deleted[0],
       accounts: deleted[1],
       pixKeys: deleted[2],
-      transactions: deleted[3],
-      userSettings: deleted[4],
+      cards: deleted[3],
+      transactions: deleted[4],
+      userSettings: deleted[5],
     });
   }
 
@@ -47,6 +49,12 @@ async function seed() {
     fotoPerfil: "https://i.pravatar.cc/150?img=47",
     saldo: 2500.75,
     tipoConta: "corrente",
+    card: {
+      brand: "Quantum Black",
+      last4: "4587",
+      limit: 5000,
+      availableLimit: 4200,
+    },
     settings: {
       biometriaAtiva: true,
       idioma: "pt-BR",
@@ -64,6 +72,12 @@ async function seed() {
     fotoPerfil: "https://i.pravatar.cc/150?img=32",
     saldo: 180.25,
     tipoConta: "poupanca",
+    card: {
+      brand: "Quantum Gold",
+      last4: "1234",
+      limit: 2500,
+      availableLimit: 2100,
+    },
     settings: {
       biometriaAtiva: false,
       idioma: "pt-BR",
@@ -100,6 +114,7 @@ async function seed() {
     users: [userA.user.id, userB.user.id],
     accounts: [userA.account.id, userB.account.id],
     pixKeys: [userA.pixKey.id, userB.pixKey.id],
+    cards: [userA.card.id, userB.card.id],
     userSettings: [userA.settings.id, userB.settings.id],
     transfers: [transfer1.id, transfer2.id],
     loginTeste: [
@@ -146,6 +161,7 @@ async function upsertSeedUser(seedUser) {
   const userId = await upsertFirebaseUser(seedUser);
   const accountId = `account_${userId}`;
   const pixKeyId = `pix_email_${userId}`;
+  const cardId = `card_${userId}_credit`;
   const settingsId = `settings_${userId}`;
 
   const user = await setDoc("users", userId, {
@@ -184,7 +200,20 @@ async function upsertSeedUser(seedUser) {
     ...seedUser.settings,
   });
 
-  return { user, account, pixKey, settings };
+  const card = await setDoc("cards", cardId, {
+    cardId,
+    userId,
+    holderName: seedUser.nome,
+    brand: seedUser.card.brand,
+    last4: seedUser.card.last4,
+    type: "credit",
+    limit: seedUser.card.limit,
+    availableLimit: seedUser.card.availableLimit,
+    active: true,
+    createdAt: new Date(),
+  });
+
+  return { user, account, pixKey, settings, card };
 }
 
 async function upsertTransaction(transactionId, transferData) {

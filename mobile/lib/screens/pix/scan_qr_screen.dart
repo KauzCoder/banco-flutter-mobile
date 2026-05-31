@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
 
 class ScanQRScreen extends StatefulWidget {
   const ScanQRScreen({super.key});
@@ -19,60 +20,19 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(context),
+            AppScreenHeader(
+              title: 'Scanner',
+              onBackPressed: () => Navigator.maybePop(context),
+              trailing: AppHeaderIconButton(
+                icon: Icons.image_outlined,
+                backgroundColor: Colors.transparent,
+                onTap: () {},
+              ),
+            ),
             Expanded(child: Center(child: _buildScanFrame())),
             _buildBottomButtons(context),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: () => Navigator.maybePop(context),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.chevron_left_rounded,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-            ),
-          ),
-          const Text(
-            'Scanner',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              onTap: () {},
-              child: const Icon(
-                Icons.image_outlined,
-                color: Colors.white,
-                size: 26,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -192,7 +152,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                   duration: const Duration(milliseconds: 200),
                   height: 52,
                   decoration: BoxDecoration(
-                    color: isLer ? const Color(0xFFDDFA46) : Colors.transparent,
+                    color: isLer ? AppColors.secondary : Colors.transparent,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   alignment: Alignment.center,
@@ -219,7 +179,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                   duration: const Duration(milliseconds: 200),
                   height: 52,
                   decoration: BoxDecoration(
-                    color: isMeu ? const Color(0xFFDDFA46) : Colors.transparent,
+                    color: isMeu ? AppColors.secondary : Colors.transparent,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   alignment: Alignment.center,

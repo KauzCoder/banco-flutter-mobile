@@ -17,13 +17,11 @@ import 'package:flutter_aplication_bank/screens/settings/change_password_screen.
 import 'package:flutter_aplication_bank/screens/settings/language_screen.dart';
 import 'package:flutter_aplication_bank/screens/settings/privacy_policy_screen.dart';
 import 'package:flutter_aplication_bank/screens/settings/settings_screen.dart';
-import 'package:flutter_aplication_bank/screens/account/payments_screen.dart';
-import 'package:flutter_aplication_bank/screens/account/account_screen.dart';
-import 'package:flutter_aplication_bank/screens/cards/cards_screen.dart';
 import 'package:flutter_aplication_bank/screens/loading_screen.dart';
 import 'package:flutter_aplication_bank/screens/feedback_screen.dart';
 import 'package:flutter_aplication_bank/screens/pay/pay_screen.dart';
 import 'package:flutter_aplication_bank/screens/oneboarding/oneboarding_screen.dart';
+import 'package:flutter_aplication_bank/screens/under_development_screen.dart';
 
 class AppRoutes {
   const AppRoutes._();
@@ -54,6 +52,7 @@ class AppRoutes {
   static const String cards = '/cards';
   static const String loading = '/loading';
   static const String feedback = '/feedback';
+  static const String underDevelopment = '/under-development';
 
   static Map<String, WidgetBuilder> get routes {
     return {
@@ -70,10 +69,10 @@ class AppRoutes {
       },
       receipt: (_) => const ReceiptScreen(),
       transactionsHistory: (_) => const TransactionsHistoryScreen(),
-      account: (_) => const AccountScreen(),
+      account: (_) => const UnderDevelopmentScreen(),
       transactions: (_) => const TransactionsScreen(),
       pix: (_) => const PixAreaScreen(),
-      cards: (_) => const CardsScreen(),
+      cards: (_) => const UnderDevelopmentScreen(),
       pixArea: (_) => const PixAreaScreen(),
       scanQr: (_) => const ScanQRScreen(),
       myQrCode: (_) => const MyQRCodeScreen(),
@@ -83,9 +82,10 @@ class AppRoutes {
       changePassword: (_) => const ChangePasswordScreen(),
       language: (_) => const LanguageScreen(),
       privacyPolicy: (_) => const PrivacyPolicyScreen(),
-      payments: (_) => const PaymentsScreen(),
+      payments: (_) => const UnderDevelopmentScreen(),
       loading: (_) => const LoadingScreen(),
       feedback: (_) => const FeedbackScreen(),
+      underDevelopment: (_) => const UnderDevelopmentScreen(),
     };
   }
 }

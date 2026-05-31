@@ -12,17 +12,27 @@ const transferBodySchema = z
     amount: amountSchema.optional(),
     descricao: z.string().trim().optional(),
     description: z.string().trim().optional(),
+    message: z.string().trim().optional(),
+    recipient: z.string().trim().min(1).optional(),
     nomeRecebedor: z.string().trim().optional(),
     chavePixRecebedor: z.string().trim().optional(),
     tipo: z.string().trim().min(1).optional(),
+    type: z.string().trim().min(1).optional(),
+    cardId: z.string().trim().min(1).optional(),
     fromUserId: z.string().trim().min(1).optional(),
   })
   .superRefine((data, ctx) => {
-    if (!data.contaDestinoId && !data.toAccountId) {
+    if (
+      !data.contaDestinoId &&
+      !data.toAccountId &&
+      !data.recipient &&
+      !data.chavePixRecebedor &&
+      !data.nomeRecebedor
+    ) {
       ctx.addIssue({
         code: "custom",
-        path: ["contaDestinoId"],
-        message: "Conta de destino e obrigatoria.",
+        path: ["recipient"],
+        message: "Destinatario e obrigatorio.",
       });
     }
 

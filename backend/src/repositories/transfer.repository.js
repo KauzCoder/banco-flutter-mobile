@@ -15,6 +15,7 @@ async function createTransfer(transferData) {
       transferData.contaOrigemId || transferData.fromAccountId || "",
     descricao: transferData.descricao || transferData.description || "",
     nomeRecebedor: transferData.nomeRecebedor || "",
+    cardId: transferData.cardId || "",
     status: transferData.status || "concluida",
     tipo: transferData.tipo || "transferencia",
     valor: Number(transferData.valor || transferData.amount || 0),

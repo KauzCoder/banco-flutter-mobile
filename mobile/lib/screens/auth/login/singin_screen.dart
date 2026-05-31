@@ -29,9 +29,20 @@ class _SingInScreenState extends State<SingInScreen> {
         _emailController.text.trim(),
         _senhaController.text.trim(),
       );
-      if (mounted) Navigator.pushReplacementNamed(context, AppRoutes.home);
+      if (mounted) Navigator.pushReplacementNamed(context, AppRoutes.login);
     } catch (e) {
-      setState(() => _erro = 'E-mail ou senha incorretos.');
+      final message = e.toString();
+      final isNetworkError =
+          message.contains('TimeoutException') ||
+          message.contains('SocketException') ||
+          message.contains('Connection refused') ||
+          message.contains('Failed host lookup');
+
+      setState(() {
+        _erro = isNetworkError
+            ? 'Nao foi possivel conectar ao nossos servicos, tente novamente mais tarde.'
+            : 'E-mail ou senha incorretos.';
+      });
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -46,10 +57,12 @@ class _SingInScreenState extends State<SingInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -61,11 +74,7 @@ class _SingInScreenState extends State<SingInScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF000000),
-              Color(0xFF4B2C8C),
-              Color(0xFFB570FF),
-            ],
+            colors: [Color(0xFF000000), Color(0xFF4B2C8C), Color(0xFFB570FF)],
             stops: [0.0, 0.5, 1.0],
           ),
         ),
@@ -79,7 +88,11 @@ class _SingInScreenState extends State<SingInScreen> {
                   const SizedBox(height: 60),
                   const Text(
                     'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const Text(
                     'Faça login com segurança na sua conta',
@@ -90,7 +103,13 @@ class _SingInScreenState extends State<SingInScreen> {
                   _buildSenhaField(),
                   if (_erro != null) ...[
                     const SizedBox(height: 4),
-                    Text(_erro!, style: const TextStyle(color: Colors.redAccent, fontSize: 13)),
+                    Text(
+                      _erro!,
+                      style: const TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 13,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                   ],
                   Row(
@@ -100,19 +119,29 @@ class _SingInScreenState extends State<SingInScreen> {
                         children: [
                           Checkbox(
                             value: isChecked,
-                            onChanged: (bool? value) => setState(() => isChecked = value ?? false),
+                            onChanged: (bool? value) =>
+                                setState(() => isChecked = value ?? false),
                             side: const BorderSide(color: Colors.white54),
                             checkColor: Colors.white,
                             activeColor: const Color(0xFF6C3FE3),
                           ),
-                          const Text('Lembrar-me', style: TextStyle(color: Colors.white54, fontSize: 14)),
+                          const Text(
+                            'Lembrar-se de mim',
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 14,
+                            ),
+                          ),
                         ],
                       ),
                       TextButton(
                         onPressed: () {},
                         child: const Text(
                           'Esqueci a senha',
-                          style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -125,32 +154,44 @@ class _SingInScreenState extends State<SingInScreen> {
                       onPressed: _isLoading ? null : _login,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF6C3FE3),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       child: _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(
                               'ENTRAR',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                     ),
                   ),
                   const SizedBox(height: 60),
                   Center(
                     child: TextButton(
-                      onPressed: () => Navigator.pushNamed(context, AppRoutes.register),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, AppRoutes.register),
                       child: RichText(
-                        text: const TextSpan(children: [
-                          TextSpan(text: 'Criar uma conta ', style: TextStyle(color: Colors.white54)),
-                          TextSpan(
-                            text: 'Registrar-se',
-                            style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Criar uma conta ',
+                              style: TextStyle(color: Colors.white54),
                             ),
-                          ),
-                        ]),
+                            TextSpan(
+                              text: 'Registrar-se',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -174,10 +215,16 @@ class _SingInScreenState extends State<SingInScreen> {
         decoration: InputDecoration(
           hintText: 'Endereço de e-mail',
           hintStyle: const TextStyle(color: Colors.black45),
-          prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFF6C3FE3)),
+          prefixIcon: const Icon(
+            Icons.email_outlined,
+            color: Color(0xFF6C3FE3),
+          ),
           filled: true,
           fillColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
@@ -203,7 +250,10 @@ class _SingInScreenState extends State<SingInScreen> {
           ),
           filled: true,
           fillColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );

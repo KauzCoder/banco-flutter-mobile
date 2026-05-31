@@ -35,6 +35,21 @@ async function findUserByEmail(email) {
   };
 }
 
+async function findUserByName(nome) {
+  const snapshot = await collection.where("nome", "==", nome).limit(1).get();
+
+  if (snapshot.empty) {
+    return null;
+  }
+
+  const doc = snapshot.docs[0];
+
+  return {
+    id: doc.id,
+    ...doc.data(),
+  };
+}
+
 async function findUserById(id) {
   const doc = await collection.doc(id).get();
 
@@ -51,5 +66,6 @@ async function findUserById(id) {
 module.exports = {
   createUser,
   findUserByEmail,
+  findUserByName,
   findUserById,
 };

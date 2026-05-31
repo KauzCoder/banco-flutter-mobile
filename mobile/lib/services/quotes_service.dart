@@ -14,11 +14,19 @@ class QuotesService {
     const symbols = [
       'USD-BRL',
       'EUR-BRL',
+      'GBP-BRL',
+      'ARS-BRL',
+      'CAD-BRL',
+      'AUD-BRL',
       'JPY-BRL',
+      'CHF-BRL',
+      'CNY-BRL',
       'BTC-BRL',
     ];
 
-    final uri = Uri.parse('${ApiConstants.awesomeApiLastUrl}/${symbols.join(',')}');
+    final uri = Uri.parse(
+      '${ApiConstants.awesomeApiLastUrl}/${symbols.join(',')}',
+    );
     final response = await client.get(uri).timeout(const Duration(seconds: 10));
 
     if (response.statusCode != 200) {
@@ -49,16 +57,20 @@ class QuotesService {
 
         final changePositive = !pctChange.startsWith('-');
 
-        final category = code.toUpperCase().contains('BTC') ? 'Criptomoedas' : 'Moedas';
+        final category = code.toUpperCase().contains('BTC')
+            ? 'Criptomoedas'
+            : 'Moedas';
 
-        quotes.add(QuoteModel(
-          symbol: code,
-          name: name,
-          price: price,
-          change: changeFormatted,
-          changePositive: changePositive,
-          category: category,
-        ));
+        quotes.add(
+          QuoteModel(
+            symbol: code,
+            name: name,
+            price: price,
+            change: changeFormatted,
+            changePositive: changePositive,
+            category: category,
+          ),
+        );
       } catch (_) {
         // ignore malformed entry
       }
@@ -95,7 +107,9 @@ class QuotesService {
 
       final changePositive = !pctChange.startsWith('-');
 
-      final category = code.toUpperCase().contains('BTC') ? 'Criptomoedas' : 'Moedas';
+      final category = code.toUpperCase().contains('BTC')
+          ? 'Criptomoedas'
+          : 'Moedas';
 
       return QuoteModel(
         symbol: code,

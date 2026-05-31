@@ -38,14 +38,22 @@ class AppScreenHeader extends StatelessWidget {
                       onTap: onBackPressed!,
                     ),
             ),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 25,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.2,
+            Positioned(
+              left: 48,
+              right: 48,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0,
+                  ),
+                ),
               ),
             ),
             if (trailing != null)

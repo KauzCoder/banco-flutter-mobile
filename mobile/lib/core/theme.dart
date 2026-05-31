@@ -7,7 +7,7 @@ class AppColors {
   static const Color primaryDark = Color(0xFF6D28D9);
 
   // Secondary Colors
-  static const Color secondary = Color(0xFFFEE82C);
+  static const Color secondary = Color.fromARGB(255, 221, 250, 70);
   static const Color secondaryLight = Color(0xFFFFEE5C);
   static const Color secondaryDark = Color(0xFFDCC61F);
 
@@ -17,7 +17,7 @@ class AppColors {
   static const Color accentDark = Color(0xFF1E40AF);
 
   // Success
-  static const Color success = Color(0xFF10B981);
+  static const Color success = Color.fromARGB(255, 16, 199, 40);
   static const Color successLight = Color(0x1010B981);
 
   // Error

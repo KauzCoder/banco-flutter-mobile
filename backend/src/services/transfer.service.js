@@ -1,26 +1,90 @@
 const accountRepository = require("../repositories/account.repository");
+const pixKeyRepository = require("../repositories/pix-key.repository");
 const transferRepository = require("../repositories/transfer.repository");
+const userRepository = require("../repositories/user.repository");
 
 function normalizeTransferInput(data) {
   return {
     fromUserId: data.fromUserId || data.userId || null,
     contaDestinoId: data.contaDestinoId || data.toAccountId || null,
     valor: Number(data.valor ?? data.amount ?? 0),
-    descricao: data.descricao ?? data.description ?? "",
+    descricao: data.descricao ?? data.description ?? data.message ?? "",
+    recipient: data.recipient || null,
     nomeRecebedor: data.nomeRecebedor || "",
     chavePixRecebedor: data.chavePixRecebedor || "",
-    tipo: data.tipo || "transferencia",
+    cardId: data.cardId || "",
+    tipo: data.tipo || data.type || "transferencia",
   };
+}
+
+async function resolveDestinationAccount(input) {
+  if (input.contaDestinoId) {
+    const account = await accountRepository.findAccountById(input.contaDestinoId);
+    return { account, receiverName: input.nomeRecebedor, pixKey: input.chavePixRecebedor };
+  }
+
+  const recipient = String(
+    input.chavePixRecebedor || input.recipient || input.nomeRecebedor || "",
+  ).trim();
+
+  if (!recipient) {
+    return { account: null, receiverName: "", pixKey: "" };
+  }
+
+  const pixKey = await pixKeyRepository.findPixKeyByValue(recipient);
+  if (pixKey) {
+    const account = await accountRepository.findAccountById(pixKey.accountId);
+    const user = account ? await userRepository.findUserById(account.userId) : null;
+    return {
+      account,
+      receiverName: user?.nome || input.nomeRecebedor || recipient,
+      pixKey: pixKey.valor,
+    };
+  }
+
+  const byEmail = await userRepository.findUserByEmail(recipient);
+  if (byEmail) {
+    const account = await accountRepository.findAccountByUserId(byEmail.id);
+    return {
+      account,
+      receiverName: byEmail.nome || recipient,
+      pixKey: recipient,
+    };
+  }
+
+  const byName = await userRepository.findUserByName(recipient);
+  if (byName) {
+    const account = await accountRepository.findAccountByUserId(byName.id);
+    return {
+      account,
+      receiverName: byName.nome || recipient,
+      pixKey: input.chavePixRecebedor || "",
+    };
+  }
+
+  const digits = recipient.replace(/\D/g, "");
+  if (digits) {
+    const account = await accountRepository.findAccountByNumber(digits);
+    if (account) {
+      const user = await userRepository.findUserById(account.userId);
+      return {
+        account,
+        receiverName: user?.nome || recipient,
+        pixKey: input.chavePixRecebedor || "",
+      };
+    }
+  }
+
+  return { account: null, receiverName: input.nomeRecebedor || recipient, pixKey: input.chavePixRecebedor || recipient };
 }
 
 async function createTransfer(data) {
   const input = normalizeTransferInput(data);
-  const destinationAccountId = input.contaDestinoId;
   const numericAmount = input.valor;
 
-  if (!input.fromUserId || !destinationAccountId || !numericAmount) {
+  if (!input.fromUserId || !numericAmount) {
     const error = new Error(
-      "fromUserId, contaDestinoId e valor sao obrigatorios.",
+      "fromUserId, destinatario e valor sao obrigatorios.",
     );
     error.statusCode = 400;
     throw error;
@@ -37,8 +101,8 @@ async function createTransfer(data) {
   const fromAccount = await accountRepository.findAccountByUserId(
     input.fromUserId,
   );
-  const toAccount =
-    await accountRepository.findAccountById(destinationAccountId);
+  const destination = await resolveDestinationAccount(input);
+  const toAccount = destination.account;
 
   if (!fromAccount) {
     const error = new Error("Conta de origem nao encontrada.");
@@ -47,8 +111,14 @@ async function createTransfer(data) {
   }
 
   if (!toAccount) {
-    const error = new Error("Conta de destino nao encontrada.");
+    const error = new Error("Destinatario nao encontrado.");
     error.statusCode = 404;
+    throw error;
+  }
+
+  if (fromAccount.id === toAccount.id) {
+    const error = new Error("Nao e possivel transferir para sua propria conta.");
+    error.statusCode = 400;
     throw error;
   }
 
@@ -70,13 +140,14 @@ async function createTransfer(data) {
   return transferRepository.createTransfer({
     fromUserId: input.fromUserId,
     fromAccountId: fromAccount.id,
-    toAccountId: destinationAccountId,
+    toAccountId: toAccount.id,
     contaOrigemId: fromAccount.id,
-    contaDestinoId: destinationAccountId,
+    contaDestinoId: toAccount.id,
     valor: numericAmount,
     descricao: input.descricao,
-    nomeRecebedor: input.nomeRecebedor,
-    chavePixRecebedor: input.chavePixRecebedor,
+    nomeRecebedor: destination.receiverName,
+    chavePixRecebedor: destination.pixKey,
+    cardId: input.cardId,
     status: "concluida",
     tipo: input.tipo,
   });

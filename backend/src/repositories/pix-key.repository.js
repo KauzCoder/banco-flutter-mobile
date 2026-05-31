@@ -40,8 +40,29 @@ async function findPixKeysByUserId(userId) {
   }));
 }
 
+async function findPixKeyByValue(value) {
+  const snapshot = await collection.where('valor', '==', value).limit(1).get();
+
+  if (snapshot.empty) {
+    return null;
+  }
+
+  const doc = snapshot.docs[0];
+  const data = doc.data();
+
+  if (data.ativa === false) {
+    return null;
+  }
+
+  return {
+    id: doc.id,
+    ...data,
+  };
+}
+
 module.exports = {
   createPixKey,
   findPixKeyById,
   findPixKeysByUserId,
+  findPixKeyByValue,
 };
