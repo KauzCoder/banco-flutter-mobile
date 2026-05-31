@@ -1,20 +1,79 @@
-# Backend - Banco Digital
+# Backend - Quantum Bank
 
-Pasta reservada para a API Node.js + Express.
+API Node.js + Express do Quantum Bank, integrada ao Firebase Auth e Firestore.
 
-## Organizacao planejada
+## Organizacao
 
 - `src/server.js`: entrada do servidor.
-- `src/app.js`: configuracao do Express.
+- `src/app.js`: configuracao do Express e rotas.
 - `src/config`: Firebase e variaveis de ambiente.
 - `src/routes`: endpoints da API.
 - `src/controllers`: entrada das requisicoes.
 - `src/services`: regras de negocio.
 - `src/repositories`: acesso ao Firestore.
 - `src/middlewares`: autenticacao, validacao e erros.
-- `src/utils`: funcoes auxiliares.
+- `src/validations`: schemas de entrada.
+- `src/seed/seed.js`: populacao inicial do Firestore.
 
-## Endpoints planejados
+## Instalar
+
+```powershell
+npm install
+```
+
+## Variaveis e credenciais
+
+Crie `backend/.env`:
+
+```env
+FIREBASE_API_KEY=SUA_CHAVE_WEB_DO_FIREBASE
+PORT=3000
+```
+
+Coloque a credencial do Firebase Admin em:
+
+```text
+backend/firebase-service-account.json
+```
+
+Se quiser usar outro caminho:
+
+```powershell
+$env:FIREBASE_SERVICE_ACCOUNT_PATH="C:\caminho\firebase-service-account.json"
+```
+
+Tambem e possivel usar `GOOGLE_APPLICATION_CREDENTIALS`.
+
+## Rodar
+
+```powershell
+npm run start
+```
+
+Health check:
+
+```powershell
+npm run test:health
+```
+
+Teste de conexao com Firebase:
+
+```powershell
+npm run test:firebase
+```
+
+## Popular o banco
+
+Para recriar os dados de teste:
+
+```powershell
+$env:SEED_CLEAR="true"; npm run seed:firebase
+```
+
+O seed cria usuarios, contas, chaves Pix, configuracoes, cartoes e transacoes
+iniciais para testar o app.
+
+## Endpoints principais
 
 - `POST /auth/register`
 - `POST /auth/login`
@@ -22,77 +81,58 @@ Pasta reservada para a API Node.js + Express.
 - `GET /auth/me`
 - `GET /account/balance`
 - `GET /account/summary`
+- `GET /cards`
 - `GET /quotes`
 - `POST /transfers`
 - `GET /transfers/history`
+- `GET /user-settings`
+- `PUT /user-settings`
+- `GET /health`
 
-## Autenticacao (Firebase Auth JWT)
+## Autenticacao
 
-Todas as rotas sao protegidas por Firebase Auth, **exceto**:
+Todas as rotas sao protegidas por Firebase Auth, exceto:
 
 - `POST /auth/register`
 - `POST /auth/login`
 - `POST /auth/refresh`
 - `GET /health`
 
-### Variaveis de ambiente
+As rotas de login e cadastro retornam:
 
-No arquivo `.env` do backend:
+- `token`: ID Token JWT.
+- `refreshToken`: token usado para renovar sessao.
+- `expiresIn`: tempo de expiracao em segundos.
 
-```
-FIREBASE_API_KEY=SUACHAVEWEB
-```
+Envie o token nas rotas protegidas:
 
-> A `FIREBASE_API_KEY` e a chave Web do seu projeto Firebase (Project Settings > General).
-
-### Como usar o token
-
-As rotas de login e register retornam:
-
-- `token` (ID Token JWT)
-- `refreshToken`
-- `expiresIn` (segundos)
-
-Para acessar as rotas protegidas, envie:
-
-```
+```text
 Authorization: Bearer SEU_ID_TOKEN
 ```
 
-Exemplo (curl):
+## Refresh token
 
-```
-curl -H "Authorization: Bearer SEU_ID_TOKEN" http://localhost:3000/account/summary
-```
-
-### Refresh token
-
-Para renovar o `token`, use o `refreshToken` retornado no login/register:
-
-```
+```http
 POST /auth/refresh
+Content-Type: application/json
+
 {
   "refreshToken": "SEU_REFRESH_TOKEN"
 }
 ```
 
-Resposta:
+## Padrao das collections
 
-```
-{
-  "token": "NOVO_ID_TOKEN",
-  "refreshToken": "NOVO_REFRESH_TOKEN",
-  "expiresIn": 3600
-}
-```
+Collections usadas no Firestore:
 
-## Padronizacao de campos (API e Firestore)
+- `users`
+- `accounts`
+- `pixKeys`
+- `userSettings`
+- `cards`
+- `transactions`
 
-A API aceita alguns aliases de entrada (ex.: pt-BR e en), mas **salva e responde**
-sempre em um **padrao unico** (pt-BR). O objetivo e evitar documentos com campos
-duplicados e manter as respostas previsiveis.
-
-### Padrao de campos por entidade
+Campos principais:
 
 **Usuario**
 
@@ -115,24 +155,18 @@ duplicados e manter as respostas previsiveis.
 - `tipoConta`
 - `dataCriacao`
 
-**Chave Pix**
+**Cartao**
 
 - `id`
 - `userId`
 - `accountId`
+- `apelido`
+- `bandeira`
+- `ultimosDigitos`
 - `tipo`
-- `valor`
-- `ativa`
+- `ativo`
+- `limite`
 - `dataCriacao`
-
-**Configuracoes do usuario**
-
-- `id`
-- `userId`
-- `biometriaAtiva`
-- `idioma`
-- `notificacoesAtivas`
-- `temaEscuro`
 
 **Transferencia**
 
@@ -140,6 +174,7 @@ duplicados e manter as respostas previsiveis.
 - `fromUserId`
 - `contaOrigemId`
 - `contaDestinoId`
+- `cardId`
 - `nomeRecebedor`
 - `chavePixRecebedor`
 - `descricao`
@@ -147,52 +182,3 @@ duplicados e manter as respostas previsiveis.
 - `tipo`
 - `valor`
 - `dataHora`
-
-### Aliases aceitos na entrada
-
-Os services normalizam os dados antes de validar e salvar. Exemplos:
-
-- `name` -> `nome`
-- `password` ou `senha` -> `password`
-- `amount` -> `valor`
-- `description` -> `descricao`
-- `toAccountId` -> `contaDestinoId`
-- `type` -> `tipo`
-- `value` -> `valor`
-
-## DTOs (resposta padronizada)
-
-Os controllers usam DTOs para sempre responder no formato padronizado. Isso evita
-expor campos internos e garante consistencia.
-
-### Exemplo: resposta de Pix Key
-
-```json
-{
-  "id": "pixKeyId",
-  "userId": "userId",
-  "accountId": "accountId",
-  "tipo": "email",
-  "valor": "ana.lima@example.com",
-  "ativa": true,
-  "dataCriacao": "2026-05-28T00:00:00.000Z"
-}
-```
-
-### Exemplo: resposta de transferencia
-
-```json
-{
-  "id": "transactionId",
-  "fromUserId": "userId",
-  "contaOrigemId": "accountIdOrigem",
-  "contaDestinoId": "accountIdDestino",
-  "nomeRecebedor": "Bruno Costa",
-  "chavePixRecebedor": "+55 11 99999-0002",
-  "descricao": "Pagamento de almoco",
-  "status": "concluida",
-  "tipo": "pix",
-  "valor": 42.9,
-  "dataHora": "2026-05-28T00:00:00.000Z"
-}
-```

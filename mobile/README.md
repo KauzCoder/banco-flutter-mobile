@@ -1,22 +1,86 @@
-# Mobile - Banco Digital
+# Mobile - Quantum Bank
 
-Projeto Flutter do aplicativo mobile.
+Aplicativo Flutter do Quantum Bank.
 
 ## Organizacao principal
 
-- `lib/main.dart`: entrada do app Flutter.
-- `lib/app.dart`: widget raiz do aplicativo.
-- `lib/core`: rotas, tema, constantes e utilitarios.
-- `lib/models`: modelos de dados do app.
-- `lib/services`: comunicacao com backend, APIs e plugins.
-- `lib/controllers`: estado e regras das telas.
+- `lib/main.dart`: entrada do app.
+- `lib/app.dart`: widget raiz e rotas principais.
+- `lib/core`: tema, constantes, rotas e configuracoes globais.
+- `lib/models`: modelos usados pelo app.
+- `lib/services`: chamadas HTTP, APIs externas e plugins.
+- `lib/controllers`: estado e regras de tela.
 - `lib/screens`: telas do aplicativo.
 - `lib/widgets`: componentes reutilizaveis.
+- `assets/images`: imagens do app.
+- `assets/svgs`: icones SVG usados nas telas.
 
-## Comandos uteis
+## Instalar dependencias
 
-```bash
+```powershell
 flutter pub get
-flutter run
-flutter build apk --split-per-abi
 ```
+
+## Rodar no Android
+
+Antes de abrir o app, deixe o backend rodando em `backend` com:
+
+```powershell
+npm run start
+```
+
+Android Emulator:
+
+```powershell
+flutter run -d emulator-5554 --dart-define=BACKEND_BASE_URL=http://10.0.2.2:3000
+```
+
+Celular fisico na mesma rede:
+
+```powershell
+flutter run --dart-define=BACKEND_BASE_URL=http://SEU_IP_LOCAL:3000
+```
+
+O valor de `BACKEND_BASE_URL` sobrescreve o padrao definido em
+`lib/core/api_constants.dart`.
+
+## Gerar APK
+
+APK unico:
+
+```powershell
+flutter build apk --release --dart-define=BACKEND_BASE_URL=http://SEU_IP_LOCAL:3000
+```
+
+Saida:
+
+```text
+build/app/outputs/flutter-apk/app-release.apk
+```
+
+APKs separados por arquitetura:
+
+```powershell
+flutter build apk --split-per-abi --dart-define=BACKEND_BASE_URL=http://SEU_IP_LOCAL:3000
+```
+
+Saidas:
+
+```text
+build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+build/app/outputs/flutter-apk/app-x86_64-release.apk
+```
+
+## Comandos de verificacao
+
+```powershell
+flutter analyze
+flutter test
+```
+
+## Observacoes
+
+- Para testar login, transferencia, saldo e cartoes, o backend precisa estar ativo.
+- Para receber dados reais, rode o seed do backend antes do teste inicial.
+- Em APK instalado no celular fisico, `localhost` nao aponta para o computador.
