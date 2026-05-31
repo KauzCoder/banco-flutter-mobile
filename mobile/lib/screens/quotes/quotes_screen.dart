@@ -16,8 +16,6 @@ class QuotesScreen extends StatefulWidget {
 }
 
 class _QuotesScreenState extends State<QuotesScreen> {
-  final tabs = ['Todas', 'Favoritas', 'Moedas', 'Criptomoedas'];
-  String selectedTab = 'Todas';
   final favorites = <String>{'USD', 'KZ', 'JPY'};
 
   @override
@@ -30,14 +28,6 @@ class _QuotesScreenState extends State<QuotesScreen> {
         controller.fetchQuotes();
       }
     });
-  }
-
-  List<QuoteModel> _filterQuotes(List<QuoteModel> quotes) {
-    if (selectedTab == 'Todas') return quotes;
-    if (selectedTab == 'Favoritas') {
-      return quotes.where((quote) => favorites.contains(quote.symbol)).toList();
-    }
-    return quotes.where((quote) => quote.category == selectedTab).toList();
   }
 
   void _toggleFavorite(String symbol) {
@@ -53,7 +43,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<QuoteController>();
-    final filteredQuotes = _filterQuotes(controller.quotes);
+    final filteredQuotes = controller.quotes;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
@@ -282,42 +272,6 @@ class _QuotesScreenState extends State<QuotesScreen> {
     );
   }
 
-  Widget _buildTab(String label) {
-    final isSelected = selectedTab == label;
-    return GestureDetector(
-      onTap: () => setState(() => selectedTab = label),
-      child: AnimatedContainer(
-        duration: AppConstants.animationDuration,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.secondary : AppColors.darkBgSecondary,
-          borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-          border: Border.all(
-            color: isSelected ? AppColors.secondary : AppColors.darkBorder,
-          ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.black : AppColors.darkText,
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIndicatorDot({required bool isActive}) {
-    return Container(
-      width: isActive ? 12 : 8,
-      height: isActive ? 12 : 8,
-      decoration: BoxDecoration(
-        color: isActive ? AppColors.secondary : AppColors.darkTextSecondary,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
 
   Widget _buildQuoteItem(QuoteModel quote) {
     final isFavorite = favorites.contains(quote.symbol);
@@ -426,3 +380,4 @@ class _QuotesScreenState extends State<QuotesScreen> {
     );
   }
 }
+

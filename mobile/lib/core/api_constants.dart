@@ -12,10 +12,12 @@ class ApiConstants {
   static const String meUrl = '$backendBaseUrl/auth/me';
   static const String quotesUrl = '$backendBaseUrl/quotes';
   static const String transfersUrl = '$backendBaseUrl/transfers';
+  
   static const String transferHistoryUrl = '$backendBaseUrl/transfers/history';
   static const String balanceUrl = '$backendBaseUrl/account/balance';
   static const String summaryUrl = '$backendBaseUrl/account/summary';
   static const String pixKeysUrl = '$backendBaseUrl/pix-keys';
   static const String userSettingsUrl = '$backendBaseUrl/user-settings';
   static const String healthUrl = '$backendBaseUrl/health';
+  static const String awesomeApiLastUrl = 'https://economia.awesomeapi.com.br/json/last';
 }
