@@ -16,7 +16,9 @@ class QuotesScreen extends StatefulWidget {
 }
 
 class _QuotesScreenState extends State<QuotesScreen> {
+  final tabs = const ['Todas', 'Favoritas', 'Moedas'];
   final favorites = <String>{'USD', 'KZ', 'JPY'};
+  String selectedTab = 'Todas';
 
   @override
   void initState() {
@@ -43,7 +45,13 @@ class _QuotesScreenState extends State<QuotesScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<QuoteController>();
-    final filteredQuotes = controller.quotes;
+    final filteredQuotes = controller.quotes.where((quote) {
+      return switch (selectedTab) {
+        'Favoritas' => favorites.contains(quote.symbol),
+        'Moedas' => quote.category == 'Moedas',
+        _ => true,
+      };
+    }).toList();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
@@ -272,6 +280,44 @@ class _QuotesScreenState extends State<QuotesScreen> {
     );
   }
 
+  Widget _buildTab(String tab) {
+    final isSelected = selectedTab == tab;
+
+    return Expanded(
+      child: InkWell(
+        onTap: () => setState(() => selectedTab = tab),
+        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+        child: Container(
+          height: 44,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.secondary : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+          ),
+          child: Text(
+            tab,
+            style: TextStyle(
+              color: isSelected ? Colors.black : AppColors.darkTextSecondary,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIndicatorDot({required bool isActive}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      width: isActive ? 18 : 7,
+      height: 7,
+      decoration: BoxDecoration(
+        color: isActive ? AppColors.secondary : Colors.white38,
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
 
   Widget _buildQuoteItem(QuoteModel quote) {
     final isFavorite = favorites.contains(quote.symbol);
@@ -380,4 +426,3 @@ class _QuotesScreenState extends State<QuotesScreen> {
     );
   }
 }
-

@@ -4,18 +4,6 @@ import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 class PixAreaScreen extends StatelessWidget {
   const PixAreaScreen({super.key});
 
-  void _showSnackbar(BuildContext context, String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        backgroundColor: const Color(0xFF6B3FE4),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,14 +42,22 @@ class PixAreaScreen extends StatelessWidget {
               color: const Color(0xFF6B3FE4),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.chevron_left_rounded, color: Colors.white, size: 26),
+            child: const Icon(
+              Icons.chevron_left_rounded,
+              color: Colors.white,
+              size: 26,
+            ),
           ),
         ),
         const Expanded(
           child: Text(
             'Área Pix',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ),
         const SizedBox(width: 42),
@@ -71,9 +67,21 @@ class PixAreaScreen extends StatelessWidget {
 
   Widget _buildGrid(BuildContext context) {
     final items = [
-      {'icon': Icons.qr_code_2_rounded,       'label': 'Meu QR Code',       'route': AppRoutes.myQrCode},
-      {'icon': Icons.qr_code_scanner_rounded,  'label': 'Escanear QR Code',  'route': AppRoutes.scanQr},
-      {'icon': Icons.pix,                      'label': 'Transferência PIX',  'route': AppRoutes.transfer},
+      {
+        'icon': Icons.qr_code_2_rounded,
+        'label': 'Meu QR Code',
+        'route': AppRoutes.myQrCode,
+      },
+      {
+        'icon': Icons.qr_code_scanner_rounded,
+        'label': 'Escanear QR Code',
+        'route': AppRoutes.scanQr,
+      },
+      {
+        'icon': Icons.pix,
+        'label': 'Transferência PIX',
+        'route': AppRoutes.transfer,
+      },
     ];
 
     return GridView.builder(
@@ -99,12 +107,20 @@ class PixAreaScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(item['icon'] as IconData, color: const Color(0xFFCBFF4D), size: 36),
+                Icon(
+                  item['icon'] as IconData,
+                  color: const Color(0xFFCBFF4D),
+                  size: 36,
+                ),
                 const SizedBox(height: 10),
                 Text(
                   item['label'] as String,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -121,8 +137,15 @@ class PixAreaScreen extends StatelessWidget {
         Container(
           width: 60,
           height: 60,
-          decoration: BoxDecoration(color: const Color(0xFF1A1040), borderRadius: BorderRadius.circular(16)),
-          child: const Icon(Icons.security_rounded, color: Color(0xFFCBFF4D), size: 32),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1040),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: const Icon(
+            Icons.security_rounded,
+            color: Color(0xFFCBFF4D),
+            size: 32,
+          ),
         ),
         const SizedBox(width: 16),
         const Expanded(
@@ -131,12 +154,21 @@ class PixAreaScreen extends StatelessWidget {
             children: [
               Text(
                 'A segurança é fundamental durante suas transações.',
-                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700, height: 1.4),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  height: 1.4,
+                ),
               ),
               SizedBox(height: 6),
               Text(
                 'Você pode ter certeza de que seus dados estão protegidos em tempo real, garantindo transações seguras e confiáveis.',
-                style: TextStyle(color: Color(0xFF8A8AA8), fontSize: 12, height: 1.5),
+                style: TextStyle(
+                  color: Color(0xFF8A8AA8),
+                  fontSize: 12,
+                  height: 1.5,
+                ),
               ),
             ],
           ),
@@ -149,7 +181,14 @@ class PixAreaScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Atalhos', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
+        const Text(
+          'Atalhos',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         const SizedBox(height: 14),
         Container(
           decoration: BoxDecoration(
@@ -169,20 +208,44 @@ class PixAreaScreen extends StatelessWidget {
                     Container(
                       width: 44,
                       height: 44,
-                      decoration: BoxDecoration(color: const Color(0xFF6B3FE4), borderRadius: BorderRadius.circular(12)),
-                      child: const Icon(Icons.key_rounded, color: Color(0xFFCBFF4D), size: 22),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF6B3FE4),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.key_rounded,
+                        color: Color(0xFFCBFF4D),
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 14),
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Minha chaves Pix', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+                        Text(
+                          'Minha chaves Pix',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         SizedBox(height: 2),
-                        Text('Gerencie suas chaves e preferencias', style: TextStyle(color: Color(0xFF8A8AA8), fontSize: 12)),
+                        Text(
+                          'Gerencie suas chaves e preferencias',
+                          style: TextStyle(
+                            color: Color(0xFF8A8AA8),
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
                     const Spacer(),
-                    const Icon(Icons.chevron_right_rounded, color: Color(0xFF6B6B8A), size: 20),
+                    const Icon(
+                      Icons.chevron_right_rounded,
+                      color: Color(0xFF6B6B8A),
+                      size: 20,
+                    ),
                   ],
                 ),
               ),
@@ -197,14 +260,23 @@ class PixAreaScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF1A1040),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       builder: (_) => Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Minhas Chaves PIX', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
+            const Text(
+              'Minhas Chaves PIX',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             const SizedBox(height: 16),
             _pixKeyTile('Email', 'linghabei@gmail.com'),
             _pixKeyTile('Telefone', '(91) 98765-4321'),
@@ -232,12 +304,26 @@ class PixAreaScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(type, style: const TextStyle(color: Color(0xFF8A8AA8), fontSize: 11)),
+              Text(
+                type,
+                style: const TextStyle(color: Color(0xFF8A8AA8), fontSize: 11),
+              ),
               const SizedBox(height: 2),
-              Text(value, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
+              Text(
+                value,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
-          const Icon(Icons.check_circle_rounded, color: Color(0xFF22C55E), size: 20),
+          const Icon(
+            Icons.check_circle_rounded,
+            color: Color(0xFF22C55E),
+            size: 20,
+          ),
         ],
       ),
     );

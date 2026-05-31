@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme.dart';
-import '../../core/constants.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
-import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
 
 class ScanQRScreen extends StatefulWidget {
   const ScanQRScreen({super.key});
