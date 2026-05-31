@@ -253,8 +253,22 @@ async function loginUser(data) {
     });
   }
 
+  let account = await accountRepository.findAccountByUserId(user.id);
+  if (!account) {
+    account = await accountRepository.createAccount({
+      userId: user.id,
+    });
+  }
+
+  let settings = await userSettingsRepository.findUserSettingsByUserId(user.id);
+  if (!settings) {
+    settings = await userSettingsRepository.createUserSettings(user.id);
+  }
+
   return {
     user: removePassword(user),
+    account,
+    settings,
     token: authResult.idToken,
     refreshToken: authResult.refreshToken,
     expiresIn: Number(authResult.expiresIn || 0),

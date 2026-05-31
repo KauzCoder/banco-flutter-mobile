@@ -17,9 +17,7 @@ class BancoDigitalApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => QuoteController()),
         ChangeNotifierProvider(create: (_) => TransferController()),
-        ChangeNotifierProvider(
-          create: (_) => ProfileController()..loadProfileData(),
-        ),
+        ChangeNotifierProvider(create: (_) => ProfileController()),
       ],
       child: MaterialApp(
         title: AppConstants.appName,

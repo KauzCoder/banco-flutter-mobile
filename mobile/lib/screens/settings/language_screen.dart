@@ -23,6 +23,18 @@ class _LanguageScreenState extends State<LanguageScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+
+      context.read<ProfileController>().loadProfileDataIfNeeded();
+    });
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
@@ -41,52 +53,64 @@ class _LanguageScreenState extends State<LanguageScreen> {
           title: 'Idioma',
           child: Column(
             children: [
-              TextField(
-                controller: _searchController,
-                onChanged: (_) => setState(() {}),
-                cursorColor: profileBlue,
-                style: const TextStyle(color: profileText, fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: 'Pesquisar Idioma',
-                  hintStyle: const TextStyle(
-                    color: profileMutedText,
-                    fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(
-                    Icons.search_rounded,
-                    color: profileMutedText,
-                    size: 32,
-                  ),
-                  filled: true,
-                  fillColor: profileInput,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: const BorderSide(color: profileBlue),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 22,
+              if (controller.isLoading && controller.settings == null) ...[
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 80),
+                  child: CircularProgressIndicator(color: profileBlue),
+                ),
+              ] else ...[
+                TextField(
+                  controller: _searchController,
+                  onChanged: (_) => setState(() {}),
+                  cursorColor: profileBlue,
+                  style: const TextStyle(color: profileText, fontSize: 16),
+                  decoration: InputDecoration(
+                    hintText: 'Pesquisar Idioma',
+                    hintStyle: const TextStyle(
+                      color: profileMutedText,
+                      fontSize: 16,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.search_rounded,
+                      color: profileMutedText,
+                      size: 32,
+                    ),
+                    filled: true,
+                    fillColor: profileInput,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: const BorderSide(color: profileBlue),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 22,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 42),
-              ...filtered.map(
-                (language) => _LanguageRow(
-                  language: language,
-                  isSelected: controller.settings?.idioma == language.code,
-                  onTap: controller.isSubmitting
-                      ? null
-                      : () => controller.updateLanguage(language.code),
+                const SizedBox(height: 42),
+                ...filtered.map(
+                  (language) => _LanguageRow(
+                    language: language,
+                    isSelected: controller.settings?.idioma == language.code,
+                    onTap: controller.isSubmitting
+                        ? null
+                        : () async {
+                            await controller.updateLanguage(language.code);
+                            if (context.mounted) {
+                              Navigator.maybePop(context);
+                            }
+                          },
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         );

@@ -1,49 +1,73 @@
+import 'dart:convert';
+
+import 'package:flutter_aplication_bank/core/api_constants.dart';
 import 'package:flutter_aplication_bank/models/user_profile.dart';
 import 'package:flutter_aplication_bank/models/user_settings.dart';
+import 'package:flutter_aplication_bank/services/auth_service.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileRepository {
-  UserProfile _profile = UserProfile(
-    id: 'mock-user-1',
-    nome: 'Kauã M. Fragoso',
-    email: 'kauamendes714@gmail.com',
-    telefone: '+8801712663389',
-    fotoPerfil: '',
-    cpf: null,
-    dataCriacao: DateTime(2021, 1, 28),
-    dataNascimentoDia: '28',
-    dataNascimentoMes: 'Setembro',
-    dataNascimentoAno: '2000',
-  );
-
-  UserSettings _settings = const UserSettings(
-    id: 'mock-settings-1',
-    userId: 'mock-user-1',
-    biometriaAtiva: false,
-    idioma: 'pt-BR',
-    notificacoesAtivas: true,
-    temaEscuro: true,
-  );
-
   Future<UserProfile> getCurrentUser() async {
-    await Future<void>.delayed(const Duration(milliseconds: 150));
-    return _profile;
+    final cachedUser = AuthService.currentUser;
+    if (cachedUser != null) {
+      return cachedUser;
+    }
+
+    return AuthService.fetchCurrentUser();
   }
 
   Future<UserSettings> getUserSettings() async {
-    await Future<void>.delayed(const Duration(milliseconds: 150));
-    return _settings;
+    final cachedSettings = AuthService.currentSettings;
+    if (cachedSettings != null) {
+      return cachedSettings;
+    }
+
+    return AuthService.fetchUserSettings();
+  }
+
+  Future<Map<String, dynamic>?> getAccount() async {
+    final cachedAccount = AuthService.currentAccount;
+    if (cachedAccount != null) {
+      return cachedAccount;
+    }
+
+    final summary = await AuthService.fetchAccountSummary();
+    final account = summary['account'];
+    return account is Map<String, dynamic> ? account : null;
   }
 
   Future<UserSettings> updateUserSettings(UserSettings settings) async {
-    await Future<void>.delayed(const Duration(milliseconds: 150));
-    _settings = settings;
-    return _settings;
+    final response = await http
+        .patch(
+          Uri.parse(ApiConstants.userSettingsUrl),
+          headers: AuthService.authHeaders,
+          body: jsonEncode({
+            'biometriaAtiva': settings.biometriaAtiva,
+            'idioma': settings.idioma,
+            'notificacoesAtivas': settings.notificacoesAtivas,
+            'temaEscuro': settings.temaEscuro,
+          }),
+        )
+        .timeout(const Duration(seconds: 10));
+
+    final body = response.body.isNotEmpty
+        ? jsonDecode(response.body)
+        : <String, dynamic>{};
+
+    if (response.statusCode != 200 || body is! Map<String, dynamic>) {
+      final message = body is Map<String, dynamic>
+          ? body['message']?.toString()
+          : null;
+      throw Exception(message ?? 'Erro ao atualizar configuracoes.');
+    }
+
+    final updatedSettings = UserSettings.fromJson(body);
+    AuthService.updateCurrentSettings(updatedSettings);
+    return updatedSettings;
   }
 
   Future<UserProfile> updateProfile(UserProfile profile) async {
-    await Future<void>.delayed(const Duration(milliseconds: 150));
-    _profile = profile;
-    return _profile;
+    throw UnimplementedError('Atualizacao de perfil ainda nao existe na API.');
   }
 
   Future<void> changePassword({
@@ -51,6 +75,6 @@ class ProfileRepository {
     required String newPassword,
     required String confirmPassword,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+    throw UnimplementedError('Troca de senha ainda nao existe na API.');
   }
 }

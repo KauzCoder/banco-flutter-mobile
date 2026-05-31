@@ -71,6 +71,8 @@ async function login(req, res, next) {
 
     return res.status(200).json({
       user: userDTO(result.user),
+      account: accountDTO(result.account),
+      settings: userSettingsDTO(result.settings),
       token: result.token,
       refreshToken: result.refreshToken,
       expiresIn: result.expiresIn,

@@ -11,9 +11,18 @@ class ProfileController extends ChangeNotifier {
 
   bool isLoading = false;
   bool isSubmitting = false;
+  bool hasLoaded = false;
   String? error;
   UserProfile? profile;
   UserSettings? settings;
+
+  Future<void> loadProfileDataIfNeeded() async {
+    if (hasLoaded || isLoading) {
+      return;
+    }
+
+    await loadProfileData();
+  }
 
   Future<void> loadProfileData() async {
     isLoading = true;
@@ -27,6 +36,7 @@ class ProfileController extends ChangeNotifier {
       ]);
       profile = results[0] as UserProfile;
       settings = results[1] as UserSettings;
+      hasLoaded = true;
     } catch (e) {
       error = e.toString();
     } finally {
@@ -65,6 +75,22 @@ class ProfileController extends ChangeNotifier {
       return;
     }
     await updateUserSettings(current.copyWith(biometriaAtiva: enabled));
+  }
+
+  Future<void> updateNotifications(bool enabled) async {
+    final current = settings;
+    if (current == null) {
+      return;
+    }
+    await updateUserSettings(current.copyWith(notificacoesAtivas: enabled));
+  }
+
+  Future<void> updateDarkTheme(bool enabled) async {
+    final current = settings;
+    if (current == null) {
+      return;
+    }
+    await updateUserSettings(current.copyWith(temaEscuro: enabled));
   }
 
   Future<void> updateProfile(UserProfile nextProfile) async {

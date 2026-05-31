@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/models/user_profile.dart';
+import 'package:flutter_aplication_bank/services/auth_service.dart';
+import 'package:flutter_aplication_bank/services/profile_repository.dart';
 import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,7 +13,58 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ProfileRepository _profileRepository = ProfileRepository();
   bool _hideBalance = false;
+  bool _isLoading = true;
+  String? _error;
+  UserProfile? _profile;
+  Map<String, dynamic>? _account;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHomeData();
+  }
+
+  Future<void> _loadHomeData() async {
+    if (!AuthService.isAuthenticated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, AppRoutes.signIn);
+        }
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final results = await Future.wait([
+        _profileRepository.getCurrentUser(),
+        _profileRepository.getAccount(),
+      ]);
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _profile = results[0] as UserProfile;
+        _account = results[1] as Map<String, dynamic>?;
+      });
+    } catch (_) {
+      if (mounted) {
+        setState(() => _error = 'Nao foi possivel carregar sua conta.');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             _buildHeader(context),
+            if (_error != null) _buildErrorBanner(),
             _buildBalanceCard(),
             _buildQuickActions(context),
             _buildCurrencyCard(),
@@ -36,32 +91,71 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ───── HEADER ─────
   Widget _buildHeader(BuildContext context) {
+    final firstName = (_profile?.nome.trim().isNotEmpty ?? false)
+        ? _profile!.nome.trim().split(' ').first
+        : 'cliente';
+
     return Container(
       padding: const EdgeInsets.only(top: 52, left: 20, right: 20, bottom: 20),
       color: const Color(0xFF0D0D0D),
       child: Row(
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 24,
-            backgroundColor: const Color(0xFF2A2A2A),
-            child: const Icon(Icons.person, color: Colors.white54, size: 26),
+            backgroundColor: Color(0xFF2A2A2A),
+            child: Icon(Icons.person, color: Colors.white54, size: 26),
           ),
           const SizedBox(width: 12),
-          const Text(
-            'Olá, Kauã Mendes 👋',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
+          Expanded(
+            child: Text(
+              _isLoading ? 'Carregando...' : 'Ola, $firstName',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          const Spacer(),
           _headerBtn(Icons.help_outline_rounded, () {}),
           const SizedBox(width: 10),
           _headerBtn(Icons.notifications_outlined, () {}),
         ],
       ),
     );
+  }
+
+  Widget _buildErrorBanner() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2A1414),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF7F1D1D)),
+      ),
+      child: Text(
+        _error!,
+        style: const TextStyle(color: Colors.white, fontSize: 13),
+      ),
+    );
+  }
+
+  String _formatCurrency(dynamic value) {
+    final amount = value is num ? value : num.tryParse(value?.toString() ?? '');
+    final normalized = (amount ?? 0).toStringAsFixed(2);
+    final parts = normalized.split('.');
+    final buffer = StringBuffer();
+
+    for (var i = 0; i < parts[0].length; i++) {
+      if (i > 0 && (parts[0].length - i) % 3 == 0) {
+        buffer.write('.');
+      }
+      buffer.write(parts[0][i]);
+    }
+
+    return 'R\$ ${buffer.toString()},${parts[1]}';
   }
 
   Widget _headerBtn(IconData icon, VoidCallback onTap) {
@@ -82,6 +176,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ───── BALANCE CARD ─────
   Widget _buildBalanceCard() {
+    final balance = _formatCurrency(_account?['saldo']);
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
@@ -114,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(
             children: [
               Text(
-                _hideBalance ? 'R\$ ••••••' : 'R\$ 50.540,00',
+                _hideBalance ? 'R\$ ******' : balance,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 28,
@@ -165,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 12),
           Row(
             children: [
-              _balanceInfo('Disponível em Conta', 'R\$ 50.540,00'),
+              _balanceInfo('Disponivel em Conta', balance),
               const Spacer(),
               _balanceInfo(
                 'Ultima Atualização',
