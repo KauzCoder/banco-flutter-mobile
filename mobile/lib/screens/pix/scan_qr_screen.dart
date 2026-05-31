@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
+import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
 
 class ScanQRScreen extends StatefulWidget {
   const ScanQRScreen({super.key});
@@ -16,68 +17,36 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(context),
-            Expanded(
-              child: Center(
-                child: _buildScanFrame(),
-              ),
-            ),
-            _buildBottomButtons(context),
-          ],
+      backgroundColor: AppColors.darkBg,
+      appBar: AppBar(
+        backgroundColor: AppColors.darkBg,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: () => Navigator.maybePop(context),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.chevron_left_rounded,
-                  color: Colors.white,
-                  size: 24,
-                ),
+        title: const Text(
+          'Scanner',
+          style: TextStyle(
+            color: AppColors.darkText,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              setState(() => _isFlashlightOn = !_isFlashlightOn);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: AppConstants.paddingMedium),
+              child: Icon(
+                _isFlashlightOn ? Icons.flashlight_on : Icons.flashlight_off,
+                color: _isFlashlightOn ? AppColors.secondary : AppColors.darkText,
               ),
             ),
           ),
-          const Text(
-            'Scanner',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              onTap: () {},
-              child: const Icon(
-                Icons.image_outlined,
-                color: Colors.white,
-                size: 26,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -159,8 +128,11 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                   duration: const Duration(milliseconds: 200),
                   height: 52,
                   decoration: BoxDecoration(
-                    color: isLer ? const Color(0xFFDDFA46) : Colors.transparent,
-                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(
+                      color: _isQRDetected ? AppColors.success : AppColors.secondary,
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
                   ),
                   alignment: Alignment.center,
                   child: Text(
@@ -174,35 +146,100 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                 ),
               ),
             ),
-            // Botão Meu Codigo
-            Expanded(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  setState(() => _selected = 'meucodigo');
-                  Navigator.pushNamed(context, AppRoutes.myQrCode);
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: 52,
-                  decoration: BoxDecoration(
-                    color: isMeu ? const Color(0xFFDDFA46) : Colors.transparent,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Meu Codigo',
-                    style: TextStyle(
-                      color: isMeu ? const Color(0xFF552F9F) : Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
+          ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(AppConstants.paddingLarge),
+            color: AppColors.darkBgSecondary,
+            child: Column(
+              children: [
+                if (_isQRDetected)
+                  Container(
+                    padding: const EdgeInsets.all(AppConstants.paddingMedium),
+                    decoration: BoxDecoration(
+                      color: AppColors.success.withAlpha(50),
+                      borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                      border: Border.all(color: AppColors.success),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.check_circle, color: AppColors.success),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'QR Code detectado! Toque para processar.',
+                            style: TextStyle(color: AppColors.success, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                if (!_isQRDetected) ...[
+                  const Icon(Icons.qr_code_2, size: 40, color: AppColors.secondary),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Posicione o QR Code dentro do quadrado',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.darkText, fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'A câmera detectará automaticamente',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.darkTextSecondary, fontSize: 14),
+                  ),
+                ],
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondary,
+                            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Text('Ler', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.myQrCode),
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: AppColors.darkBg,
+                            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                            border: Border.all(color: AppColors.darkBorder),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Text('Meu Código', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+                const SizedBox(height: 16),
+                CustomButton(
+                  label: _isQRDetected ? 'Processar PIX' : 'Ler QR Code',
+                  onPressed: () {
+                    if (_isQRDetected) {
+                      Navigator.pushNamed(context, AppRoutes.transfer);
+                    } else {
+                      setState(() => _isQRDetected = true);
+                    }
+                  },
+                  backgroundColor: AppColors.primary,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

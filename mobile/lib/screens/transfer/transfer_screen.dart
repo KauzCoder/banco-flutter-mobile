@@ -6,6 +6,7 @@ import '../../widgets/common_widgets.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 import 'package:flutter_aplication_bank/controllers/transfer_controller.dart';
 import 'package:flutter_aplication_bank/models/transfer_request.dart';
+import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
 
 class TransferScreen extends StatefulWidget {
   final String initialSection;
@@ -184,9 +185,9 @@ class _TransferScreenState extends State<TransferScreen> {
       Navigator.pushNamed(context, AppRoutes.receipt);
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     }
   }
 
@@ -261,7 +262,9 @@ class _TransferScreenState extends State<TransferScreen> {
           decoration: BoxDecoration(
             color: selected ? AppColors.secondary : AppColors.darkBgSecondary,
             borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            border: Border.all(color: selected ? AppColors.secondary : AppColors.darkBorder),
+            border: Border.all(
+              color: selected ? AppColors.secondary : AppColors.darkBorder,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -284,9 +287,23 @@ class _TransferScreenState extends State<TransferScreen> {
         const SizedBox(height: 20),
         Row(
           children: [
-            Expanded(child: _buildActionCard('Escanear QR', Icons.qr_code, AppColors.primary, () => Navigator.pushNamed(context, AppRoutes.scanQr))),
+            Expanded(
+              child: _buildActionCard(
+                'Escanear QR',
+                Icons.qr_code,
+                AppColors.primary,
+                () => Navigator.pushNamed(context, AppRoutes.scanQr),
+              ),
+            ),
             const SizedBox(width: 12),
-            Expanded(child: _buildActionCard('Digitar', Icons.keyboard, AppColors.secondary, () => _selectSection('Digitar'))),
+            Expanded(
+              child: _buildActionCard(
+                'Digitar',
+                Icons.keyboard,
+                AppColors.secondary,
+                () => _selectSection('Digitar'),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 24),
@@ -294,14 +311,23 @@ class _TransferScreenState extends State<TransferScreen> {
           spacing: 12,
           runSpacing: 12,
           children: quickActions.map((action) {
-            return _buildQuickAction(action['icon'] as IconData, action['label'] as String, action['color'] as Color);
+            return _buildQuickAction(
+              action['icon'] as IconData,
+              action['label'] as String,
+              action['color'] as Color,
+            );
           }).toList(),
         ),
       ],
     );
   }
 
-  Widget _buildActionCard(String title, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildActionCard(
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(

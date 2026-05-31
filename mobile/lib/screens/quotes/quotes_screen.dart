@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_aplication_bank/controllers/quote_controller.dart';
 import 'package:flutter_aplication_bank/models/quote_model.dart';
+import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
+import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 
@@ -13,8 +16,6 @@ class QuotesScreen extends StatefulWidget {
 }
 
 class _QuotesScreenState extends State<QuotesScreen> {
-  final tabs = ['Todas', 'Favoritas', 'Moedas', 'Criptomoedas'];
-  String selectedTab = 'Todas';
   final favorites = <String>{'USD', 'KZ', 'JPY'};
 
   @override
@@ -27,14 +28,6 @@ class _QuotesScreenState extends State<QuotesScreen> {
         controller.fetchQuotes();
       }
     });
-  }
-
-  List<QuoteModel> _filterQuotes(List<QuoteModel> quotes) {
-    if (selectedTab == 'Todas') return quotes;
-    if (selectedTab == 'Favoritas') {
-      return quotes.where((quote) => favorites.contains(quote.symbol)).toList();
-    }
-    return quotes.where((quote) => quote.category == selectedTab).toList();
   }
 
   void _toggleFavorite(String symbol) {
@@ -50,120 +43,31 @@ class _QuotesScreenState extends State<QuotesScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<QuoteController>();
-    final filteredQuotes = _filterQuotes(controller.quotes);
+    final filteredQuotes = controller.quotes;
 
     return Scaffold(
       backgroundColor: AppColors.darkBg,
-      appBar: AppBar(
-        backgroundColor: AppColors.darkBg,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back_ios, color: AppColors.darkText),
-        ),
-        title: const Text(
-          'Cotação de Moedas',
-          style: TextStyle(
-            color: AppColors.darkText,
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: AppConstants.paddingMedium),
-            child: Icon(
-              Icons.pie_chart_outline,
-              color: AppColors.darkText,
-              size: 24,
+      bottomNavigationBar: const AppBottomNavBar(
+        currentItem: AppBottomNavItem.quotes,
+      ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(64),
+        child: SafeArea(
+          bottom: false,
+          child: AppScreenHeader(
+            title: 'Cotação de Moedas',
+            onBackPressed: () => Navigator.maybePop(context),
+            trailing: AppHeaderIconButton(
+              icon: Icons.pie_chart_outline,
+              onTap: () {},
+              backgroundColor: AppColors.darkBgSecondary,
             ),
           ),
-        ],
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppConstants.paddingMedium),
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.paddingSmall,
-              vertical: AppConstants.paddingSmall,
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.darkBgSecondary,
-              borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
-              border: Border.all(color: AppColors.purpleGradient.colors.last),
-            ),
-            child: Row(
-              children: [
-                for (final tab in tabs) ...[
-                  _buildTab(tab),
-                  const SizedBox(width: 8),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          Container(
-            height: 220,
-            padding: const EdgeInsets.all(AppConstants.paddingMedium),
-            decoration: BoxDecoration(
-              gradient: AppColors.purpleGradient,
-              borderRadius: BorderRadius.circular(AppConstants.radiusXLarge),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.purpleGradient.colors.last.withAlpha((0.25 * 255).round()),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Cotação em tempo real',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  'Dados fornecidos em tempo real através da Awesome API',
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  height: 110,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.darkBg,
-                    borderRadius: BorderRadius.circular(
-                      AppConstants.radiusLarge,
-                    ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Gráfico de cotações',
-                      style: TextStyle(color: Colors.white38, fontSize: 12),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 14),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildIndicatorDot(isActive: selectedTab == 'Todas'),
-                    const SizedBox(width: 6),
-                    _buildIndicatorDot(isActive: selectedTab == 'Favoritas'),
-                    const SizedBox(width: 6),
-                    _buildIndicatorDot(isActive: selectedTab == 'Moedas'),
-                  ],
-                ),
-              ],
-            ),
-          ),
           const SizedBox(height: 24),
           const Text(
             'Principais moedas',
@@ -251,16 +155,10 @@ class _QuotesScreenState extends State<QuotesScreen> {
             ),
             child: Row(
               children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(
-                      AppConstants.radiusLarge,
-                    ),
-                  ),
-                  child: const Icon(Icons.shield, color: Colors.white),
+                SvgPicture.asset(
+                  'assets/svgs/solar_shield-bold-duotone.svg',
+                  width: 34,
+                  height: 34,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -272,13 +170,13 @@ class _QuotesScreenState extends State<QuotesScreen> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                       SizedBox(height: 4),
                       Text(
                         'Dados fornecidos em tempo real através da Awesome API',
-                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                        style: TextStyle(color: Colors.white70, fontSize: 10),
                       ),
                     ],
                   ),
@@ -291,42 +189,6 @@ class _QuotesScreenState extends State<QuotesScreen> {
     );
   }
 
-  Widget _buildTab(String label) {
-    final isSelected = selectedTab == label;
-    return GestureDetector(
-      onTap: () => setState(() => selectedTab = label),
-      child: AnimatedContainer(
-        duration: AppConstants.animationDuration,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.secondary : AppColors.darkBgSecondary,
-          borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-          border: Border.all(
-            color: isSelected ? AppColors.secondary : AppColors.darkBorder,
-          ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.black : AppColors.darkText,
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIndicatorDot({required bool isActive}) {
-    return Container(
-      width: isActive ? 12 : 8,
-      height: isActive ? 12 : 8,
-      decoration: BoxDecoration(
-        color: isActive ? AppColors.secondary : AppColors.darkTextSecondary,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
 
   Widget _buildQuoteItem(QuoteModel quote) {
     final isFavorite = favorites.contains(quote.symbol);
@@ -435,3 +297,4 @@ class _QuotesScreenState extends State<QuotesScreen> {
     );
   }
 }
+

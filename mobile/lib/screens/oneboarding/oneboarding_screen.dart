@@ -44,7 +44,7 @@ class _OneboardingScreenState extends State<OneboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+      Navigator.of(context).pushReplacementNamed(AppRoutes.register);
     }
   }
 

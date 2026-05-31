@@ -16,33 +16,26 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF9151F5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Q",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+                SizedBox(
+                  width: 58,
+                  height: 58,
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/icon-app.png",
+                      width: 58,
+                      height: 58,
                     ),
                   ),
                 ),
                 const SizedBox(width: 12),
                 const Text(
-                  "QUANTUM", 
+                  "QUANTUM",
                   style: TextStyle(
-                    color: Colors.white, 
-                    fontSize: 32, 
-                    fontWeight: FontWeight.bold, 
-                    letterSpacing: 1.5
-                  )
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                  ),
                 ),
               ],
             ),
@@ -50,46 +43,92 @@ class LoginScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFF1E1C24),
+                color: const Color(0xFF141318), // Cor do fundo ajustada
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.05)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
               child: Row(
                 children: [
-                  const CircleAvatar(backgroundColor: Color(0xFF322A45), radius: 25, child: Icon(Icons.person, color: Colors.white54)),
+                  const CircleAvatar(
+                    backgroundColor: Color(0xFF322A45),
+                    radius: 25,
+                    child: Icon(Icons.person, color: Colors.white54),
+                  ),
                   const SizedBox(width: 15),
                   const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Kauã M. Fragoso", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                        Text(
+                          "Kauã M. Fragoso",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         SizedBox(height: 4),
-                        Text("***.074.162-85", style: TextStyle(color: Colors.white54, fontSize: 13)),
+                        Text(
+                          "***.074.162-85",
+                          style: TextStyle(color: Colors.white54, fontSize: 13),
+                        ),
                       ],
                     ),
                   ),
-                  TextButton(onPressed: () {}, child: const Text("Trocar", style: TextStyle(color: Color(0xFF9151F5), fontWeight: FontWeight.bold))),
+                  TextButton(
+                    onPressed: () => Navigator.pushReplacementNamed(
+                      context,
+                      AppRoutes.signIn,
+                    ),
+                    child: const Text(
+                      "Trocar",
+                      style: TextStyle(
+                        color: Color(0xFF9151F5),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              height: 60,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E1C24),
-                borderRadius: BorderRadius.circular(16),
+            // Campo de senha substituindo o Container de bolinhas
+            TextField(
+              obscureText: true, // Isso censura a senha como ••••••••
+              textAlign: TextAlign.left,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1C24),
+                hintText: "Digite sua senha",
+                hintStyle: const TextStyle(color: Colors.white24),
+                contentPadding: EdgeInsets.all(16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              child: const Center(child: Text("••••••••", style: TextStyle(color: Colors.white54, fontSize: 20))),
             ),
             const SizedBox(height: 30),
             SizedBox(
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF9151F5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-                child: const Text("Continuar", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                onPressed: () => Navigator.pushNamed(context, AppRoutes.home),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF9151F5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: const Text(
+                  "Continuar",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],
