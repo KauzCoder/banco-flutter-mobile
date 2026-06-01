@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_aplication_bank/controllers/transactions_controller.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 import 'package:flutter_aplication_bank/models/transaction_model.dart';
+import 'package:flutter_aplication_bank/screens/receipt/receipt_screen.dart';
 import 'package:flutter_aplication_bank/widgets/bottom_navigation/app_bottom_nav_bar.dart';
 import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
 import 'package:provider/provider.dart';
@@ -90,8 +91,13 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     ...filteredTransactions.map(
                       (transaction) => _TransactionRow(
                         transaction: transaction,
-                        onTap: () =>
-                            Navigator.pushNamed(context, AppRoutes.receipt),
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          AppRoutes.receipt,
+                          arguments: ReceiptArguments.fromTransaction(
+                            transaction,
+                          ).toMap(),
+                        ),
                       ),
                     ),
                 ],

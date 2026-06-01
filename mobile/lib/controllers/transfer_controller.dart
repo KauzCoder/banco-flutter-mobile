@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplication_bank/models/transaction_model.dart';
 import 'package:flutter_aplication_bank/models/transfer_request.dart';
 import 'package:flutter_aplication_bank/services/transfer_service.dart';
 
@@ -10,13 +11,13 @@ class TransferController extends ChangeNotifier {
   bool isSubmitting = false;
   String? error;
 
-  Future<void> sendTransfer(TransferRequest request) async {
+  Future<TransactionModel> sendTransfer(TransferRequest request) async {
     isSubmitting = true;
     error = null;
     notifyListeners();
 
     try {
-      await _service.sendTransfer(request);
+      return await _service.sendTransfer(request);
     } catch (e) {
       error = e.toString();
       rethrow;

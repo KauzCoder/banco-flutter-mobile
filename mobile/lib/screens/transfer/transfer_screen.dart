@@ -7,6 +7,7 @@ import 'package:flutter_aplication_bank/core/theme.dart';
 import 'package:flutter_aplication_bank/models/credit_card_model.dart';
 import 'package:flutter_aplication_bank/models/transfer_request.dart';
 import 'package:flutter_aplication_bank/models/transfer_contact.dart';
+import 'package:flutter_aplication_bank/screens/receipt/receipt_screen.dart';
 import 'package:provider/provider.dart';
 
 class TransferScreen extends StatefulWidget {
@@ -113,7 +114,7 @@ class _TransferScreenState extends State<TransferScreen> {
     try {
       final transferController = context.read<TransferController>();
       final transferDataController = context.read<TransferDataController>();
-      await transferController.sendTransfer(request);
+      final transaction = await transferController.sendTransfer(request);
       await transferDataController.load();
 
       if (!mounted) {
@@ -123,18 +124,7 @@ class _TransferScreenState extends State<TransferScreen> {
       Navigator.pushNamed(
         context,
         AppRoutes.receipt,
-        arguments: {
-          'amount': 'R\$ $_formattedAmount',
-          'receiverName':
-              _selectedRecipient?.name ?? _recipientController.text.trim(),
-          'pixKey':
-              _selectedRecipient?.recipient ?? _recipientController.text.trim(),
-          'type': 'Pix',
-          'institution': 'Quantum Bank',
-          'dateTime': _receiptDateTime(DateTime.now()),
-          'transactionId':
-              'QB${DateTime.now().millisecondsSinceEpoch.toString()}',
-        },
+        arguments: ReceiptArguments.fromTransaction(transaction).toMap(),
       );
     } catch (error) {
       if (!mounted) {
@@ -607,16 +597,6 @@ class _TransferScreenState extends State<TransferScreen> {
     return value.toStringAsFixed(2).replaceAll('.', ',');
   }
 
-  String _receiptDateTime(DateTime dateTime) {
-    final local = dateTime.toLocal();
-    final day = local.day.toString().padLeft(2, '0');
-    final month = local.month.toString().padLeft(2, '0');
-    final year = local.year.toString();
-    final hour = local.hour.toString().padLeft(2, '0');
-    final minute = local.minute.toString().padLeft(2, '0');
-
-    return '$day/$month/$year as $hour:$minute';
-  }
 }
 
 class _SourceOption extends StatelessWidget {

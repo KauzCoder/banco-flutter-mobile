@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(width: 10),
         Expanded(
           child: Text(
-            _isLoading ? 'Carregando...' : 'Boas vinda de volta,$firstName!👋',
+            _isLoading ? 'Carregando...' : 'Boas vinda de volta, $firstName!👋',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

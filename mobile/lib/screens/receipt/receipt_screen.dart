@@ -9,6 +9,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
 import 'package:flutter_aplication_bank/core/theme.dart';
+import 'package:flutter_aplication_bank/models/transaction_model.dart';
 import 'package:flutter_aplication_bank/widgets/headers/app_screen_header.dart';
 
 class ReceiptScreen extends StatefulWidget {
@@ -379,17 +380,93 @@ class ReceiptData {
   }
 
   static const fallback = ReceiptData(
-    amount: 'R\$250,00',
-    receiverName: 'Rubens E S Fragoso',
-    pixKey: 'kaua••••@gmail.com',
-    dateTime: '23/05/2026 às 09:41',
+    amount: 'R\$ 0,00',
+    receiverName: 'Nao informado',
+    pixKey: 'Nao informado',
+    dateTime: 'Nao informado',
     type: 'Pix',
-    institution: 'Banco Exemplo',
-    transactionId: 'El8236120•••••••3921',
+    institution: 'Quantum Bank',
+    transactionId: 'Nao informado',
   );
 
   static String _stringValue(Object? value, String fallbackValue) {
     final text = value?.toString().trim();
     return text == null || text.isEmpty ? fallbackValue : text;
+  }
+}
+
+class ReceiptArguments {
+  const ReceiptArguments({
+    required this.amount,
+    required this.receiverName,
+    required this.pixKey,
+    required this.dateTime,
+    required this.type,
+    required this.institution,
+    required this.transactionId,
+  });
+
+  final String amount;
+  final String receiverName;
+  final String pixKey;
+  final String dateTime;
+  final String type;
+  final String institution;
+  final String transactionId;
+
+  factory ReceiptArguments.fromTransaction(TransactionModel transaction) {
+    return ReceiptArguments(
+      amount:
+          'R\$ ${transaction.amount.abs().toStringAsFixed(2).replaceAll('.', ',')}',
+      receiverName: transaction.title.trim().isEmpty
+          ? 'Nao informado'
+          : transaction.title,
+      pixKey: transaction.recipientKey.trim().isEmpty
+          ? 'Nao informado'
+          : transaction.recipientKey,
+      dateTime: _formatDateTime(transaction.dateTime),
+      type: _formatType(transaction.type),
+      institution: 'Quantum Bank',
+      transactionId: transaction.id.trim().isEmpty
+          ? 'Nao informado'
+          : transaction.id,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'amount': amount,
+      'receiverName': receiverName,
+      'pixKey': pixKey,
+      'dateTime': dateTime,
+      'type': type,
+      'institution': institution,
+      'transactionId': transactionId,
+    };
+  }
+
+  static String _formatType(String type) {
+    return switch (type.toLowerCase()) {
+      'pix' => 'Pix',
+      'entrada' => 'Entrada',
+      'pagamento' => 'Pagamento',
+      'transferencia' => 'Transferencia',
+      _ => 'Pix',
+    };
+  }
+
+  static String _formatDateTime(DateTime? value) {
+    if (value == null) {
+      return 'Nao informado';
+    }
+
+    final local = value.toLocal();
+    final day = local.day.toString().padLeft(2, '0');
+    final month = local.month.toString().padLeft(2, '0');
+    final year = local.year.toString();
+    final hour = local.hour.toString().padLeft(2, '0');
+    final minute = local.minute.toString().padLeft(2, '0');
+
+    return '$day/$month/$year as $hour:$minute';
   }
 }

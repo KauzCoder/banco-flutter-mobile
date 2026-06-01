@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import 'package:flutter_aplication_bank/core/routes/app_routes.dart';
@@ -12,6 +13,68 @@ class ScanQRScreen extends StatefulWidget {
 
 class _ScanQRScreenState extends State<ScanQRScreen> {
   String _selected = 'ler';
+  CameraController? _cameraController;
+  Future<void>? _cameraFuture;
+  String? _cameraError;
+
+  @override
+  void initState() {
+    super.initState();
+    _cameraFuture = _initializeCamera();
+  }
+
+  Future<void> _initializeCamera() async {
+    try {
+      final cameras = await availableCameras();
+      if (cameras.isEmpty) {
+        if (mounted) {
+          setState(() => _cameraError = 'Camera indisponivel neste aparelho.');
+        }
+        return;
+      }
+
+      final camera = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.back,
+        orElse: () => cameras.first,
+      );
+
+      final controller = CameraController(
+        camera,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+
+      await controller.initialize();
+
+      if (!mounted) {
+        await controller.dispose();
+        return;
+      }
+
+      setState(() {
+        _cameraController = controller;
+        _cameraError = null;
+      });
+    } on CameraException catch (error) {
+      if (mounted) {
+        setState(() {
+          _cameraError = error.code == 'CameraAccessDenied'
+              ? 'Permissao da camera negada.'
+              : 'Nao foi possivel abrir a camera.';
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _cameraError = 'Nao foi possivel abrir a camera.');
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +92,76 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                 onTap: () {},
               ),
             ),
-            Expanded(child: Center(child: _buildScanFrame())),
+            Expanded(child: _buildCameraArea()),
             _buildBottomButtons(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCameraArea() {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        FutureBuilder<void>(
+          future: _cameraFuture,
+          builder: (context, snapshot) {
+            final controller = _cameraController;
+            if (controller != null && controller.value.isInitialized) {
+              return ClipRect(
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    width: controller.value.previewSize!.height,
+                    height: controller.value.previewSize!.width,
+                    child: CameraPreview(controller),
+                  ),
+                ),
+              );
+            }
+
+            return _buildCameraFallback(snapshot.connectionState);
+          },
+        ),
+        Container(color: Colors.black.withValues(alpha: 0.18)),
+        Center(child: _buildScanFrame()),
+        Positioned(
+          left: 24,
+          right: 24,
+          bottom: 18,
+          child: Text(
+            _cameraError ?? 'Posicione o QR Code dentro da moldura.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: _cameraError == null ? Colors.white70 : Colors.redAccent,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCameraFallback(ConnectionState state) {
+    if (_cameraError != null) {
+      return Container(
+        color: Colors.black,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Text(
+          _cameraError!,
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white70, fontSize: 15),
+        ),
+      );
+    }
+
+    return const ColoredBox(
+      color: Colors.black,
+      child: Center(
+        child: CircularProgressIndicator(color: Color(0xFF813DFF)),
       ),
     );
   }
