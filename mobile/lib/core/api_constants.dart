@@ -1,10 +1,10 @@
 class ApiConstants {
   const ApiConstants._();
 
-  //Nao esquece trocar o IP para o IP da sua maquina, ou hospedar o backend em algum lugar e colocar a URL aqui
+  // URL padrao da API hospedada. Use --dart-define=BACKEND_BASE_URL=... se precisar sobrescrever.
   static const String backendBaseUrl = String.fromEnvironment(
     'BACKEND_BASE_URL',
-    defaultValue: 'http://192.168.0.4:3000',
+    defaultValue: 'https://banco-flutter-mobile.onrender.com',
   );
   // Endpoints
 

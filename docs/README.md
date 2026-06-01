@@ -65,5 +65,5 @@ Mobile:
 ```powershell
 cd mobile
 flutter analyze
-flutter build apk --release --dart-define=BACKEND_BASE_URL=https://URL_DA_SUA_API
+flutter build apk --release --dart-define=BACKEND_BASE_URL=https://banco-flutter-mobile.onrender.com
 ```

@@ -24,6 +24,15 @@ amarelo-lima para acoes e componentes com visual de banco digital.
 - Plugins Flutter: `share_plus`, `screenshot`, `path_provider`,
   `shared_preferences` e `flutter_svg`.
 
+## Integrantes
+
+- Jean Laurinho de Moraes - 04179165
+- Ryan Custodio Reboucas - 04185916
+- Maria Laura dos Santos - 04185470
+- Waldir Roque de Andrade Ribeiro - 04197072
+
+**Dono do repositorio:** Emerson Kaua - 04177460
+
 ## Estrutura
 
 ```text
@@ -77,10 +86,16 @@ Mobile:
 ```powershell
 cd mobile
 flutter pub get
-flutter run --dart-define=BACKEND_BASE_URL=http://SEU_IP_LOCAL:3000
+flutter run
 ```
 
-No Android Emulator, use:
+Por padrao, o app usa a API hospedada em:
+
+```text
+https://banco-flutter-mobile.onrender.com
+```
+
+Para testar com backend local no Android Emulator, use:
 
 ```powershell
 flutter run -d emulator-5554 --dart-define=BACKEND_BASE_URL=http://10.0.2.2:3000
@@ -88,11 +103,17 @@ flutter run -d emulator-5554 --dart-define=BACKEND_BASE_URL=http://10.0.2.2:3000
 
 ## Gerar APK
 
-Depois de hospedar a API, gere o APK apontando para a URL publicada:
+Para gerar o APK usando a API hospedada:
 
 ```powershell
 cd mobile
-flutter build apk --release --dart-define=BACKEND_BASE_URL=https://URL_DA_SUA_API
+flutter build apk --release
+```
+
+Ou informe a URL explicitamente:
+
+```powershell
+flutter build apk --release --dart-define=BACKEND_BASE_URL=https://banco-flutter-mobile.onrender.com
 ```
 
 Saida:

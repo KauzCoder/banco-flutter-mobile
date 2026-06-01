@@ -32,24 +32,30 @@ npm run start
 Android Emulator:
 
 ```powershell
-flutter run -d emulator-5554 --dart-define=BACKEND_BASE_URL=http://10.0.2.2:3000
+flutter run -d emulator-5554
 ```
 
-Celular fisico na mesma rede:
+Por padrao, o app usa a API hospedada:
 
-```powershell
-flutter run --dart-define=BACKEND_BASE_URL=http://SEU_IP_LOCAL:3000
+```text
+https://banco-flutter-mobile.onrender.com
 ```
 
 O valor de `BACKEND_BASE_URL` sobrescreve o padrao definido em
 `lib/core/api_constants.dart`.
+
+Para usar backend local no Android Emulator:
+
+```powershell
+flutter run -d emulator-5554 --dart-define=BACKEND_BASE_URL=http://10.0.2.2:3000
+```
 
 ## Gerar APK
 
 APK unico:
 
 ```powershell
-flutter build apk --release --dart-define=BACKEND_BASE_URL=http://SEU_IP_LOCAL:3000
+flutter build apk --release
 ```
 
 Saida:
@@ -61,7 +67,7 @@ build/app/outputs/flutter-apk/app-release.apk
 APKs separados por arquitetura:
 
 ```powershell
-flutter build apk --split-per-abi --dart-define=BACKEND_BASE_URL=http://SEU_IP_LOCAL:3000
+flutter build apk --split-per-abi
 ```
 
 Saidas:
