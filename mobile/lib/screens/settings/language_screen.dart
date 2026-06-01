@@ -14,12 +14,12 @@ class _LanguageScreenState extends State<LanguageScreen> {
   final _searchController = TextEditingController();
 
   final List<_LanguageOption> _languages = const [
-    _LanguageOption(code: 'pt-BR', label: 'Português', flag: '🇧🇷'),
-    _LanguageOption(code: 'en-AU', label: 'Austrália', flag: '🇦🇺'),
-    _LanguageOption(code: 'fr-FR', label: 'Francês', flag: '🇫🇷'),
-    _LanguageOption(code: 'es-ES', label: 'Espanhol', flag: '🇪🇸'),
-    _LanguageOption(code: 'hy-AM', label: 'América', flag: '🇦🇲'),
-    _LanguageOption(code: 'vi-VN', label: 'Vietnã', flag: '🇻🇳'),
+    _LanguageOption(code: 'pt-BR', label: 'Portugues', badge: 'PT'),
+    _LanguageOption(code: 'en-AU', label: 'Ingles', badge: 'EN'),
+    _LanguageOption(code: 'fr-FR', label: 'Frances', badge: 'FR'),
+    _LanguageOption(code: 'es-ES', label: 'Espanhol', badge: 'ES'),
+    _LanguageOption(code: 'hy-AM', label: 'Armenio', badge: 'HY'),
+    _LanguageOption(code: 'vi-VN', label: 'Vietnamita', badge: 'VI'),
   ];
 
   @override
@@ -65,7 +65,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   cursorColor: profileBlue,
                   style: const TextStyle(color: profileText, fontSize: 16),
                   decoration: InputDecoration(
-                    hintText: 'Pesquisar Idioma',
+                    hintText: 'Pesquisar idioma',
                     hintStyle: const TextStyle(
                       color: profileMutedText,
                       fontSize: 16,
@@ -145,9 +145,18 @@ class _LanguageRow extends StatelessWidget {
               width: 64,
               height: 64,
               alignment: Alignment.center,
-              decoration: const BoxDecoration(shape: BoxShape.circle),
-              clipBehavior: Clip.antiAlias,
-              child: Text(language.flag, style: const TextStyle(fontSize: 44)),
+              decoration: const BoxDecoration(
+                color: profileInput,
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                language.badge,
+                style: const TextStyle(
+                  color: profileText,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ),
             const SizedBox(width: 28),
             Expanded(
@@ -185,10 +194,10 @@ class _LanguageOption {
   const _LanguageOption({
     required this.code,
     required this.label,
-    required this.flag,
+    required this.badge,
   });
 
   final String code;
   final String label;
-  final String flag;
+  final String badge;
 }
