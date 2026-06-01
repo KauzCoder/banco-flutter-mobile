@@ -27,7 +27,7 @@ class QuotesService {
     final uri = Uri.parse(
       '${ApiConstants.awesomeApiLastUrl}/${symbols.join(',')}',
     );
-    final response = await client.get(uri).timeout(const Duration(seconds: 10));
+    final response = await client.get(uri).timeout(ApiConstants.requestTimeout);
 
     if (response.statusCode != 200) {
       throw Exception('Falha ao carregar cotações.');
@@ -81,7 +81,7 @@ class QuotesService {
 
   Future<QuoteModel?> fetchLatestForPair(String pair) async {
     final uri = Uri.parse('${ApiConstants.awesomeApiLastUrl}/$pair');
-    final response = await client.get(uri).timeout(const Duration(seconds: 10));
+    final response = await client.get(uri).timeout(ApiConstants.requestTimeout);
 
     if (response.statusCode != 200) return null;
 

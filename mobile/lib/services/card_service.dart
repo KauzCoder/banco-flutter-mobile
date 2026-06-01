@@ -13,7 +13,7 @@ class CardService {
   Future<List<CreditCardModel>> fetchCards() async {
     final response = await _client
         .get(Uri.parse(ApiConstants.cardsUrl), headers: AuthService.authHeaders)
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     if (response.statusCode != 200) {
       throw Exception('Falha ao carregar cartoes.');

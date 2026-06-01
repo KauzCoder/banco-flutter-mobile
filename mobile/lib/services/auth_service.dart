@@ -69,7 +69,7 @@ class AuthService {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({'email': email, 'password': password}),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     final body = _decodeBody(response.body);
 
@@ -96,7 +96,7 @@ class AuthService {
             'password': password,
           }),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     final body = _decodeBody(response.body);
 
@@ -127,7 +127,7 @@ class AuthService {
   static Future<UserProfile> fetchCurrentUser() async {
     final response = await http
         .get(Uri.parse(ApiConstants.meUrl), headers: authHeaders)
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     final body = _decodeBody(response.body);
 
@@ -142,7 +142,7 @@ class AuthService {
   static Future<Map<String, dynamic>> fetchAccountSummary() async {
     final response = await http
         .get(Uri.parse(ApiConstants.summaryUrl), headers: authHeaders)
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     final body = _decodeBody(response.body);
 
@@ -158,7 +158,7 @@ class AuthService {
   static Future<UserSettings> fetchUserSettings() async {
     final response = await http
         .get(Uri.parse(ApiConstants.userSettingsUrl), headers: authHeaders)
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     final body = _decodeBody(response.body);
 

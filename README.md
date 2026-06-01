@@ -24,14 +24,20 @@ amarelo-lima para acoes e componentes com visual de banco digital.
 - Plugins Flutter: `share_plus`, `screenshot`, `path_provider`,
   `shared_preferences` e `flutter_svg`.
 
-## Integrantes
+## Equipe
 
-- Jean Laurinho de Moraes - 04179165
-- Ryan Custodio Reboucas - 04185916
-- Maria Laura dos Santos - 04185470
-- Waldir Roque de Andrade Ribeiro - 04197072
-
-**Dono do repositorio:** Emerson Kaua - 04177460
+> ### Dono do repositorio
+>
+> **Emerson Kaua - 04177460**
+>
+> **Integrantes do projeto**
+>
+> | Nome | Matricula |
+> | --- | --- |
+> | Jean Laurinho de Moraes | 04179165 |
+> | Ryan Custodio Reboucas | 04185916 |
+> | Maria Laura dos Santos | 04185470 |
+> | Waldir Roque de Andrade Ribeiro | 04197072 |
 
 ## Estrutura
 
@@ -61,6 +67,18 @@ amarelo-lima para acoes e componentes com visual de banco digital.
 - QR Code real e leitura por camera ainda nao estao finalizados.
 - Recuperacao de senha, notificacoes e biometria ainda precisam de conclusao.
 - Ainda nao ha suite completa de testes automatizados.
+
+## Contas para teste
+
+Use apenas as contas abaixo para testar o login no app:
+
+| Usuario | E-mail | Senha |
+| --- | --- | --- |
+| Ana Lima | `ana.lima@example.com` | `123456` |
+| Bruno Costa | `bruno.costa@example.com` | `123456` |
+
+Essas contas sao criadas pelo seed do backend e possuem dados vinculados no
+Firestore, como conta bancaria, saldo, cartoes, chave Pix e transacoes.
 
 ## Documentacao
 

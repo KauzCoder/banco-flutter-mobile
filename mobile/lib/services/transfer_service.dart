@@ -18,7 +18,7 @@ class TransferService {
           headers: AuthService.authHeaders,
           body: jsonEncode(request.toJson()),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       final body = response.body.isNotEmpty ? jsonDecode(response.body) : null;

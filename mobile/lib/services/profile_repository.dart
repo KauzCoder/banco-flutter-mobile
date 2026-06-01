@@ -48,7 +48,7 @@ class ProfileRepository {
             'temaEscuro': settings.temaEscuro,
           }),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     final body = response.body.isNotEmpty
         ? jsonDecode(response.body)

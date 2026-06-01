@@ -6,6 +6,8 @@ class ApiConstants {
     'BACKEND_BASE_URL',
     defaultValue: 'https://banco-flutter-mobile.onrender.com',
   );
+
+  static const Duration requestTimeout = Duration(seconds: 60);
   // Endpoints
 
   static const String loginUrl = '$backendBaseUrl/auth/login';

@@ -28,7 +28,7 @@ class TransactionsService {
     );
     final response = await _client
         .get(uri, headers: {'Authorization': 'Bearer $token'})
-        .timeout(const Duration(seconds: 10));
+        .timeout(ApiConstants.requestTimeout);
 
     if (response.statusCode != 200) {
       throw Exception('Falha ao carregar transações.');
